@@ -1,0 +1,1 @@
+C:\cocos test\TestCode\proj.win32\Debug.win32\TestCode.exe
