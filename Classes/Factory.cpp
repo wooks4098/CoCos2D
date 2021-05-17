@@ -16,9 +16,7 @@ void Factory::Create_HpBar()
 	Hp_Bar = Sprite::create("Wook_Test/Test_Hp.png");
 	Hp_Bar->setAnchorPoint(Vec2(1, 1));
 	Hp_Bar->setPosition(winSize.width, winSize.height);
-
-	//Hp_Bar->addChild(Hp_Bar_Back);
-
+	
 }
 
 void Factory::Create_HpDownMenu()
@@ -33,6 +31,12 @@ void Factory::Create_HpDownMenu()
 
 void Factory::HpDown(Ref* Sender)
 {
+	if (CurHp <= 0)
+		return;
 	CurHp -= 10;
-	Hp_Bar->setPosition(Vec2(winSize.width + (560 / MaxHp * (MaxHp - CurHp)), winSize.height));
+	//Hp_Bar->setPosition(Vec2(winSize.width + (560 / MaxHp * (MaxHp - CurHp)), winSize.height));
+	if(CurHp <= 0)
+		Hp_Bar->setScaleX(0);
+	else
+		Hp_Bar->setScaleX((float)CurHp/(float)MaxHp);
 }
