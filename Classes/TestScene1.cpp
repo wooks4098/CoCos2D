@@ -63,6 +63,14 @@ void TestScene1::createUnit2()
 
 void TestScene1::collisionUnit1(float f)
 {
+    if (unit1 == nullptr)
+    {
+        log("unit1 is null!");
+        this->createUnit1();
+
+        return;
+    }
+
     if (unit1->getBoundingBox().intersectsRect(unit2->getBoundingBox()))
     {
         log("unit1 unit2 collision");
@@ -73,6 +81,14 @@ void TestScene1::collisionUnit1(float f)
 
 void TestScene1::collisionUnit2(float f)
 {
+    if (unit2 == nullptr)
+    {
+        log("unit2 is null!");
+        this->createUnit2();
+
+        return;
+    }
+
     if (unit2->getBoundingBox().intersectsRect(unit1->getBoundingBox()))
     {
         log("unit2 unit1 collision");
@@ -86,6 +102,25 @@ void TestScene1::fightUnit()
     this->stopAction(moveUnit1);
     this->stopAction(moveUnit2);
 
-    log("unit fight!!! - %d", num);
-    num++;
+    if (num < 300)
+    {
+        log("unit fight!!! - %d", num);
+        num++;
+    }
+    else
+    {
+        log("unit die!!!");
+        num = 0;
+
+        unit1->removeFromParentAndCleanup(true);
+        unit1 = nullptr;
+        this->removeChild(unit1);
+
+        unit2->removeFromParentAndCleanup(true);
+        unit2 = nullptr;
+        this->removeChild(unit2);
+
+    }
+
+
 }
