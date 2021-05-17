@@ -2,10 +2,7 @@
 #include "cocos2d.h"
 #include <string>
 using namespace cocos2d; 
-struct Bubble
-{
-	
-};
+
 
 class Factory : public cocos2d::Sprite
 {
