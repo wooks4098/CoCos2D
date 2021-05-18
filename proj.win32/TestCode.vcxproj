@@ -159,6 +159,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\TestScene1.cpp" />
     <ClCompile Include="..\Classes\TestScene2.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mecro.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />

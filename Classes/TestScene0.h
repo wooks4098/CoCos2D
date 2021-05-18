@@ -13,17 +13,21 @@ class TestScene0 : public cocos2d::Scene
 private: 
 	Size winSize;
 	Factory factory[2];
-	float Right_Factory_UnitSpawntime;
-	float Left_Factory_UnitSpawntime;
+
 public:
 	static cocos2d::Scene* createScene();
-
 	virtual bool init();
-
 	CREATE_FUNC(TestScene0);
 
-	void Factory_Right_tick(float f);
-	void Factory_Left_tick(float f);
+	void ChangeBubble()
+	{
+
+	}
+
+
+	//스캐줄
+	void Factory_Right_CreatUnitCheck(float f);	//팩토리(Right) 유닛 생성 체크
+	void Factory_Left_CreatUnitCheck(float f);	//팩토리(Left) 유닛 생성 체크
 };  
 
 #endif // !__SceneTrans__TestScene0

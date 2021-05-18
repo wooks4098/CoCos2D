@@ -31,17 +31,17 @@ bool TestScene0::init()
 	this->addChild(factory[FACTORY_LEFT].return_HpBar_Back());
 	this->addChild(factory[FACTORY_LEFT].return_HpBar());
 	//팩토리 스케줄 등록
-	this->schedule(schedule_selector(TestScene0::Factory_Right_tick), 0.1f);
-	this->schedule(schedule_selector(TestScene0::Factory_Left_tick), 0.1f);
+	this->schedule(schedule_selector(TestScene0::Factory_Right_CreatUnitCheck), 0.1f);
+	this->schedule(schedule_selector(TestScene0::Factory_Left_CreatUnitCheck), 0.1f);
     return true;
 }
 
-void TestScene0::Factory_Right_tick(float f)
+void TestScene0::Factory_Right_CreatUnitCheck(float f)
 {
-	Right_Factory_UnitSpawntime += 0.1;
+	factory[FACTORY_RIGHT].CreatUnit();
 }
 
-void TestScene0::Factory_Left_tick(float f)
+void TestScene0::Factory_Left_CreatUnitCheck(float f)
 {
-	Left_Factory_UnitSpawntime += 0.1;
+	factory[FACTORY_LEFT].CreatUnit();
 }

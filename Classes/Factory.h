@@ -14,6 +14,8 @@ private:
 	int MaxHp;		//최대 체력
 	int CurHp;		//현재 체력
 	bool isRight;	//공장이 오른쪽에 있는지
+	int CreatUnit_timeCheck;	//유닛 생성 쿨타임 체크
+	int CreatUnit_time;		//유닛 생성 쿨타임
 
 	Sprite* Hp_Bar;
 	Sprite* Hp_Bar_Back;
@@ -22,7 +24,12 @@ private:
 public:
 	Factory();
 
-	void Create(int factoryNumber);
+	void Create(int factoryNumber);//팩토리 생성 함수
+	void CreatUnit(float f); //유닛 생성 함수
+	void Change_CreatUnit_Time(float time); //유닛 생성 쿨타임 변경 함수
+	
+
+
 
 	//HP바
 	void Create_HpBar();
@@ -37,6 +44,6 @@ public:
 	void HpDown(Ref* Sender);
 
 	
-	void CreatUnit();
+
 };
 

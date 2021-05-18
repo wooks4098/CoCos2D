@@ -3,6 +3,8 @@
 Factory::Factory()
 {
 	winSize = Director::getInstance()->getWinSize(); //화면의 사이즈 구하기
+	CreatUnit_timeCheck = 30;	
+	CreatUnit_time = 0;		
 	MaxHp = 100;
 	CurHp = MaxHp;
 }
@@ -78,9 +80,19 @@ void Factory::HpDown(Ref* Sender)
 	else
 		Hp_Bar->setScaleX((float)CurHp/(float)MaxHp);
 }
-
-
-void CreatUnit()
+void Factory::Change_CreatUnit_Time(float time)
 {
+	CreatUnit_time = time*10;
+	CreatUnit_timeCheck = 0;
+}
+
+void Factory::CreatUnit(float f)
+{
+	CreatUnit_time += 0.1f;
+	if (CreatUnit_time >= CreatUnit_timeCheck)
+	{
+		//유닛 생성 함수 등록
+		CreatUnit_time = 0;
+	}
 
 }
