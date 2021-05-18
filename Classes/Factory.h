@@ -1,10 +1,12 @@
 #pragma once
 #include "cocos2d.h"
 #include <string>
+#define FACTORY_RIGHT 0
+#define FACTORY_LEFT 1
 using namespace cocos2d; 
 
 
-class Factory : public cocos2d::Sprite
+class Factory
 {
 private:
 	Size winSize;
@@ -20,6 +22,8 @@ private:
 public:
 	Factory();
 
+	void Create(int factoryNumber);
+
 	//HP바
 	void Create_HpBar();
 	Sprite* return_HpBar() { return Hp_Bar; };
@@ -32,5 +36,7 @@ public:
 	//콜백 함수
 	void HpDown(Ref* Sender);
 
+	
+	void CreatUnit();
 };
 

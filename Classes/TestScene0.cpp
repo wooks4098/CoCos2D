@@ -18,18 +18,30 @@ bool TestScene0::init()
     auto wlayer = LayerColor::create(Color4B::WHITE);
     this->addChild(wlayer);
 
-	factory.Create_HpDownMenu();
-	this->addChild(factory.return_Menu());
-	
-	factory.Create_HpBar();
-	this->addChild(factory.return_HpBar_Back());
-	this->addChild(factory.return_HpBar());
+	//팩토리 생성
+	factory[FACTORY_RIGHT].Create(FACTORY_RIGHT);
 
+	factory[FACTORY_LEFT].Create(FACTORY_LEFT);
+	//팩토리 등록
+	this->addChild(factory[FACTORY_RIGHT].return_Menu());
+	this->addChild(factory[FACTORY_RIGHT].return_HpBar_Back());
+	this->addChild(factory[FACTORY_RIGHT].return_HpBar());
 
+	this->addChild(factory[FACTORY_LEFT].return_Menu());
+	this->addChild(factory[FACTORY_LEFT].return_HpBar_Back());
+	this->addChild(factory[FACTORY_LEFT].return_HpBar());
+	//팩토리 스케줄 등록
+	this->schedule(schedule_selector(TestScene0::Factory_Right_tick), 0.1f);
+	this->schedule(schedule_selector(TestScene0::Factory_Left_tick), 0.1f);
     return true;
 }
 
-//void TestScene0::HpDown(Ref* Sender)
-//{
-//
-//}
+void TestScene0::Factory_Right_tick(float f)
+{
+	Right_Factory_UnitSpawntime += 0.1;
+}
+
+void TestScene0::Factory_Left_tick(float f)
+{
+	Left_Factory_UnitSpawntime += 0.1;
+}

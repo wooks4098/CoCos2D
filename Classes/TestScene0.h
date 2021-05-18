@@ -3,13 +3,18 @@
 
 #include "cocos2d.h"
 #include "Factory.h"
+
+#define FACTORY_RIGHT 0
+#define FACTORY_LEFT 1
+
 using namespace cocos2d;
 class TestScene0 : public cocos2d::Scene
 {
 private: 
 	Size winSize;
-	Factory factory;
-
+	Factory factory[2];
+	float Right_Factory_UnitSpawntime;
+	float Left_Factory_UnitSpawntime;
 public:
 	static cocos2d::Scene* createScene();
 
@@ -17,7 +22,8 @@ public:
 
 	CREATE_FUNC(TestScene0);
 
-	//void HpDown(Ref* Sender);
-}; 
+	void Factory_Right_tick(float f);
+	void Factory_Left_tick(float f);
+};  
 
 #endif // !__SceneTrans__TestScene0
