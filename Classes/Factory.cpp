@@ -15,6 +15,22 @@ void Factory::Create(int factoryNumber)
 	Create_HpBar();
 	Create_HpDownMenu();
 }
+void Factory::Create_Factory_Sp()
+{
+	//if (isRight)
+	//{//공장 위치: 오른쪽
+	//	Factory_sp = Sprite::create("");
+	//	Factory_sp->setAnchorPoint(Vec2(1, 0.5));
+	//	Factory_sp->setPosition(winSize.width, winSize.height/2);
+	//}
+	//else
+	//{//공장 위치 왼쪽
+	//	Factory_sp = Sprite::create("");
+	//	Factory_sp->setAnchorPoint(Vec2(0, 0.5));
+	//	Factory_sp->setPosition(0, winSize.height/2);
+	//}
+}
+
 void Factory::Create_HpBar()
 {
 	if (isRight)

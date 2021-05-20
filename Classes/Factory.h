@@ -19,26 +19,36 @@ private:
 
 	Sprite* Hp_Bar;
 	Sprite* Hp_Bar_Back;
+	Sprite* Factory_sp;
 	Menu *menu;
 
 public:
 	Factory();
 
+	//Creat
 	void Create(int factoryNumber);//팩토리 생성 함수
 	void CreatUnit(float f); //유닛 생성 함수
 	void Change_CreatUnit_Time(float time); //유닛 생성 쿨타임 변경 함수
 	
+	void Factory_Hp_Down();//팩토리 Hp 감소
+	void Factory_Damage_Action();//팩토리 데미지 액션
+	void Factory_Hit_Check();//팩토리 충돌 체크
 
-
-
-	//HP바
+	//Sprite creat
 	void Create_HpBar();
+	void Create_Factory_Sp();
+	//Menu Creat
+	void Create_HpDownMenu();
+
+
+
+
+
+	//Scene에 등록시키기 위한 리턴
 	Sprite* return_HpBar() { return Hp_Bar; };
 	Sprite* return_HpBar_Back() { return Hp_Bar_Back; };
-	//메뉴
-	void Create_HpDownMenu();
+	Sprite* return_Factory_Sp() { return Factory_sp; };
 	Menu* return_Menu() { return menu; };
-
 
 	//콜백 함수
 	void HpDown(Ref* Sender);
