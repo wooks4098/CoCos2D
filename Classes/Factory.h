@@ -5,7 +5,6 @@
 #define FACTORY_LEFT 1
 using namespace cocos2d; 
 
-
 class Factory
 {
 private:

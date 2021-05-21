@@ -30,11 +30,10 @@
     <ClCompile Include="..\Classes\TestScene2.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Bubble.cpp" />
     <ClCompile Include="..\Classes\Factory.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="Mecro.cpp">
+    <ClCompile Include="..\Classes\Bubble.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -57,8 +56,13 @@
     <ClInclude Include="..\Classes\TestScene2.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Bubble.h" />
     <ClInclude Include="..\Classes\Factory.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Bubble.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\mecro.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
