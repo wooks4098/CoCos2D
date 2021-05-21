@@ -18,14 +18,13 @@ Bubble* Bubble::create(const std::string& filename)//, BUBBLE b_slot)
 Bubble* Bubble::BubbleCreate(BUBBLE info)
 {
 	b_stat = info;
-	pBub = new(std::nothrow)Bubble();
 
 	if (b_stat.Defense != 0)
 	{
 		b_stat.Defense += 5;
-		if (b_stat.level == 1)
+		if (b_stat.key == C1_Blue)
 			pBub = Bubble::create("Bubble/C1_Blue.png");
-		else if (b_stat.level == 2)
+		else
 			pBub = Bubble::create("Bubble/C2_Blue.png");
 		b_stat.iscircle = true;
 		log(b_stat.Defense);
@@ -33,29 +32,29 @@ Bubble* Bubble::BubbleCreate(BUBBLE info)
 	if (b_stat.Hp != 0)
 	{
 		b_stat.Hp += 100;
-		if (b_stat.level == 1)
+		if (b_stat.key == C1_Red)
 			pBub = Bubble::create("Bubble/C1_Red.png");
-		else if (b_stat.level == 2)
+		else
 			pBub = Bubble::create("Bubble/C2_Red.png");
 		b_stat.iscircle = true;
 		log(b_stat.Hp);
 	}
-	if (b_stat.Spawn_time != 0)
+	if (b_stat.SpawnSpeed != 0)
 	{
-		b_stat.Spawn_time += 3;
-		if (b_stat.level == 1)
+		b_stat.SpawnSpeed += 3;
+		if (b_stat.key == C1_Yellow)
 			pBub = Bubble::create("Bubble/C1_Yellow.png");
-		else if (b_stat.level == 2)
+		else 
 			pBub = Bubble::create("Bubble/C2_Yellow.png");
 		b_stat.iscircle = true;
-		log(b_stat.Spawn_time);
+		log(b_stat.SpawnSpeed);
 	}
 	if (b_stat.Damage != 0)
 	{
 		b_stat.Damage += 10;
-		if (b_stat.level == 1)
+		if (b_stat.key == R1_Blue)
 			pBub = Bubble::create("Bubble/R1_Blue.png");
-		else if (b_stat.level == 2)
+		else 
 			pBub = Bubble::create("Bubble/R2_Blue.png");
 		b_stat.iscircle = false;
 		log(b_stat.Damage);
@@ -63,9 +62,9 @@ Bubble* Bubble::BubbleCreate(BUBBLE info)
 	if (b_stat.AttackSpeed != 0)
 	{
 		b_stat.AttackSpeed += 1;
-		if (b_stat.level == 1)
+		if (b_stat.key == R1_Red)
 			pBub = Bubble::create("Bubble/R1_Red.png");
-		else if (b_stat.level == 2)
+		else
 			pBub = Bubble::create("Bubble/R2_Red.png");
 		b_stat.iscircle = false;
 		log(b_stat.AttackSpeed);
@@ -73,14 +72,14 @@ Bubble* Bubble::BubbleCreate(BUBBLE info)
 	if (b_stat.MoveSpeed != 0)
 	{
 		b_stat.MoveSpeed += 5;
-		if (b_stat.level == 1)
+		if (b_stat.key == R1_Yellow)
 			pBub = Bubble::create("Bubble/R1_Yellow.png");
-		else if(b_stat.level == 2)
+		else
 			pBub = Bubble::create("Bubble/R2_Yellow.png");
 		b_stat.iscircle = false;
 		log(b_stat.MoveSpeed);
 	}
-	
+	pBub->b_stat = b_stat;
 	pBub->setPosition(Vec2(300, 200));
 	pBub->setPr(10);
 	pBub->setPrWiththis(true);
@@ -148,3 +147,16 @@ void Bubble::setPrWiththis(bool useNodePr)
 {
 	_useNodePr = useNodePr;
 }
+
+//void Bubble::DimuTick(float t)
+//{
+//
+//	//if ((bubbleA->isMove() || bubbleB->isMove()) && bubbleA->getBoundingBox().intersectsRect(bubbleB->getBoundingBox()))
+//	//{
+//	//	log("C Check");
+//	//	bubbleA->removeFromParentAndCleanup(true);
+//	//	bubbleA = nullptr;
+//	//	bubbleB->removeFromParentAndCleanup(true);
+//	//	bubbleB = nullptr;
+//	//}
+//}

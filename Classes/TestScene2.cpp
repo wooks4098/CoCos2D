@@ -38,7 +38,7 @@ bool TestScene2::init()
 
     return true;
 }
-BUBBLE TestScene2::GetPP(int lev)
+BUBBLE TestScene2::GetPP()
 {
 	randnum = rand() % 6;
 
@@ -47,55 +47,61 @@ BUBBLE TestScene2::GetPP(int lev)
 	val.Damage = 0;
 	val.AttackSpeed = 0;
 	val.MoveSpeed = 0;
-	val.Spawn_time = 0;
-	val.level = lev;
+	val.SpawnSpeed = 0;
+	
 
-	if (val.level ==1)
+	if (randnum <=5)
 	{
 		switch (randnum)
 		{
-		case 0:
-			val.Damage = 5;
-			break;
-		case 1:
+		case C1_Blue:
 			val.Defense = 5;
+			val.key = 0;
 			break;
-		case 2:
-			val.Spawn_time = -0.1f;
-			break;
-		case 3:
-			val.MoveSpeed = 2;
-			break;
-		case 4:
-			val.AttackSpeed = 0.5f;
-			break;
-		case 5:
+		case C1_Red:
 			val.Hp = 5;
+			val.key = 1;
+			break;
+		case C1_Yellow:
+			val.SpawnSpeed = -0.1f;
+			val.key = 2;
+			break;
+		case R1_Blue:
+			val.Damage = 2;
+			val.key = 3;
+			break;
+		case R1_Red:
+			val.AttackSpeed = 0.5f;
+			val.key = 4;
+			break;
+		case R1_Yellow:
+			val.MoveSpeed = 5;
+			val.key = 5;
 			break;
 		default:
 			break;
 		}
 	}
-	else if(val.level ==2)
+	else if(val.key >5)
 	{
 		switch (randnum)
 		{
-		case 0:
+		case C2_Blue:
 			val.Damage = 10;
 			break;
-		case 1:
+		case C2_Red:
 			val.Defense = 10;
 			break;
-		case 2:
-			val.Spawn_time = -0.3f;
+		case C2_Yellow:
+			val.SpawnSpeed = -0.3f;
 			break;
-		case 3:
+		case R2_Blue:
 			val.MoveSpeed = 3;
 			break;
-		case 4:
+		case R2_Red:
 			val.AttackSpeed = 1;
 			break;
-		case 5:
+		case R2_Yellow:
 			val.Hp = 15;
 			break;
 		default:
@@ -122,7 +128,7 @@ void TestScene2::ClickToCreateBubble1(Ref* pSender)
 	//this->addChild(bubbles.back()->Bubble_rt());
 
 	bubbles.push_back(new Bubble);
-	bubbles.back()=bubbles.back()->BubbleCreate(GetPP(1));// = Bubble::create("white-512x512.png");
+	bubbles.back()=bubbles.back()->BubbleCreate(GetPP());// = Bubble::create("white-512x512.png");
 
 	this->addChild(bubbles.back());
 	//bubbleB = Bubble::create("white-512x512.png");
@@ -144,7 +150,33 @@ void TestScene2::Click2(Ref* pSender)
 
 void TestScene2::myTick(float f)
 {
-	//간단한 충돌체크
+	//충돌철이
+	if(bubbles.size()>=2)
+	{
+		for (int i = 0; i < bubbles.size(); i++)
+		{
+			for (int j = i+1; j < bubbles.size(); j++)
+			{
+				if (bubbles[i]->getBoundingBox().intersectsRect(bubbles[j]->getBoundingBox()))
+				{
+					if (bubbles[i]->BubbleStat_rt().key == bubbles[j]->BubbleStat_rt().key)
+					{
+						log("C Check");
+						bubbles[i]->removeFromParentAndCleanup(true);
+						bubbles.erase(bubbles.begin() + i);
+						if (i!=j)
+						{
+							bubbles[j-1]->removeFromParentAndCleanup(true);
+							bubbles.erase(bubbles.begin() + j - 1);
+						}
+						return;
+					}
+				}
+			}
+		}
+	}
+
+
 	//if (bubbleA != nullptr&& bubbleB != nullptr)
 	//{
 	//	if ((bubbleA->isMove() || bubbleB->isMove()) && bubbleA->getBoundingBox().intersectsRect(bubbleB->getBoundingBox()))
@@ -154,7 +186,6 @@ void TestScene2::myTick(float f)
 	//		bubbleA = nullptr;
 	//		bubbleB->removeFromParentAndCleanup(true);
 	//		bubbleB = nullptr;
-	//		CreateBubble2();
 	//	}
 	//}
 }

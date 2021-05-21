@@ -14,11 +14,13 @@ public:
 	void onExit();
 	bool isMove();
 	bool _isMove = false;
-	BUBBLE b_stat;
-	Sprite* Bubble_rt() { return bubble_s; }
+	//void DimuTick(float t);
+	Bubble* Bubble_rt() { return pBub; }
+	BUBBLE BubbleStat_rt() { return b_stat; }
 private:
 	cocos2d::EventListener* _listener;
 	Sprite* bubble_s;
+	BUBBLE b_stat;
 	Bubble* pBub;
 	int _fixedPr;
 	bool _useNodePr;

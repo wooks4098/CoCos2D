@@ -23,7 +23,7 @@ public:
 	Bubble* bubbleA;
 	Bubble* bubbleB;
 
-	BUBBLE GetPP(int lev);
+	BUBBLE GetPP();
 	void ClickToCreateBubble1(Ref* pSender);
 	void Click2(Ref* pSender);
 	void myTick(float f);
