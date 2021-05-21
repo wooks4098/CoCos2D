@@ -21,7 +21,6 @@ Bubble* Bubble::BubbleCreate(BUBBLE info)
 
 	if (b_stat.Defense != 0)
 	{
-		b_stat.Defense += 5;
 		if (b_stat.key == C1_Blue)
 			pBub = Bubble::create("Bubble/C1_Blue.png");
 		else
@@ -31,7 +30,6 @@ Bubble* Bubble::BubbleCreate(BUBBLE info)
 	}
 	if (b_stat.Hp != 0)
 	{
-		b_stat.Hp += 100;
 		if (b_stat.key == C1_Red)
 			pBub = Bubble::create("Bubble/C1_Red.png");
 		else
@@ -41,7 +39,6 @@ Bubble* Bubble::BubbleCreate(BUBBLE info)
 	}
 	if (b_stat.SpawnSpeed != 0)
 	{
-		b_stat.SpawnSpeed += 3;
 		if (b_stat.key == C1_Yellow)
 			pBub = Bubble::create("Bubble/C1_Yellow.png");
 		else 
@@ -51,7 +48,6 @@ Bubble* Bubble::BubbleCreate(BUBBLE info)
 	}
 	if (b_stat.Damage != 0)
 	{
-		b_stat.Damage += 10;
 		if (b_stat.key == R1_Blue)
 			pBub = Bubble::create("Bubble/R1_Blue.png");
 		else 
@@ -61,7 +57,6 @@ Bubble* Bubble::BubbleCreate(BUBBLE info)
 	}
 	if (b_stat.AttackSpeed != 0)
 	{
-		b_stat.AttackSpeed += 1;
 		if (b_stat.key == R1_Red)
 			pBub = Bubble::create("Bubble/R1_Red.png");
 		else
@@ -71,7 +66,6 @@ Bubble* Bubble::BubbleCreate(BUBBLE info)
 	}
 	if (b_stat.MoveSpeed != 0)
 	{
-		b_stat.MoveSpeed += 5;
 		if (b_stat.key == R1_Yellow)
 			pBub = Bubble::create("Bubble/R1_Yellow.png");
 		else
@@ -79,6 +73,13 @@ Bubble* Bubble::BubbleCreate(BUBBLE info)
 		b_stat.iscircle = false;
 		log(b_stat.MoveSpeed);
 	}
+	b_stat.Defense += 5;
+	b_stat.Hp += 100;
+	b_stat.SpawnSpeed += 3;
+	b_stat.Damage += 10;
+	b_stat.AttackSpeed += 1;
+	b_stat.MoveSpeed += 5;
+
 	pBub->b_stat = b_stat;
 	pBub->setPosition(Vec2(100, 100));
 	pBub->setPr(10);
