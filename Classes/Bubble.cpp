@@ -2,7 +2,7 @@
 
 USING_NS_CC;
 
-Bubble* Bubble::create(const std::string& filename)
+Bubble* Bubble::create(const std::string& filename, bool iscc, float hp, float dmg, float def, float speed, float spawntime)
 {
 	Bubble* sprite = new(std::nothrow)Bubble(); // nothrow > 몬스터 잘못 생성될때 프로그래 죽지않도록
 	if (sprite && sprite->initWithFile(filename))

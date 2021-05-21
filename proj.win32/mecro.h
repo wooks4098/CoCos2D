@@ -1,3 +1,4 @@
+#pragma once
 struct BUBBLE
 {
 	bool iscircle;		//모양 true = 원 | false = 마름모

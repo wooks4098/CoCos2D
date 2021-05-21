@@ -38,10 +38,10 @@ bool TestScene0::init()
 
 void TestScene0::Factory_Right_CreatUnitCheck(float f)
 {
-	factory[FACTORY_RIGHT].CreatUnit();
+	//factory[FACTORY_RIGHT].CreatUnit();
 }
 
 void TestScene0::Factory_Left_CreatUnitCheck(float f)
 {
-	factory[FACTORY_LEFT].CreatUnit();
+	//factory[FACTORY_LEFT].CreatUnit();
 }
