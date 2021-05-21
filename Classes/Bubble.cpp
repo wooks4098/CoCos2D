@@ -80,7 +80,7 @@ Bubble* Bubble::BubbleCreate(BUBBLE info)
 		log(b_stat.MoveSpeed);
 	}
 	pBub->b_stat = b_stat;
-	pBub->setPosition(Vec2(300, 200));
+	pBub->setPosition(Vec2(100, 100));
 	pBub->setPr(10);
 	pBub->setPrWiththis(true);
 	return pBub;
@@ -98,7 +98,6 @@ void Bubble::onEnter()
 
 	listener->onTouchBegan = [=](Touch* touch, Event* event)
 	{
-		log("touch bg...");
 		Vec2 basepoint = touch->getLocation();
 
 		Vec2 LocationInNode = this->convertToNodeSpace(touch->getLocation());
@@ -107,13 +106,14 @@ void Bubble::onEnter()
 		Rect rect = Rect(0, 0, s.width, s.height);
 		if (rect.containsPoint(LocationInNode))
 		{
+			_isMove = true;
+			log("touch Bubble...");
 			return true;
 		}
 	};
 
 	listener->onTouchMoved = [=](Touch* touch, Event* event)
 	{
-		_isMove = true;
 		log("touch mv...", _isMove);
 		this->setPosition(this->getPosition() + touch->getDelta());//이동한정보
 	};
