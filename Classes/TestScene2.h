@@ -3,9 +3,16 @@
 
 #include "cocos2d.h"
 #include "Bubble.h"
+#include "time.h"
 
 class TestScene2 : public cocos2d::Scene
 {
+private:
+	std::vector<Bubble*> bubbles;
+	std::vector<int> bubbleis;
+	BUBBLE val;
+	//BUBBLE addval;
+	int randnum;
 public:
 	static cocos2d::Scene* createScene();
 
@@ -15,9 +22,8 @@ public:
 
 	Bubble* bubbleA;
 	Bubble* bubbleB;
-	Bubble* bubbleC;
 
-	void CreateBubble2();
+	BUBBLE GetPP(int lev);
 	void ClickToCreateBubble1(Ref* pSender);
 	void Click2(Ref* pSender);
 	void myTick(float f);
@@ -28,4 +34,3 @@ public:
 };
 
 #endif // !__SceneTrans__TestScene2
-

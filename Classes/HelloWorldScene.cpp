@@ -31,7 +31,7 @@ bool HelloWorld::init()
 //////#define U 1             //ÁöÇö¾À   TestScene1
 //////#define K 2             //Ã¤¿ø¾À   TestScene2
 
-    switch (W)
+    switch (K)
     {
     case 0:
         runAction(CallFuncN::create(CC_CALLBACK_1(HelloWorld::Scene0, this)));

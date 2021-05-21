@@ -2,7 +2,7 @@
 
 USING_NS_CC;
 
-Bubble* Bubble::create(const std::string& filename, bool iscc, float hp, float dmg, float def, float speed, float spawntime)
+Bubble* Bubble::create(const std::string& filename)//, BUBBLE b_slot)
 {
 	Bubble* sprite = new(std::nothrow)Bubble(); // nothrow > 몬스터 잘못 생성될때 프로그래 죽지않도록
 	if (sprite && sprite->initWithFile(filename))
@@ -10,10 +10,83 @@ Bubble* Bubble::create(const std::string& filename, bool iscc, float hp, float d
 		sprite->autorelease();
 		return sprite;
 	}
-
+	
 	CC_SAFE_DELETE(sprite);
 	return nullptr;
 }
+
+Bubble* Bubble::BubbleCreate(BUBBLE info)
+{
+	b_stat = info;
+	pBub = new(std::nothrow)Bubble();
+
+	if (b_stat.Defense != 0)
+	{
+		b_stat.Defense += 5;
+		if (b_stat.level == 1)
+			pBub = Bubble::create("Bubble/C1_Blue.png");
+		else if (b_stat.level == 2)
+			pBub = Bubble::create("Bubble/C2_Blue.png");
+		b_stat.iscircle = true;
+		log(b_stat.Defense);
+	}
+	if (b_stat.Hp != 0)
+	{
+		b_stat.Hp += 100;
+		if (b_stat.level == 1)
+			pBub = Bubble::create("Bubble/C1_Red.png");
+		else if (b_stat.level == 2)
+			pBub = Bubble::create("Bubble/C2_Red.png");
+		b_stat.iscircle = true;
+		log(b_stat.Hp);
+	}
+	if (b_stat.Spawn_time != 0)
+	{
+		b_stat.Spawn_time += 3;
+		if (b_stat.level == 1)
+			pBub = Bubble::create("Bubble/C1_Yellow.png");
+		else if (b_stat.level == 2)
+			pBub = Bubble::create("Bubble/C2_Yellow.png");
+		b_stat.iscircle = true;
+		log(b_stat.Spawn_time);
+	}
+	if (b_stat.Damage != 0)
+	{
+		b_stat.Damage += 10;
+		if (b_stat.level == 1)
+			pBub = Bubble::create("Bubble/R1_Blue.png");
+		else if (b_stat.level == 2)
+			pBub = Bubble::create("Bubble/R2_Blue.png");
+		b_stat.iscircle = false;
+		log(b_stat.Damage);
+	}
+	if (b_stat.AttackSpeed != 0)
+	{
+		b_stat.AttackSpeed += 1;
+		if (b_stat.level == 1)
+			pBub = Bubble::create("Bubble/R1_Red.png");
+		else if (b_stat.level == 2)
+			pBub = Bubble::create("Bubble/R2_Red.png");
+		b_stat.iscircle = false;
+		log(b_stat.AttackSpeed);
+	}
+	if (b_stat.MoveSpeed != 0)
+	{
+		b_stat.MoveSpeed += 5;
+		if (b_stat.level == 1)
+			pBub = Bubble::create("Bubble/R1_Yellow.png");
+		else if(b_stat.level == 2)
+			pBub = Bubble::create("Bubble/R2_Yellow.png");
+		b_stat.iscircle = false;
+		log(b_stat.MoveSpeed);
+	}
+	
+	pBub->setPosition(Vec2(300, 200));
+	pBub->setPr(10);
+	pBub->setPrWiththis(true);
+	return pBub;
+}
+
 bool Bubble::isMove()
 {
 	return _isMove;
@@ -35,7 +108,6 @@ void Bubble::onEnter()
 		Rect rect = Rect(0, 0, s.width, s.height);
 		if (rect.containsPoint(LocationInNode))
 		{
-			//this->setColor(Color3B::RED);
 			return true;
 		}
 	};
@@ -51,7 +123,6 @@ void Bubble::onEnter()
 	{
 		_isMove = false;
 		log("touch end...");
-		//this->setColor(Color3B::WHITE);
 	};
 
 	if (_useNodePr)
