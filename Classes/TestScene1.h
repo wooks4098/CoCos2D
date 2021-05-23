@@ -33,7 +33,7 @@ public:
 	void update(float f) override;
 
 	//À¯´Ö Á¦°Å
-	void removeUnit(Unit* u);
+	void removeUnit(Ref* pSender);
 
 	CREATE_FUNC(TestScene1);
 };

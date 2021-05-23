@@ -68,6 +68,11 @@ void TestScene1::update(float f)
         {
             Rect rectU2 = u2->getBoundingBox();
             
+            //u1->schedule(schedule_selector(Unit::actionMove), 2.0f);
+            //u2->schedule(schedule_selector(Unit::actionMove), 2.0f);
+            this->schedule(schedule_selector(Unit::actionMove), 2.0f);
+
+
             //두 유닛이 충돌했을 때
             if (rectU1.intersectsRect(rectU2))
             {
@@ -79,41 +84,58 @@ void TestScene1::update(float f)
                 u1->enemy = u2;
                 u2->enemy = u1;
 
-                //u1->hit(u2);
-                u1->schedule(schedule_selector(Unit::hit, 2.0f));
+                u1->hit(0);
+                //u1->schedule(schedule_selector(Unit::hit, 2.0f));
                 u1->stopUnit();
+                //u1->schedule(schedule_selector(Unit::actionAttack), 2.0f);
 
-                //u2->hit(u1);
-                u2->schedule(schedule_selector(Unit::hit, 2.0f));
+                u2->hit(0);
+                //u2->schedule(schedule_selector(Unit::hit, 2.0f));
                 u2->stopUnit();
+                //u2->schedule(schedule_selector(Unit::actionAttack), 2.0f);
 
-                if (u1->getHp() >= 0)
+
+                if (u1->getHp() <= 0)
+                {
                     removeUnit(u1);
-                if (u2->getHp() >= 0)
+                }
+                if (u2->getHp() <= 0)
+                {
                     removeUnit(u2);
+                }
             }
             else
+            {
+            }
+            /*else
             {
                 u1->enemy = nullptr;
                 u2->enemy = nullptr;
 
                 u1->unschedule(schedule_selector(Unit::hit, 2.0f));
                 u2->unschedule(schedule_selector(Unit::hit, 2.0f));
-            }
+            }*/
         }
     }
 }
 
-void TestScene1::removeUnit(Unit* u)
+void TestScene1::removeUnit(Ref* pSender)
 {
+    auto u = (Unit*)pSender;
+
     if (u->getMyFac() == facL)
     {
-        this->removeChild(u);
+        //unitsL.eraseObject(u);
+        u->unschedule(schedule_selector(Unit::actionAttack));
     }
     else
     {
-        this->removeChild(u);
+        //unitsR.eraseObject(u);
+        u->schedule(schedule_selector(Unit::actionAttack));
     }
+    
+    this->removeChild(u);
+
 }
 
 //

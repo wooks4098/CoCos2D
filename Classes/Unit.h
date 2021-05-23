@@ -24,6 +24,7 @@ private:
 
 public:
 	static Unit* createUnit(Vec2 v); //¿Ø¥÷ ª˝º∫
+	void unitAni(); //¿Ø¥÷ √ ±‚»≠
 	void moveUnit(float speed); //¿Ø¥÷ ¿Ãµø
 	void stopUnit(); //¿Ø¥÷ ¿Ãµø ¡§¡ˆ
 	void collision(float f); //¿Ø¥÷ √Êµπ
@@ -36,4 +37,17 @@ public:
 
 	Unit* enemy;
 
+	Animation* moveAni;
+	Animation* attackAni;
+	Animation* dieAni;
+
+	Animate* moveAct;
+	Animate* attackAct;
+	Animate* dieAct;
+
+	RepeatForever* rep;
+
+	void actionMove(float f);
+	void actionAttack(float f);
+	void actionDie(float f);
 };
