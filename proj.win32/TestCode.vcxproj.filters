@@ -36,6 +36,9 @@
     <ClCompile Include="..\Classes\Bubble.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Unit.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -63,6 +66,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\mecro.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Unit.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
