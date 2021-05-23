@@ -15,6 +15,7 @@ Unit* Unit::createUnit(Vec2 v)
 		sprite->myFactory = TestScene1::getInstance()->facL;
 		sprite->enemyFactory = TestScene1::getInstance()->facR;
 
+		sprite->maxHp = 50;
 		sprite->hp = 50;
 		sprite->speed = 10;
 		sprite->power = 5;
@@ -25,14 +26,19 @@ Unit* Unit::createUnit(Vec2 v)
 		sprite->myFactory = TestScene1::getInstance()->facR;
 		sprite->enemyFactory = TestScene1::getInstance()->facL;
 
+		sprite->maxHp = 20;
 		sprite->hp = 20;
 		sprite->speed = 5;
 		sprite->power = 2;
 	}
 	
+	sprite->initUnit();
 	sprite->setPosition(sprite->myFactory);
 	sprite->unitAni();
 	//sprite->schedule(schedule_selector(Unit::actionMove), 2.0f);
+
+	sprite->scheduleUpdate();
+
 
 	if (sprite && sprite->initWithFile(fileName))
 	{
@@ -44,6 +50,20 @@ Unit* Unit::createUnit(Vec2 v)
 	return nullptr;
 }
 #pragma endregion
+
+void Unit::initUnit()
+{
+	Size unitSize = this->getContentSize(); //왜 적용이 안되냐
+	//hp바
+	emptyHP = Sprite::create("Character/emptyHP.png");
+	fullHP = Sprite::create("Character/fullHP.png");
+
+	emptyHP->setPosition(Vec2(unitSize.width + 150, unitSize.height + 300));
+	fullHP->setPosition(Vec2(unitSize.width + 150, unitSize.height + 300));
+
+	this->addChild(emptyHP, 3);
+	this->addChild(fullHP, 4);
+}
 
  void Unit::unitAni()
 {
@@ -142,6 +162,7 @@ Unit* Unit::createUnit(Vec2 v)
 		 dieAct = Animate::create(dieAni);
 	 }
 }
+
  void Unit::actionMove(float f)
  {
 	 rep = RepeatForever::create(moveAct);
@@ -195,4 +216,9 @@ void Unit::hit(float f)
 void Unit::die()
 {
 	log("\n\ndie\n\n");
+}
+
+void Unit::update(float f)
+{
+	fullHP->setTextureRect(Rect(0, 0, fullHP->getContentSize().width * hp / maxHp, fullHP->getContentSize().height));
 }

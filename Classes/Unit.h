@@ -11,6 +11,7 @@ class Unit : public cocos2d::Sprite
 {
 private:
 	//스테이터스
+	float maxHp;
 	float hp;
 	float speed;
 	float power;
@@ -24,7 +25,8 @@ private:
 
 public:
 	static Unit* createUnit(Vec2 v); //유닛 생성
-	void unitAni(); //유닛 초기화
+	void unitAni(); //유닛 애니메이션 //수정해야함
+	void initUnit();
 	void moveUnit(float speed); //유닛 이동
 	void stopUnit(); //유닛 이동 정지
 	void collision(float f); //유닛 충돌
@@ -50,4 +52,9 @@ public:
 	void actionMove(float f);
 	void actionAttack(float f);
 	void actionDie(float f);
+
+	Sprite* emptyHP;
+	Sprite* fullHP;
+
+	void update(float f) override;
 };
