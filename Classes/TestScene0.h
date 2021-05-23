@@ -14,6 +14,8 @@ private:
 	Size winSize;
 	Factory factory[2];
 
+	Sprite* UI_Hp_top;
+	Sprite* Factory_Back;
 public:
 	static cocos2d::Scene* createScene();
 	virtual bool init();
@@ -24,10 +26,13 @@ public:
 
 	}
 
+	void Creat_Factory();
+	void Create_BackGround();
 
 	//스캐줄
 	void Factory_Right_CreatUnitCheck(float f);	//팩토리(Right) 유닛 생성 체크
 	void Factory_Left_CreatUnitCheck(float f);	//팩토리(Left) 유닛 생성 체크
+	void Update(float f);//업데이트
 };  
 
 #endif // !__SceneTrans__TestScene0

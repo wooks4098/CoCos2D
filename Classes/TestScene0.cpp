@@ -18,6 +18,18 @@ bool TestScene0::init()
     auto wlayer = LayerColor::create(Color4B::WHITE);
     this->addChild(wlayer);
 
+	Create_BackGround();
+	Creat_Factory();
+
+	//팩토리 스케줄 등록
+	this->schedule(schedule_selector(TestScene0::Factory_Right_CreatUnitCheck), 0.1f);
+	this->schedule(schedule_selector(TestScene0::Factory_Left_CreatUnitCheck), 0.1f);
+	this->schedule(schedule_selector(TestScene0::Update));
+    return true;
+}
+
+void TestScene0::Creat_Factory()
+{
 	//팩토리 생성
 	factory[FACTORY_RIGHT].Create(FACTORY_RIGHT);
 
@@ -32,11 +44,31 @@ bool TestScene0::init()
 	this->addChild(factory[FACTORY_LEFT].return_HpBar_Back());
 	this->addChild(factory[FACTORY_LEFT].return_HpBar());
 	this->addChild(factory[FACTORY_LEFT].return_Factory_Sp());
+	//버블 등록
+	//for (int i = 0; i < 7;)
+	{
+		factory[FACTORY_RIGHT].return_Factory_Sp()->addChild(factory[FACTORY_RIGHT].return_Circle_bubble());
+		factory[FACTORY_RIGHT].return_Factory_Sp()->addChild(factory[FACTORY_RIGHT].return_Rhombus_bubble());
+		factory[FACTORY_LEFT].return_Factory_Sp()->addChild(factory[FACTORY_LEFT].return_Circle_bubble());
+		factory[FACTORY_LEFT].return_Factory_Sp()->addChild(factory[FACTORY_LEFT].return_Rhombus_bubble());
+	}
 
-	//팩토리 스케줄 등록
-	this->schedule(schedule_selector(TestScene0::Factory_Right_CreatUnitCheck), 0.1f);
-	this->schedule(schedule_selector(TestScene0::Factory_Left_CreatUnitCheck), 0.1f);
-    return true;
+}
+void TestScene0::Create_BackGround()
+{
+	Factory_Back = Sprite::create("Factory/BG.png");
+	Factory_Back->setAnchorPoint(Vec2(0, 0.5));
+	Factory_Back->setPosition(0, winSize.height / 2);
+	this->addChild(Factory_Back);
+
+	UI_Hp_top = Sprite::create("UI/UI_top.png");
+	UI_Hp_top->setAnchorPoint(Vec2(0, 1));
+	UI_Hp_top->setPosition(0, winSize.height);
+	this->addChild(UI_Hp_top);
+}
+void TestScene0::Update(float f)
+{
+
 }
 
 void TestScene0::Factory_Right_CreatUnitCheck(float f)
