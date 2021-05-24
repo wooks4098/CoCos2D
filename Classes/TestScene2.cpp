@@ -21,8 +21,8 @@ bool TestScene2::init()
     this->addChild(wlayer);
 
 	#pragma region menu
-	auto m_3 = MenuItemImage::create("btn-play-normal.png", "btn-play-selected.png", CC_CALLBACK_1(TestScene2::ClickToCreateBubble1, this));
-	auto m_4 = MenuItemImage::create("end1.PNG", "end2.PNG", CC_CALLBACK_1(TestScene2::ClickToCreateBubble1, this));
+	auto m_3 = MenuItemImage::create("btn-play-normal.png", "btn-play-selected.png", CC_CALLBACK_1(TestScene2::ClickToCreateBubble1, this,1));
+	auto m_4 = MenuItemImage::create("end1.PNG", "end2.PNG", CC_CALLBACK_1(TestScene2::ClickToCreateBubble1, this,1));
 	m_3->setTag(1);
 	m_4->setTag(2);
 	auto menu1 = Menu::create(m_3, m_4, nullptr);
@@ -40,63 +40,77 @@ bool TestScene2::init()
 }
 BUBBLE TestScene2::GetPP(int lev)
 {
-	randnum = rand() % 6;
 
 	val.Hp = 0;
 	val.Defense = 0;
 	val.Damage = 0;
 	val.AttackSpeed = 0;
 	val.MoveSpeed = 0;
-	val.Spawn_time = 0;
-	val.level = lev;
+	val.SpawnSpeed = 0;
+	
 
-	if (val.level ==1)
+	if (lev==1)
 	{
+		randnum = rand() % 6;
 		switch (randnum)
 		{
-		case 0:
-			val.Damage = 5;
-			break;
-		case 1:
+		case C1_Blue:
 			val.Defense = 5;
+			val.key = 0;
 			break;
-		case 2:
-			val.Spawn_time = -0.1f;
-			break;
-		case 3:
-			val.MoveSpeed = 2;
-			break;
-		case 4:
-			val.AttackSpeed = 0.5f;
-			break;
-		case 5:
+		case C1_Red:
 			val.Hp = 5;
+			val.key = 1;
+			break;
+		case C1_Yellow:
+			val.SpawnSpeed = -0.1f;
+			val.key = 2;
+			break;
+		case R1_Blue:
+			val.Damage = 2;
+			val.key = 3;
+			break;
+		case R1_Red:
+			val.AttackSpeed = 0.5f;
+			val.key = 4;
+			break;
+		case R1_Yellow:
+			val.MoveSpeed = 5;
+			val.key = 5;
 			break;
 		default:
 			break;
 		}
 	}
-	else if(val.level ==2)
+	else if(lev==2)
 	{
+		randnum = (rand() % 6) + 6;
+
 		switch (randnum)
 		{
-		case 0:
+		case C2_Blue:
 			val.Damage = 10;
+			val.key = 6;
 			break;
-		case 1:
+		case C2_Red:
 			val.Defense = 10;
+			val.key = 7;
 			break;
-		case 2:
-			val.Spawn_time = -0.3f;
+		case C2_Yellow:
+			val.SpawnSpeed = -0.3f;
+			val.key = 8;
 			break;
-		case 3:
+		case R2_Blue:
 			val.MoveSpeed = 3;
+			val.key = 9;
 			break;
-		case 4:
+		case R2_Red:
 			val.AttackSpeed = 1;
+			val.key = 10;
 			break;
-		case 5:
+		case R2_Yellow:
 			val.Hp = 15;
+			val.key = 11;
 			break;
 		default:
 			break;
@@ -113,7 +127,7 @@ BUBBLE TestScene2::GetPP(int lev)
 	return val;
 }
 
-void TestScene2::ClickToCreateBubble1(Ref* pSender)
+void TestScene2::ClickToCreateBubble1(Ref* pSender,int lev)
 {
 	//bubbles.push_back(new Bubble);
 	//bubbles.back()->BubbleCreate(GetPP(1));
@@ -122,17 +136,9 @@ void TestScene2::ClickToCreateBubble1(Ref* pSender)
 	//this->addChild(bubbles.back()->Bubble_rt());
 
 	bubbles.push_back(new Bubble);
-	bubbles.back()=bubbles.back()->BubbleCreate(GetPP(1));// = Bubble::create("white-512x512.png");
+	bubbles.back()=bubbles.back()->BubbleCreate(GetPP(lev));
 
 	this->addChild(bubbles.back());
-	//bubbleB = Bubble::create("white-512x512.png");
-	//bubbleB->setScale(0.2, 0.2); 
-	//bubbleB->setColor(Color3B(127 - count, 100, 255));
-	//bubbleB->setPosition(Vec2(100 + count, 160));
-	//bubbleB->setPr(10);
-	//bubbleB->setPrWiththis(false);
-	//this->addChild(bubbleB);
-
 }
 
 void TestScene2::Click2(Ref* pSender)
@@ -144,17 +150,38 @@ void TestScene2::Click2(Ref* pSender)
 
 void TestScene2::myTick(float f)
 {
-	//간단한 충돌체크
-	//if (bubbleA != nullptr&& bubbleB != nullptr)
-	//{
-	//	if ((bubbleA->isMove() || bubbleB->isMove()) && bubbleA->getBoundingBox().intersectsRect(bubbleB->getBoundingBox()))
-	//	{
-	//		log("C Check");
-	//		bubbleA->removeFromParentAndCleanup(true);
-	//		bubbleA = nullptr;
-	//		bubbleB->removeFromParentAndCleanup(true);
-	//		bubbleB = nullptr;
-	//		CreateBubble2();
-	//	}
-	//}
+	for (int i = 0; i < bubbles.size(); i++)
+	{
+		if (bubbles[i]->isMove())//움직이고 있다면 충돌처리를 하지 않는다.
+		{
+			return;
+		}
+	}
+	//충돌철이//첫 생성 시 겹쳐서 생성되면 바로 합쳐진다...
+	if(bubbles.size()>=2)
+	{
+		for (int i = 0; i < bubbles.size(); i++)
+		{
+			for (int j = i+1; j < bubbles.size(); j++)
+			{
+				if (bubbles[i]->getBoundingBox().intersectsRect(bubbles[j]->getBoundingBox()))
+				{
+					if (bubbles[i]->BubbleStat_rt().key <= 5 && bubbles[i]->BubbleStat_rt().key == bubbles[j]->BubbleStat_rt().key)
+					{
+						log("C Check");
+						bubbles[i]->removeFromParentAndCleanup(true);
+						bubbles.erase(bubbles.begin() + i);
+						if (i!=j)
+						{
+							bubbles[j-1]->removeFromParentAndCleanup(true);
+							bubbles.erase(bubbles.begin() + j - 1);
+						}
+						//new 버블 생성 코드
+						ClickToCreateBubble1(this, 2);
+						return;
+					}
+				}
+			}
+		}
+	}
 }

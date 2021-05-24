@@ -1,11 +1,24 @@
 #include "TestScene1.h"
-#include "HelloWorldScene.h"
+//#include "HelloWorldScene.h"
 using namespace cocos2d;
 
+#pragma region singleton
+TestScene1* TestScene1::instance = NULL;
+TestScene1* TestScene1::getInstance()
+{
+    if (instance == NULL)
+        instance = new TestScene1;
+
+    return instance;
+}
+#pragma endregion
+
+#pragma region createScene
 Scene* TestScene1::createScene()
 {
     return TestScene1::create();
 }
+#pragma endregion
 
 bool TestScene1::init()
 {
@@ -15,112 +28,140 @@ bool TestScene1::init()
     }
     auto wlayer = LayerColor::create(Color4B::GRAY);
     this->addChild(wlayer);
-    
+
+    initData(); //데이터 초기화
+
     //유닛 생성
-    createUnit1();
-    createUnit2();
+    createUnit(facL);
+    createUnit(facR);
 
-    //유닛 충돌 체크
-    this->schedule(schedule_selector(TestScene1::collisionUnit1));
-    this->schedule(schedule_selector(TestScene1::collisionUnit2));
-
+    this->scheduleUpdate();
 
     return true;
 }
 
-//유닛 생성
-void TestScene1::createUnit1()
+void TestScene1::createUnit(Vec2 v)
 {
- 	//팩토리 위치로 수정하기
-    Size winSize = Director::getInstance()->getWinSize();
-	Vec2 factory1 = Vec2(0, winSize.height / 2);
-    Vec2 factory2 = Vec2(winSize.width, winSize.height / 2);
+    Unit* unit = Unit::createUnit(v);
+    if(v == facL)
+        unitsL.pushBack(unit);
+    else
+        unitsR.pushBack(unit);
 
-    unit1 = Sprite::create("CyanSquare.png");
-    unit1->setPosition(factory1);
-    this->addChild(unit1);
+    this->addChild(unit);
+    unit->moveUnit(300);
 
-    //유닛 이동
-    moveUnit1 = MoveTo::create(3, factory2); //상대 팩토리로 이동
-    unit1->runAction(moveUnit1); //액션 실행
 }
 
-void TestScene1::createUnit2()
+void TestScene1::initData()
 {
-    //팩토리 위치로 수정하기
-    Size winSize = Director::getInstance()->getWinSize();
-    Vec2 factory1 = Vec2(0, winSize.height / 2);
-    Vec2 factory2 = Vec2(winSize.width, winSize.height / 2);
-
-    unit2 = Sprite::create("YellowSquare.png");
-    unit2->setPosition(factory2);
-    this->addChild(unit2);
-
-    //유닛 이동
-    moveUnit2 = MoveTo::create(3, factory1); //상대 팩토리로 이동
-    unit2->runAction(moveUnit2); //액션 실행
+    unitsL.clear();
+    unitsR.clear();
 }
 
-void TestScene1::collisionUnit1(float f)
+void TestScene1::update(float f)
 {
-    if (unit1 == nullptr)
+    for (Unit* u1 : unitsL)
     {
-        log("unit1 is null!");
-        this->createUnit1();
+        Rect rectU1 = u1->getBoundingBox();
+        for (Unit* u2 : unitsR)
+        {
+            Rect rectU2 = u2->getBoundingBox();
+            
+            //u1->schedule(schedule_selector(Unit::actionMove), 2.0f);
+            //u2->schedule(schedule_selector(Unit::actionMove), 2.0f);
+            this->schedule(schedule_selector(Unit::actionMove), 2.0f);
 
-        return;
-    }
 
-    if (unit1->getBoundingBox().intersectsRect(unit2->getBoundingBox()))
-    {
-        log("unit1 unit2 collision");
+            //두 유닛이 충돌했을 때
+            if (rectU1.intersectsRect(rectU2))
+            {
+                log("unit1 unit2 collision");
 
-        fightUnit();
+                log("%f", u1->getHp());
+                log("%f", u2->getHp());
+
+                u1->enemy = u2;
+                u2->enemy = u1;
+
+                u1->hit(0);
+                //u1->schedule(schedule_selector(Unit::hit, 2.0f));
+                u1->stopUnit();
+                //u1->schedule(schedule_selector(Unit::actionAttack), 2.0f);
+
+                u2->hit(0);
+                //u2->schedule(schedule_selector(Unit::hit, 2.0f));
+                u2->stopUnit();
+                //u2->schedule(schedule_selector(Unit::actionAttack), 2.0f);
+
+
+                if (u1->getHp() <= 0)
+                {
+                    removeUnit(u1);
+                }
+                if (u2->getHp() <= 0)
+                {
+                    removeUnit(u2);
+                }
+            }
+            else
+            {
+            }
+            /*else
+            {
+                u1->enemy = nullptr;
+                u2->enemy = nullptr;
+
+                u1->unschedule(schedule_selector(Unit::hit, 2.0f));
+                u2->unschedule(schedule_selector(Unit::hit, 2.0f));
+            }*/
+        }
     }
 }
 
-void TestScene1::collisionUnit2(float f)
+void TestScene1::removeUnit(Ref* pSender)
 {
-    if (unit2 == nullptr)
+    auto u = (Unit*)pSender;
+
+    if (u->getMyFac() == facL)
     {
-        log("unit2 is null!");
-        this->createUnit2();
-
-        return;
-    }
-
-    if (unit2->getBoundingBox().intersectsRect(unit1->getBoundingBox()))
-    {
-        log("unit2 unit1 collision");
-
-        fightUnit();
-    }
-}
-
-void TestScene1::fightUnit()
-{
-    this->stopAction(moveUnit1);
-    this->stopAction(moveUnit2);
-
-    if (num < 300)
-    {
-        log("unit fight!!! - %d", num);
-        num++;
+        //unitsL.eraseObject(u);
+        u->unschedule(schedule_selector(Unit::actionAttack));
     }
     else
     {
-        log("unit die!!!");
-        num = 0;
-
-        unit1->removeFromParentAndCleanup(true);
-        unit1 = nullptr;
-        this->removeChild(unit1);
-
-        unit2->removeFromParentAndCleanup(true);
-        unit2 = nullptr;
-        this->removeChild(unit2);
-
+        //unitsR.eraseObject(u);
+        u->schedule(schedule_selector(Unit::actionAttack));
     }
-
+    
+    this->removeChild(u);
 
 }
+
+//
+//void TestScene1::fightUnit()
+//{
+//    this->stopAction(moveUnit1);
+//    this->stopAction(moveUnit2);
+//
+//    if (num < 300)
+//    {
+//        log("unit fight!!! - %d", num);
+//        num++;
+//    }
+//    else
+//    {
+//        log("unit die!!!");
+//        num = 0;
+//
+//        unit1->removeFromParentAndCleanup(true);
+//        unit1 = nullptr;
+//        this->removeChild(unit1);
+//
+//        unit2->removeFromParentAndCleanup(true);
+//        unit2 = nullptr;
+//        this->removeChild(unit2);
+//
+//    }
+//
+//

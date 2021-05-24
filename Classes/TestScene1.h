@@ -1,32 +1,39 @@
-#ifndef __SceneTrans__TestScene1
-#define __SceneTrans__TestScene1
-
-#include "cocos2d.h"
-
-using namespace cocos2d;
+#pragma
+#include "Unit.h"
 
 class TestScene1 : public cocos2d::Scene
 {
+private:
+	TestScene1() {};
+	static TestScene1* instance;
+
 public:
 	static cocos2d::Scene* createScene();
+	static TestScene1* getInstance();
 
 	virtual bool init();
 
+	Size winSize = Director::getInstance()->getWinSize();
+
+	//팩토리 정보
+	Vec2 facL = Vec2(0, winSize.height / 2);
+	Vec2 facR = Vec2(winSize.width, winSize.height / 2);
+
+	//모든 유닛 저장
+	Vector<Unit*> unitsL;
+	Vector<Unit*> unitsR;
+
+	//데이터 초기화
+	void initData();
+
+	//유닛 생성
+	void createUnit(Vec2 v);
+
+	//유닛 충돌
+	void update(float f) override;
+
+	//유닛 제거
+	void removeUnit(Ref* pSender);
+
 	CREATE_FUNC(TestScene1);
-
-
-	Sprite* unit1;
-	Sprite* unit2;
-	int num;
-	Action* moveUnit1;
-	Action* moveUnit2;
-
-
-	void createUnit1();
-	void createUnit2();
-	void collisionUnit1(float f);
-	void collisionUnit2(float f);
-	void fightUnit();
 };
-
-#endif // !__SceneTrans__TestScene1

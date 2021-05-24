@@ -9,10 +9,6 @@ Factory::Factory()
 	CurHp = MaxHp;
 }
 
-
-
-
-
 #pragma region 생성
 void Factory::Create(int factoryNumber)
 {
@@ -22,6 +18,7 @@ void Factory::Create(int factoryNumber)
 	Create_HpBar();
 	Create_HpDownMenu();
 	Create_Factory_Sp();
+	Create_Bubble();
 
 }
 void Factory::Create_Factory_Sp()
@@ -38,6 +35,8 @@ void Factory::Create_Factory_Sp()
 		Factory_sp->setAnchorPoint(Vec2(0, 0.5));
 		Factory_sp->setPosition(0, winSize.height / 2);
 	}
+	
+
 }
 
 void Factory::Create_HpBar()
@@ -46,11 +45,11 @@ void Factory::Create_HpBar()
 	{//공장 위치: 오른쪽
 		Hp_Bar_Back = Sprite::create("Wook_Test/Test_Hp_Back.png");
 		Hp_Bar_Back->setAnchorPoint(Vec2(1, 1));
-		Hp_Bar_Back->setPosition(winSize.width, winSize.height);
+		Hp_Bar_Back->setPosition(winSize.width-80, winSize.height-20);
 
 		Hp_Bar = Sprite::create("Wook_Test/Test_Hp.png");
 		Hp_Bar->setAnchorPoint(Vec2(1, 1));
-		Hp_Bar->setPosition(winSize.width, winSize.height);
+		Hp_Bar->setPosition(winSize.width-80 , winSize.height - 20);
 
 
 	}
@@ -58,13 +57,14 @@ void Factory::Create_HpBar()
 	{//공장 위치 왼쪽
 		Hp_Bar_Back = Sprite::create("Wook_Test/Test_Hp_Back.png");
 		Hp_Bar_Back->setAnchorPoint(Vec2(0, 1));
-		Hp_Bar_Back->setPosition(0, winSize.height);
+		Hp_Bar_Back->setPosition(0 + 80, winSize.height - 20);
 
 		Hp_Bar = Sprite::create("Wook_Test/Test_Hp.png");
 		Hp_Bar->setAnchorPoint(Vec2(0, 1));
-		Hp_Bar->setPosition(0, winSize.height);
+		Hp_Bar->setPosition(0 + 80, winSize.height - 20);
 	}
 
+	
 
 }
 
@@ -74,8 +74,8 @@ void Factory::Create_HpDownMenu()
 	{
 		auto Test_Hpdown_btn = MenuItemImage::create("Wook_Test/Test_Hpdown_1.png", "Wook_Test/Test_Hpdown_2.png", CC_CALLBACK_1(Factory::HpDown, this));
 
-		Test_Hpdown_btn->setPosition(winSize.width, winSize.height / 2);
-		Test_Hpdown_btn->setAnchorPoint(Vec2(1, 1));
+		Test_Hpdown_btn->setPosition(winSize.width,0);
+		Test_Hpdown_btn->setAnchorPoint(Vec2(1, 0));
 		menu = Menu::create(Test_Hpdown_btn, nullptr);
 
 		menu->setPosition(Vec2::ZERO);
@@ -84,26 +84,65 @@ void Factory::Create_HpDownMenu()
 	{
 		auto Test_Hpdown_btn = MenuItemImage::create("Wook_Test/Test_Hpdown_1.png", "Wook_Test/Test_Hpdown_2.png", CC_CALLBACK_1(Factory::HpDown, this));
 
-		Test_Hpdown_btn->setPosition(0, winSize.height / 2);
-		Test_Hpdown_btn->setAnchorPoint(Vec2(0, 1));
+		Test_Hpdown_btn->setPosition(0,0);
+		Test_Hpdown_btn->setAnchorPoint(Vec2(0, 0));
 		menu = Menu::create(Test_Hpdown_btn, nullptr);
 
 		menu->setPosition(Vec2::ZERO);
 	}
 
 }
-
+void Factory::Create_Bubble()
+{
+	//원
+	Circle_bubble_sprite[0] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/C1_Blue.png");
+	Circle_bubble_sprite[1] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/C1_Red.png");
+	Circle_bubble_sprite[2] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/C1_Yellow.png");
+	Circle_bubble_sprite[3] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/C2_Blue.png");
+	Circle_bubble_sprite[4] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/C2_Red.png");
+	Circle_bubble_sprite[5] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/C2_Yellow.png");
+	Circle_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1_40.png");
+	//마름모
+	Rhombus_bubble_sprite[0] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R1_Blue.png");
+	Rhombus_bubble_sprite[1] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R1_Red.png");
+	Rhombus_bubble_sprite[2] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R1_Yellow.png");
+	Rhombus_bubble_sprite[3] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R2_Blue.png");
+	Rhombus_bubble_sprite[4] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R2_Red.png");
+	Rhombus_bubble_sprite[5] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R2_Yellow.png");
+	Rhombus_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1_40.png");
+	SetPos_Bubble();
+}
 
 #pragma endregion
+
 
 #pragma region 팩토리 관련
 void Factory::Factory_Damage_Action()
 {
-	auto First = Spawn::create(ScaleBy::create(0.08, 1.1), nullptr);
-	auto Second = Spawn::create(ScaleBy::create(0.08, 0.9), nullptr);
-	auto Third = Spawn::create(ScaleBy::create(0.08, 1), nullptr);
-	auto Action = Sequence::create(First, Second, Third, nullptr);
-	Factory_sp->runAction(Action);
+	if (isRight)
+	{
+		auto First = Spawn::create(ScaleTo::create(0.05, 1.1), MoveBy::create(0.08, Vec2(-10, -10)), nullptr);
+		auto Second = Spawn::create(ScaleTo::create(0.05, 0.9), MoveBy::create(0.08, Vec2(20, 20)), nullptr);
+		auto Third = Spawn::create(ScaleTo::create(0.05, 1), MoveBy::create(0.08, Vec2(-10, -10)), nullptr);
+		auto Action = Sequence::create(First, Second, Third, nullptr);
+		Factory_sp->runAction(Action);
+
+
+	}
+	else
+	{
+		auto First = Spawn::create(ScaleTo::create(0.05, 1.1), MoveBy::create(0.08, Vec2(10, 10)), nullptr);
+		auto Second = Spawn::create(ScaleTo::create(0.05, 0.9), MoveBy::create(0.08, Vec2(-20, -20)), nullptr);
+		auto Third = Spawn::create(ScaleTo::create(0.05, 1), MoveBy::create(0.08, Vec2(10, 10)), nullptr);
+		auto Action = Sequence::create(First, Second, Third, nullptr);
+		auto Action1 = Sequence::create(First, Second, Third, nullptr);
+		auto Action2 = Sequence::create(First, Second, Third, nullptr);
+		Factory_sp->runAction(Action);
+
+
+	}
+	
+	
 }
 
 void Factory::Factory_Hit_Check(Sprite* _unit)
@@ -127,6 +166,64 @@ void Factory::Factory_Hp_Down()
 }
 #pragma endregion
 
+#pragma region 버블
+void Factory::Change_Bubble(BUBBLE _Bubble)
+{
+
+	switch (_Bubble.key)
+	{
+	case C1_Blue:
+	case C1_Red:
+	case C1_Yellow:
+	case R1_Blue:
+	case R1_Red:
+	case R1_Yellow:
+		Circle_bubble = _Bubble;
+		break;
+	case C2_Blue:
+	case C2_Red:
+	case C2_Yellow:
+	case R2_Blue:
+	case R2_Red:
+	case R2_Yellow:
+		Rhombus_bubble = _Bubble;
+		break;
+
+	}
+
+	
+}
+
+void Factory::SetPos_Bubble()
+{
+	if (isRight)
+	{
+		for (int i = 0; i < 7; i++)
+		{
+			Circle_bubble_sprite[i]->setAnchorPoint(Vec2(0.5, 0.5));
+			Circle_bubble_sprite[i]->setPosition(Vec2(-45,285));
+			Rhombus_bubble_sprite[i]->setAnchorPoint(Vec2(0.5, 0.5));
+			Rhombus_bubble_sprite[i]->setPosition(Vec2(-120, 285));
+
+		}
+	}
+	else
+	{
+		for (int i = 0; i < 7; i++)
+		{
+			Circle_bubble_sprite[i]->setAnchorPoint(Vec2(0.5, 0.5));
+			Circle_bubble_sprite[i]->setPosition(Vec2(280, 285));
+
+			Rhombus_bubble_sprite[i]->setAnchorPoint(Vec2(0.5, 0.5));
+			Rhombus_bubble_sprite[i]->setPosition( Vec2(200, 285));
+
+		}
+	}
+	
+}
+#pragma endregion
+
+
 #pragma region 유닛관련
 void Factory::Change_CreatUnit_Time(float time)
 {
@@ -146,6 +243,7 @@ void Factory::CreatUnit()
 }
 
 #pragma endregion
+
 
 #pragma region 메뉴 콜백
 

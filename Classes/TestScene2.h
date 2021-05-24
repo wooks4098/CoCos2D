@@ -19,12 +19,13 @@ public:
 	virtual bool init();
 
 	int count;
+	static bool isMove;
 
 	Bubble* bubbleA;
 	Bubble* bubbleB;
 
 	BUBBLE GetPP(int lev);
-	void ClickToCreateBubble1(Ref* pSender);
+	void ClickToCreateBubble1(Ref* pSender,int lev);
 	void Click2(Ref* pSender);
 	void myTick(float f);
 
