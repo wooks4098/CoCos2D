@@ -154,7 +154,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\Bubble.cpp" />
     <ClCompile Include="..\Classes\Factory.cpp" />
+    <ClCompile Include="..\Classes\GameScene .cpp" />
     <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
+    <ClCompile Include="..\Classes\MenuScene .cpp" />
     <ClCompile Include="..\Classes\TestScene0.cpp" />
     <ClCompile Include="..\Classes\TestScene1.cpp" />
     <ClCompile Include="..\Classes\TestScene2.cpp" />
@@ -165,8 +167,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\Bubble.h" />
     <ClInclude Include="..\Classes\Factory.h" />
+    <ClInclude Include="..\Classes\GameScene .h" />
     <ClInclude Include="..\Classes\HelloWorldScene.h" />
     <ClInclude Include="..\Classes\mecro.h" />
+    <ClInclude Include="..\Classes\MenuScene .h" />
     <ClInclude Include="..\Classes\TestScene0.h" />
     <ClInclude Include="..\Classes\TestScene1.h" />
     <ClInclude Include="..\Classes\TestScene2.h" />

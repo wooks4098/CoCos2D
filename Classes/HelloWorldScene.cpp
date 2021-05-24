@@ -4,6 +4,8 @@
 #include "TestScene0.h"
 #include "TestScene1.h"
 #include "TestScene2.h"
+#include "MenuScene .h"
+#include "GameScene .h"
 
 #define W 0             //¿í·¡¾À   TestScene0
 #define U 1             //ÁöÇö¾À   TestScene1
@@ -31,7 +33,7 @@ bool HelloWorld::init()
 //////#define U 1             //ÁöÇö¾À   TestScene1
 //////#define K 2             //Ã¤¿ø¾À   TestScene2
 
-    switch (U)
+    switch (4)
     {
     case 0:
         runAction(CallFuncN::create(CC_CALLBACK_1(HelloWorld::Scene0, this)));
@@ -42,6 +44,12 @@ bool HelloWorld::init()
     case 2:
         runAction(CallFuncN::create(CC_CALLBACK_1(HelloWorld::Scene2, this)));
         break;
+	case 3:
+		runAction(CallFuncN::create(CC_CALLBACK_1(HelloWorld::GameScene, this)));
+		break;
+	case 4:
+		runAction(CallFuncN::create(CC_CALLBACK_1(HelloWorld::MenuScene, this)));
+		break;
     }
  
 
@@ -63,4 +71,14 @@ void HelloWorld::Scene2(Ref* pSender)
 {
     auto pScene2 = TestScene2::createScene();
     Director::getInstance()->replaceScene(pScene2);
+}
+void HelloWorld::GameScene(Ref* pSender)
+{
+	auto GameScene = GameScene::createScene();
+	Director::getInstance()->replaceScene(GameScene);
+}
+void HelloWorld::MenuScene(Ref* pSender)
+{
+	auto MenuScene = MenuScene::createScene();
+	Director::getInstance()->replaceScene(MenuScene);
 }
