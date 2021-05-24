@@ -25,8 +25,8 @@ private:
 	Sprite* Factory_sp;
 	Menu *menu;
 
-	Sprite* Circle_bubble_sprite[7];
-	Sprite* Rhombus_bubble_sprite[7];
+	Sprite* Circle_bubble_sprite[8];
+	Sprite* Rhombus_bubble_sprite[8];
 
 
 public:
