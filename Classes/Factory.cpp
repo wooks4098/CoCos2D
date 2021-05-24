@@ -14,26 +14,28 @@ void Factory::Create(int factoryNumber)
 {
 	if (factoryNumber == FACTORY_RIGHT)
 		isRight = true;
+	else
+		isRight = false;
 	//스프라이트 생성
 	Create_HpBar();
 	Create_HpDownMenu();
 	Create_Factory_Sp();
-	Create_Bubble();
+	//Create_Bubble();
 
 }
 void Factory::Create_Factory_Sp()
 {
 	if (isRight)
 	{//공장 위치: 오른쪽
-		Factory_sp = Sprite::create("Wook_Test/Test_Factory.png");
+		Factory_sp = Sprite::create("Factory/Bg_Fatory_R.png");
 		Factory_sp->setAnchorPoint(Vec2(1, 0.5));
-		Factory_sp->setPosition(winSize.width, winSize.height / 2);
+		Factory_sp->setPosition(winSize.width, winSize.height / 2+80);
 	}
 	else
 	{//공장 위치 왼쪽
-		Factory_sp = Sprite::create("Wook_Test/Test_Factory.png");
+		Factory_sp = Sprite::create("Factory/Bg_Fatory_L.png");
 		Factory_sp->setAnchorPoint(Vec2(0, 0.5));
-		Factory_sp->setPosition(0, winSize.height / 2);
+		Factory_sp->setPosition(0, winSize.height / 2 + 80);
 	}
 	
 
@@ -101,7 +103,7 @@ void Factory::Create_Bubble()
 	Circle_bubble_sprite[3] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/C2_Blue.png");
 	Circle_bubble_sprite[4] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/C2_Red.png");
 	Circle_bubble_sprite[5] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/C2_Yellow.png");
-	Circle_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1_40.png");
+	Circle_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2_40.png");
 	//마름모
 	Rhombus_bubble_sprite[0] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R1_Blue.png");
 	Rhombus_bubble_sprite[1] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R1_Red.png");
@@ -201,9 +203,10 @@ void Factory::SetPos_Bubble()
 		for (int i = 0; i < 7; i++)
 		{
 			Circle_bubble_sprite[i]->setAnchorPoint(Vec2(0.5, 0.5));
-			Circle_bubble_sprite[i]->setPosition(Vec2(-45,285));
+			Circle_bubble_sprite[i]->setPosition(Vec2(75, 245));
+
 			Rhombus_bubble_sprite[i]->setAnchorPoint(Vec2(0.5, 0.5));
-			Rhombus_bubble_sprite[i]->setPosition(Vec2(-120, 285));
+			Rhombus_bubble_sprite[i]->setPosition(Vec2(155, 245));
 
 		}
 	}
@@ -212,10 +215,10 @@ void Factory::SetPos_Bubble()
 		for (int i = 0; i < 7; i++)
 		{
 			Circle_bubble_sprite[i]->setAnchorPoint(Vec2(0.5, 0.5));
-			Circle_bubble_sprite[i]->setPosition(Vec2(280, 285));
+			Circle_bubble_sprite[i]->setPosition(Vec2(275, 245));
 
 			Rhombus_bubble_sprite[i]->setAnchorPoint(Vec2(0.5, 0.5));
-			Rhombus_bubble_sprite[i]->setPosition( Vec2(200, 285));
+			Rhombus_bubble_sprite[i]->setPosition( Vec2(195, 245));
 
 		}
 	}

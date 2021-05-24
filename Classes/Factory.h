@@ -62,8 +62,8 @@ public:
 
 	Menu* return_Menu() { return menu; };
 
-	Sprite* return_Circle_bubble() { return *Circle_bubble_sprite; };
-	Sprite* return_Rhombus_bubble() { return *Rhombus_bubble_sprite; };
+	Sprite* return_Circle_bubble(int number) { return Circle_bubble_sprite[number]; };
+	Sprite* return_Rhombus_bubble(int number) { return Rhombus_bubble_sprite[number]; };
 
 	//콜백 함수
 	void HpDown(Ref* Sender);
