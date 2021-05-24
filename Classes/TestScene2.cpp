@@ -181,6 +181,10 @@ void TestScene2::myTick(float f)
 						return;
 					}
 				}
+				//else if (bubbles[i]->getBoundingBox().intersectsRect())
+				{
+
+				}
 			}
 		}
 	}

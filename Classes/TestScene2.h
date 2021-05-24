@@ -9,9 +9,7 @@ class TestScene2 : public cocos2d::Scene
 {
 private:
 	std::vector<Bubble*> bubbles;
-	std::vector<int> bubbleis;
 	BUBBLE val;
-	//BUBBLE addval;
 	int randnum;
 public:
 	static cocos2d::Scene* createScene();
