@@ -52,6 +52,8 @@ public:
 	//Menu Creat
 	void Create_HpDownMenu();
 
+	void Test();
+	int Change_Key(int _key);
 
 
 

@@ -7,6 +7,9 @@ Factory::Factory()
 	CreatUnit_time = 0;		
 	MaxHp = 100;
 	CurHp = MaxHp;
+
+	Circle_bubble.key = None_Circle;
+	Rhombus_bubble.key = None_Rhombus;
 }
 
 #pragma region 생성
@@ -171,8 +174,32 @@ void Factory::Factory_Hp_Down()
 #pragma endregion
 
 #pragma region 버블
+int Factory::Change_Key(int _key)
+{
+	switch (_key)
+	{
+	case R1_Blue:
+		return 0;
+	case R1_Red:
+		return 1;
+	case R1_Yellow:
+		return 2;
+
+	case C2_Blue:
+	case R2_Blue:
+		return 3;
+	case R2_Red:
+	case C2_Red:
+		return 4;
+	case C2_Yellow:
+	case R2_Yellow:
+		return 5;
+	}
+}
+
 void Factory::Change_Bubble(BUBBLE _Bubble)
 {
+
 	auto hide = Hide::create();
 	auto show = Show::create();
 	switch (_Bubble.key)
@@ -180,20 +207,24 @@ void Factory::Change_Bubble(BUBBLE _Bubble)
 	case C1_Blue:
 	case C1_Red:
 	case C1_Yellow:
-	case R1_Blue:
-	case R1_Red:
-	case R1_Yellow:
+	case C2_Blue:
+	case C2_Red:
+	case C2_Yellow:
+		_Bubble.key = Change_Key(_Bubble.key);
+		//Circle_bubble_sprite[0]->runAction(show);
 		if(Circle_bubble.key != None_Circle)
 			Circle_bubble_sprite[Circle_bubble.key]->runAction(hide);
 		Circle_bubble = _Bubble;
 		Circle_bubble_sprite[Circle_bubble.key]->runAction(show);
 		break;
-	case C2_Blue:
-	case C2_Red:
-	case C2_Yellow:
+
+	case R1_Blue:
+	case R1_Red:
+	case R1_Yellow:
 	case R2_Blue:
 	case R2_Red:
 	case R2_Yellow:
+		_Bubble.key = Change_Key(_Bubble.key);
 		if (Rhombus_bubble.key != None_Rhombus)
 			Rhombus_bubble_sprite[Rhombus_bubble.key]->runAction(hide);
 		Rhombus_bubble = _Bubble;
@@ -280,3 +311,9 @@ void Factory::HpDown(Ref* Sender)
 }
 #pragma endregion
 
+void Factory::Test()
+{
+	auto show = Show::create();
+	Circle_bubble_sprite[0]->runAction(show);
+
+}

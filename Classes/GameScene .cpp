@@ -62,14 +62,13 @@ void GameScene::Creat_Factory()
 	this->addChild(factory[FACTORY_LEFT].return_HpBar());
 	this->addChild(factory[FACTORY_LEFT].return_Factory_Sp());
 	//버블 등록
-	for (int i = 0; i < 7; i++)
+	for(int i = 6; i>0-1; i--)
 	{
 		factory[FACTORY_RIGHT].return_Factory_Sp()->addChild(factory[FACTORY_RIGHT].return_Circle_bubble(i));
 		factory[FACTORY_RIGHT].return_Factory_Sp()->addChild(factory[FACTORY_RIGHT].return_Rhombus_bubble(i));
 		factory[FACTORY_LEFT].return_Factory_Sp()->addChild(factory[FACTORY_LEFT].return_Circle_bubble(i));
 		factory[FACTORY_LEFT].return_Factory_Sp()->addChild(factory[FACTORY_LEFT].return_Rhombus_bubble(i));
 	}
-
 }
 void GameScene::Create_BackGround()
 {
@@ -178,7 +177,6 @@ void GameScene::ClickToCreateBubble1(Ref* pSender, int lev, bool isRight)
 	//bubbles.back()->setPr(10);
 	//bubbles.back()->setPrWiththis(false);
 	//this->addChild(bubbles.back()->Bubble_rt());
-
 	bubblesLeft.push_back(new Bubble);
 	bubblesLeft.back() = bubblesLeft.back()->BubbleCreate(GetPP(lev));
 	this->addChild(bubblesLeft.back());
@@ -248,6 +246,7 @@ void GameScene::OneTwoThreeFourBubbleBubble(float f)
 		if (bubblesLeft[i]->getBoundingBox().intersectsRect(factory[FACTORY_RIGHT].return_Factory_Sp()->getBoundingBox()))
 		{
 			factory[FACTORY_RIGHT].Change_Bubble(bubblesLeft[i]->BubbleStat_rt());
+
 		}
 	}
 //	else if()
