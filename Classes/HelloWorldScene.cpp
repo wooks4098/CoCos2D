@@ -10,7 +10,8 @@
 #define W 0             //¿í·¡¾À   TestScene0
 #define U 1             //ÁöÇö¾À   TestScene1
 #define K 2             //Ã¤¿ø¾À   TestScene2
-
+#define Game 3
+#define Menu 4
 
 USING_NS_CC;
 
@@ -32,6 +33,8 @@ bool HelloWorld::init()
 //////#define W 0             //¿í·¡¾À   TestScene0
 //////#define U 1             //ÁöÇö¾À   TestScene1
 //////#define K 2             //Ã¤¿ø¾À   TestScene2
+//////#define Game 3          //°ÔÀÓ¾À   GameScene
+//////#define Menu 4          //¸Þ´º¾À   MenuScene
 
     switch (4)
     {
