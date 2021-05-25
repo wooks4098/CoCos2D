@@ -20,7 +20,7 @@ void Factory::Create(int factoryNumber)
 	Create_HpBar();
 	Create_HpDownMenu();
 	Create_Factory_Sp();
-	//Create_Bubble();
+	Create_Bubble();
 
 }
 void Factory::Create_Factory_Sp()
@@ -33,7 +33,7 @@ void Factory::Create_Factory_Sp()
 	}
 	else
 	{//공장 위치 왼쪽
-		Factory_sp = Sprite::create("Factory/Bg_Fatory_L.png");
+		Factory_sp = Sprite::create("Factory/Bg_Factory_L.png");
 		Factory_sp->setAnchorPoint(Vec2(0, 0.5));
 		Factory_sp->setPosition(0, winSize.height / 2 + 80);
 	}
@@ -45,11 +45,11 @@ void Factory::Create_HpBar()
 {
 	if (isRight)
 	{//공장 위치: 오른쪽
-		Hp_Bar_Back = Sprite::create("Wook_Test/Test_Hp_Back.png");
+		Hp_Bar_Back = Sprite::create("UI/UI_top_hp_down.png");
 		Hp_Bar_Back->setAnchorPoint(Vec2(1, 1));
 		Hp_Bar_Back->setPosition(winSize.width-80, winSize.height-20);
 
-		Hp_Bar = Sprite::create("Wook_Test/Test_Hp.png");
+		Hp_Bar = Sprite::create("UI/UI_top_hp_up.png");
 		Hp_Bar->setAnchorPoint(Vec2(1, 1));
 		Hp_Bar->setPosition(winSize.width-80 , winSize.height - 20);
 
@@ -57,11 +57,11 @@ void Factory::Create_HpBar()
 	}
 	else
 	{//공장 위치 왼쪽
-		Hp_Bar_Back = Sprite::create("Wook_Test/Test_Hp_Back.png");
+		Hp_Bar_Back = Sprite::create("UI/UI_top_hp_down.png");
 		Hp_Bar_Back->setAnchorPoint(Vec2(0, 1));
 		Hp_Bar_Back->setPosition(0 + 80, winSize.height - 20);
 
-		Hp_Bar = Sprite::create("Wook_Test/Test_Hp.png");
+		Hp_Bar = Sprite::create("UI/UI_top_hp_up.png");
 		Hp_Bar->setAnchorPoint(Vec2(0, 1));
 		Hp_Bar->setPosition(0 + 80, winSize.height - 20);
 	}
@@ -104,6 +104,7 @@ void Factory::Create_Bubble()
 	Circle_bubble_sprite[4] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/C2_Red.png");
 	Circle_bubble_sprite[5] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/C2_Yellow.png");
 	Circle_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2_40.png");
+	Circle_bubble_sprite[7] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2_40.png");
 	//마름모
 	Rhombus_bubble_sprite[0] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R1_Blue.png");
 	Rhombus_bubble_sprite[1] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R1_Red.png");
@@ -112,6 +113,7 @@ void Factory::Create_Bubble()
 	Rhombus_bubble_sprite[4] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R2_Red.png");
 	Rhombus_bubble_sprite[5] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R2_Yellow.png");
 	Rhombus_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1_40.png");
+	Rhombus_bubble_sprite[7] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1_40.png");
 	SetPos_Bubble();
 }
 
@@ -123,9 +125,9 @@ void Factory::Factory_Damage_Action()
 {
 	if (isRight)
 	{
-		auto First = Spawn::create(ScaleTo::create(0.05, 1.1), MoveBy::create(0.08, Vec2(-10, -10)), nullptr);
-		auto Second = Spawn::create(ScaleTo::create(0.05, 0.9), MoveBy::create(0.08, Vec2(20, 20)), nullptr);
-		auto Third = Spawn::create(ScaleTo::create(0.05, 1), MoveBy::create(0.08, Vec2(-10, -10)), nullptr);
+		auto First = Spawn::create(ScaleTo::create(0.05, 1.1), MoveBy::create(0.08, Vec2(0, -10)), nullptr);
+		auto Second = Spawn::create(ScaleTo::create(0.05, 0.9), MoveBy::create(0.08, Vec2(0, 20)), nullptr);
+		auto Third = Spawn::create(ScaleTo::create(0.05, 1), MoveBy::create(0.08, Vec2(0, -10)), nullptr);
 		auto Action = Sequence::create(First, Second, Third, nullptr);
 		Factory_sp->runAction(Action);
 
@@ -133,9 +135,9 @@ void Factory::Factory_Damage_Action()
 	}
 	else
 	{
-		auto First = Spawn::create(ScaleTo::create(0.05, 1.1), MoveBy::create(0.08, Vec2(10, 10)), nullptr);
-		auto Second = Spawn::create(ScaleTo::create(0.05, 0.9), MoveBy::create(0.08, Vec2(-20, -20)), nullptr);
-		auto Third = Spawn::create(ScaleTo::create(0.05, 1), MoveBy::create(0.08, Vec2(10, 10)), nullptr);
+		auto First = Spawn::create(ScaleTo::create(0.05, 1.1), MoveBy::create(0.08, Vec2(0, 10)), nullptr);
+		auto Second = Spawn::create(ScaleTo::create(0.05, 0.9), MoveBy::create(0.08, Vec2(0, -20)), nullptr);
+		auto Third = Spawn::create(ScaleTo::create(0.05, 1), MoveBy::create(0.08, Vec2(0, 10)), nullptr);
 		auto Action = Sequence::create(First, Second, Third, nullptr);
 		auto Action1 = Sequence::create(First, Second, Third, nullptr);
 		auto Action2 = Sequence::create(First, Second, Third, nullptr);
@@ -171,7 +173,8 @@ void Factory::Factory_Hp_Down()
 #pragma region 버블
 void Factory::Change_Bubble(BUBBLE _Bubble)
 {
-
+	auto hide = Hide::create();
+	auto show = Show::create();
 	switch (_Bubble.key)
 	{
 	case C1_Blue:
@@ -180,7 +183,10 @@ void Factory::Change_Bubble(BUBBLE _Bubble)
 	case R1_Blue:
 	case R1_Red:
 	case R1_Yellow:
+		if(Circle_bubble.key != None_Circle)
+			Circle_bubble_sprite[Circle_bubble.key]->runAction(hide);
 		Circle_bubble = _Bubble;
+		Circle_bubble_sprite[Circle_bubble.key]->runAction(show);
 		break;
 	case C2_Blue:
 	case C2_Red:
@@ -188,7 +194,10 @@ void Factory::Change_Bubble(BUBBLE _Bubble)
 	case R2_Blue:
 	case R2_Red:
 	case R2_Yellow:
+		if (Rhombus_bubble.key != None_Rhombus)
+			Rhombus_bubble_sprite[Rhombus_bubble.key]->runAction(hide);
 		Rhombus_bubble = _Bubble;
+		Rhombus_bubble_sprite[Rhombus_bubble.key]->runAction(show);
 		break;
 
 	}
@@ -202,18 +211,24 @@ void Factory::SetPos_Bubble()
 	{
 		for (int i = 0; i < 7; i++)
 		{
+			auto action = Hide::create();
+			auto action1 = Hide::create();
 			Circle_bubble_sprite[i]->setAnchorPoint(Vec2(0.5, 0.5));
 			Circle_bubble_sprite[i]->setPosition(Vec2(75, 245));
 
 			Rhombus_bubble_sprite[i]->setAnchorPoint(Vec2(0.5, 0.5));
 			Rhombus_bubble_sprite[i]->setPosition(Vec2(155, 245));
-
+			if (i == 6) break;
+			Circle_bubble_sprite[i]->runAction(action);
+			Rhombus_bubble_sprite[i]->runAction(action1);
 		}
 	}
 	else
 	{
 		for (int i = 0; i < 7; i++)
 		{
+			auto action = Hide::create();
+			auto action1 = Hide::create();
 			Circle_bubble_sprite[i]->setAnchorPoint(Vec2(0.5, 0.5));
 			Circle_bubble_sprite[i]->setPosition(Vec2(275, 245));
 
@@ -222,7 +237,8 @@ void Factory::SetPos_Bubble()
 
 		}
 	}
-	
+	Circle_bubble_sprite[7]->setPosition(Vec2(-3000, -3000));
+	Rhombus_bubble_sprite[7]->setPosition(Vec2(-3000, -3000));
 }
 #pragma endregion
 
