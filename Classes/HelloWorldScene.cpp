@@ -36,7 +36,7 @@ bool HelloWorld::init()
 //////#define Game 3          //∞‘¿”æ¿   GameScene
 //////#define Menu 4          //∏ﬁ¥∫æ¿   MenuScene
 
-    switch (4)
+    switch (Game)
     {
     case 0:
         runAction(CallFuncN::create(CC_CALLBACK_1(HelloWorld::Scene0, this)));
