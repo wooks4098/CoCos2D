@@ -18,15 +18,18 @@ private:
 
 	//dimu
 	std::vector<Bubble*> bubblesLeft;
-	//std::vector<Bubble*> bubblesRight;
+	std::vector<Bubble*> bubblesRight;
 	BUBBLE val;
 	int randnum;
 
+	int bitCoin;
 	int count;
 	static bool isMove;
 
 	Bubble* bubbleA;
 	Bubble* bubbleB;
+	Sprite* DeleteZoneL;
+	Sprite* DeleteZoneR;
 
 public:
     static cocos2d::Scene* createScene();
@@ -43,7 +46,8 @@ public:
 	void Factory_Right_CreatUnitCheck(float f);	//蒲配府(Right) 蜡粗 积己 眉农
 	void Factory_Left_CreatUnitCheck(float f);	//蒲配府(Left) 蜡粗 积己 眉农
 	void Update(float f);//诀单捞飘
-	void OneTwoThreeFourBubbleBubble(float f);
+	void OneTwoThreeFourBubbleBubbleRight(float f);
+	void OneTwoThreeFourBubbleBubbleLeft(float f);
 };
 
 #endif // _SceneTrans__GameScene

@@ -17,9 +17,15 @@ bool GameScene::init()
 	addChild(wlayer);
 	winSize = Director::getInstance()->getWinSize(); //화면의 사이즈 구하기
 
+	bitCoin = 100;
+
 	Create_BackGround();
 	Creat_Factory();
 
+	DeleteZoneL = Sprite::create("UI/UI_bottom_Delet.png");
+	DeleteZoneR = Sprite::create("UI/UI_bottom_Delet.png");
+	DeleteZoneL->setPosition(Vec2(200, 100));
+	this->addChild(DeleteZoneL);
 
 #pragma region menu
 	auto m_3 = MenuItemImage::create("btn-play-normal.png", "btn-play-selected.png", CC_CALLBACK_1(GameScene::ClickToCreateBubble1, this, 1, true));
@@ -40,7 +46,8 @@ bool GameScene::init()
 	this->schedule(schedule_selector(GameScene::Factory_Right_CreatUnitCheck), 0.1f);
 	this->schedule(schedule_selector(GameScene::Factory_Left_CreatUnitCheck), 0.1f);
 	this->schedule(schedule_selector(GameScene::Update));
-	this->schedule(schedule_selector(GameScene::OneTwoThreeFourBubbleBubble));
+	this->schedule(schedule_selector(GameScene::OneTwoThreeFourBubbleBubbleLeft));
+	this->schedule(schedule_selector(GameScene::OneTwoThreeFourBubbleBubbleRight));
 	return true;
 }
 
@@ -82,6 +89,7 @@ void GameScene::Create_BackGround()
 	UI_Hp_top->setPosition(0, winSize.height);
 	this->addChild(UI_Hp_top);
 }
+
 BUBBLE GameScene::GetPP(int lev)
 {
 
@@ -197,7 +205,63 @@ void GameScene::Factory_Left_CreatUnitCheck(float f)
 {
 	//factory[FACTORY_LEFT].CreatUnit();
 }
-void GameScene::OneTwoThreeFourBubbleBubble(float f)
+void GameScene::OneTwoThreeFourBubbleBubbleRight(float f)
+{
+	for (int i = 0; i < bubblesRight.size(); i++)
+	{
+		if (bubblesRight[i]->isMove())//움직이고 있다면 충돌처리를 하지 않는다.
+		{
+			return;
+		}
+	}
+	
+	//right
+	if (bubblesRight.size() >= 2)
+	{
+		for (int i = 0; i < bubblesRight.size(); i++)
+		{
+			for (int j = i + 1; j < bubblesRight.size(); j++)
+			{
+				if (bubblesRight[i]->getBoundingBox().intersectsRect(bubblesRight[j]->getBoundingBox()))
+				{
+					if (bubblesRight[i]->BubbleStat_rt().key <= 5 && bubblesRight[i]->BubbleStat_rt().key == bubblesRight[j]->BubbleStat_rt().key)
+					{
+						log("R C Check");
+						bubblesRight[i]->removeFromParentAndCleanup(true);
+						bubblesRight.erase(bubblesRight.begin() + i);
+						if (i != j)
+						{
+							bubblesRight[j - 1]->removeFromParentAndCleanup(true);
+							bubblesRight.erase(bubblesRight.begin() + j - 1);
+						}
+						//new 버블 생성 코드
+						ClickToCreateBubble1(this, 2, true);
+						return;
+					}
+				}
+			}
+		}
+	}
+
+	//right
+	for (int i = 0; i < bubblesRight.size(); i++)
+	{
+		if (bubblesRight[i]->getBoundingBox().intersectsRect(factory[FACTORY_RIGHT].return_Factory_Sp()->getBoundingBox()))
+		{
+			factory[FACTORY_RIGHT].Change_Bubble(bubblesRight[i]->BubbleStat_rt());
+			bubblesRight[i]->removeFromParentAndCleanup(true);
+			bubblesRight.erase(bubblesRight.begin() + i);
+			break;
+		}
+		if (bubblesRight[i]->getBoundingBox().intersectsRect(DeleteZoneL->getBoundingBox()))
+		{
+			//coin++
+			bubblesRight[i]->removeFromParentAndCleanup(true);
+			bubblesRight.erase(bubblesRight.begin() + i);
+		}
+	}
+}
+void GameScene::OneTwoThreeFourBubbleBubbleLeft(float f)
 {
 	for (int i = 0; i < bubblesLeft.size(); i++)
 	{
@@ -217,7 +281,7 @@ void GameScene::OneTwoThreeFourBubbleBubble(float f)
 				{
 					if (bubblesLeft[i]->BubbleStat_rt().key <= 5 && bubblesLeft[i]->BubbleStat_rt().key == bubblesLeft[j]->BubbleStat_rt().key)
 					{
-						log("C Check");
+						log("L C Check");
 						bubblesLeft[i]->removeFromParentAndCleanup(true);
 						bubblesLeft.erase(bubblesLeft.begin() + i);
 						if (i != j)
@@ -230,23 +294,25 @@ void GameScene::OneTwoThreeFourBubbleBubble(float f)
 						return;
 					}
 				}
-				//if (bubblesLeft[i]->getBoundingBox().intersectsRect(factory[FACTORY_RIGHT].return_Factory_Sp()->getBoundingBox()))
-				//{
-				//	log("Factory Check");
-				//}
-				//else if (bubbles[i]->getBoundingBox().intersectsRect())
-				{
-
-				}
 			}
 		}
 	}
+	
+	//left
 	for (int i = 0; i < bubblesLeft.size(); i++)
 	{
 		if (bubblesLeft[i]->getBoundingBox().intersectsRect(factory[FACTORY_RIGHT].return_Factory_Sp()->getBoundingBox()))
 		{
 			factory[FACTORY_RIGHT].Change_Bubble(bubblesLeft[i]->BubbleStat_rt());
-
+			bubblesLeft[i]->removeFromParentAndCleanup(true);
+			bubblesLeft.erase(bubblesLeft.begin() + i);
+			break;
+		}
+		if (bubblesLeft[i]->getBoundingBox().intersectsRect(DeleteZoneL->getBoundingBox()))
+		{
+			//coin++
+			bubblesLeft[i]->removeFromParentAndCleanup(true);
+			bubblesLeft.erase(bubblesLeft.begin() + i);
 		}
 	}
 //	else if()

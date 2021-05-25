@@ -15,7 +15,10 @@ bool TestScene2::init()
     }
 	srand(time(NULL));
 
-
+	//DeleteZoneL = Sprite::create("UI_bottom_Delet.png");
+	//DeleteZoneR = Sprite::create("UI_bottom_Delet.png");
+	//DeleteZoneL->setPosition(Vec2(200, 100));
+	//this->addChild(DeleteZoneL);
 
     auto wlayer = LayerColor::create(Color4B(100,255,255,100));
     this->addChild(wlayer);

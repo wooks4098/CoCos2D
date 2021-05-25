@@ -25,8 +25,7 @@ public:
 	Bubble* bubbleA;
 	Bubble* bubbleB;
 
-	//Sprite* DeleteZoneL;
-	//Sprite* DeleteZoneR;
+
 	BUBBLE GetPP(int lev);
 	void ClickToCreateBubble1(Ref* pSender,int lev, bool isRight);
 	void Click2(Ref* pSender);
