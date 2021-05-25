@@ -16,6 +16,16 @@ private:
 
 	Sprite* UI_Hp_top;
 	Sprite* Factory_Back;
+
+	Sprite* UI_Left_bottom_Info;
+	Sprite* UI_Left_bottom_Inven;
+	Sprite* UI_Left_bottom_Delet;
+	Sprite* UI_Right_bottom_Info;
+	Sprite* UI_Right_bottom_Inven;
+	Sprite* UI_Right_bottom_Delet;
+
+	Menu* Bubble_Menu;
+
 public:
 	static cocos2d::Scene* createScene();
 	virtual bool init();

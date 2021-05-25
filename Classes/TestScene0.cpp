@@ -65,6 +65,38 @@ void TestScene0::Create_BackGround()
 	UI_Hp_top->setAnchorPoint(Vec2(0, 1));
 	UI_Hp_top->setPosition(0, winSize.height);
 	this->addChild(UI_Hp_top);
+
+	UI_Left_bottom_Info = Sprite::create("UI/UI_bottom_Info_Left.png");
+	UI_Left_bottom_Info->setAnchorPoint(Vec2(0, 0));
+	UI_Left_bottom_Info->setPosition(0, 0);
+	this->addChild(UI_Left_bottom_Info);
+
+	UI_Left_bottom_Inven = Sprite::create("UI/UI_bottom_Inventory.png");
+	UI_Left_bottom_Inven->setAnchorPoint(Vec2(0, 0));
+	UI_Left_bottom_Inven->setPosition(UI_Left_bottom_Info->getContentSize().width, 0);
+	this->addChild(UI_Left_bottom_Inven);
+	
+	UI_Left_bottom_Delet = Sprite::create("UI/UI_bottom_Delet.png");
+	UI_Left_bottom_Delet->setAnchorPoint(Vec2(0, 0));
+	UI_Left_bottom_Delet->setPosition(UI_Left_bottom_Inven->getContentSize().width, 0);
+	this->addChild(UI_Left_bottom_Delet);
+	
+	UI_Right_bottom_Info = Sprite::create("UI/UI_bottom_Info_Right.png");
+	UI_Right_bottom_Info->setAnchorPoint(Vec2(1, 0));
+	UI_Right_bottom_Info->setPosition(winSize.width,0);
+	this->addChild(UI_Right_bottom_Info);
+
+	UI_Right_bottom_Inven = Sprite::create("UI/UI_bottom_Inventory.png");
+	UI_Right_bottom_Inven->setAnchorPoint(Vec2(1, 0));
+	UI_Right_bottom_Inven->setPosition(winSize.width - UI_Right_bottom_Info->getContentSize().width, 0);
+	this->addChild(UI_Right_bottom_Inven);
+
+	UI_Right_bottom_Delet = Sprite::create("UI/UI_bottom_Delet.png");
+	UI_Right_bottom_Delet->setAnchorPoint(Vec2(1, 0));
+	UI_Right_bottom_Delet->setPosition(winSize.width - UI_Right_bottom_Inven->getContentSize().width,0 );
+	this->addChild(UI_Right_bottom_Delet);
+
+
 }
 void TestScene0::Update(float f)
 {
