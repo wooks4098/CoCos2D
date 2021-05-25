@@ -81,7 +81,7 @@ Bubble* Bubble::BubbleCreate(BUBBLE info)
 	//b_stat.MoveSpeed += 5;
 
 	pBub->b_stat = b_stat;
-	pBub->setPosition(Vec2(100, 100));
+	//pBub->setPosition(Vec2(100, 100));
 	pBub->setPr(10);
 	pBub->setPrWiththis(true);
 	return pBub;

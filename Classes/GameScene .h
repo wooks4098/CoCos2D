@@ -16,27 +16,40 @@ private:
 	Sprite* UI_Hp_top;
 	Sprite* Factory_Back;
 
+	//Bubble UI
 	Sprite* UI_Left_bottom_Info;
+	MenuItemImage* UI_Left_bottom_Bubble;
+	MenuItemImage* UI_Left_bottom_Unit;
 	Sprite* UI_Left_bottom_Inven;
 	Sprite* UI_Left_bottom_Delet;
+
 	Sprite* UI_Right_bottom_Info;
+	MenuItemImage* UI_Right_bottom_Bubble;
+	MenuItemImage* UI_Right_bottom_Unit;
 	Sprite* UI_Right_bottom_Inven;
 	Sprite* UI_Right_bottom_Delet;
 
+	Label* Lcoin;
+	Label* Rcoin;
+	Label* Lbitcoincost;
+	Label* Rbitcoincost;
+
 	//dimu
+	INVENPOS invenPos_Left[8];
+	INVENPOS invenPos_Right[8];
+	int lCount;
+	int RCount;
 	std::vector<Bubble*> bubblesLeft;
 	std::vector<Bubble*> bubblesRight;
 	BUBBLE val;
 	int randnum;
-
-	int bitCoin;
-	int count;
+	int bitCoinL;
+	int bubbleCostL;
+	int bitCoinR;
+	int bubbleCostR;
 	static bool isMove;
-
-	Bubble* bubbleA;
-	Bubble* bubbleB;
-	Sprite* DeleteZoneL;
-	Sprite* DeleteZoneR;
+	
+	int coinAmount;
 
 public:
     static cocos2d::Scene* createScene();
@@ -55,6 +68,7 @@ public:
 	void Update(float f);//업데이트
 	void OneTwoThreeFourBubbleBubbleRight(float f);
 	void OneTwoThreeFourBubbleBubbleLeft(float f);
+	void GetCoinInTime(float f);
 };
 
 #endif // _SceneTrans__GameScene
