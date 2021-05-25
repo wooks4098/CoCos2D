@@ -18,7 +18,7 @@ private:
 
 	//dimu
 	std::vector<Bubble*> bubblesLeft;
-	std::vector<Bubble*> bubblesRight;
+	//std::vector<Bubble*> bubblesRight;
 	BUBBLE val;
 	int randnum;
 

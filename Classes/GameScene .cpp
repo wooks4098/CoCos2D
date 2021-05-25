@@ -40,6 +40,7 @@ bool GameScene::init()
 	this->schedule(schedule_selector(GameScene::Factory_Right_CreatUnitCheck), 0.1f);
 	this->schedule(schedule_selector(GameScene::Factory_Left_CreatUnitCheck), 0.1f);
 	this->schedule(schedule_selector(GameScene::Update));
+	this->schedule(schedule_selector(GameScene::OneTwoThreeFourBubbleBubble));
 	return true;
 }
 
@@ -231,6 +232,10 @@ void GameScene::OneTwoThreeFourBubbleBubble(float f)
 						return;
 					}
 				}
+				//if (bubblesLeft[i]->getBoundingBox().intersectsRect(factory[FACTORY_RIGHT].return_Factory_Sp()->getBoundingBox()))
+				//{
+				//	log("Factory Check");
+				//}
 				//else if (bubbles[i]->getBoundingBox().intersectsRect())
 				{
 
@@ -238,6 +243,14 @@ void GameScene::OneTwoThreeFourBubbleBubble(float f)
 			}
 		}
 	}
+	for (int i = 0; i < bubblesLeft.size(); i++)
+	{
+		if (bubblesLeft[i]->getBoundingBox().intersectsRect(factory[FACTORY_RIGHT].return_Factory_Sp()->getBoundingBox()))
+		{
+			factory[FACTORY_RIGHT].Change_Bubble(bubblesLeft[i]->BubbleStat_rt());
+		}
+	}
+//	else if()
 }
 #pragma endregion
 

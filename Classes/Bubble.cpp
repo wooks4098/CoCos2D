@@ -108,21 +108,21 @@ void Bubble::onEnter()
 		if (rect.containsPoint(LocationInNode))
 		{
 			_isMove = true;
-			log("touch Bubble...");
+			//log("touch Bubble...");
 			return true;
 		}
 	};
 
 	listener->onTouchMoved = [=](Touch* touch, Event* event)
 	{
-		log("touch mv...", _isMove);
+		//log("touch mv...", _isMove);
 		this->setPosition(this->getPosition() + touch->getDelta());//이동한정보
 	};
 
 	listener->onTouchEnded = [=](Touch* touch, Event* event)
 	{
 		_isMove = false;
-		log("touch end...");
+		//log("touch end...");
 	};
 
 	if (_useNodePr)
