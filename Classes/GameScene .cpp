@@ -20,6 +20,22 @@ bool GameScene::init()
 	Create_BackGround();
 	Creat_Factory();
 
+
+#pragma region menu
+	auto m_3 = MenuItemImage::create("btn-play-normal.png", "btn-play-selected.png", CC_CALLBACK_1(GameScene::ClickToCreateBubble1, this, 1, true));
+	auto m_4 = MenuItemImage::create("end1.PNG", "end2.PNG", CC_CALLBACK_1(GameScene::ClickToCreateBubble1, this, 1, false));
+	m_3->setTag(1);
+	m_4->setTag(2);
+	auto menu1 = Menu::create(m_3, m_4, nullptr);
+	m_3->setPosition(Vec2(480, 320));
+	m_3->setAnchorPoint(Vec2(1, 1));
+	m_4->setPosition(Vec2(0, 320));
+	m_4->setAnchorPoint(Vec2(0, 1));
+	this->addChild(menu1);
+	menu1->setPosition(Vec2::ZERO);
+#pragma endregion
+
+
 	//스케줄 등록
 	this->schedule(schedule_selector(GameScene::Factory_Right_CreatUnitCheck), 0.1f);
 	this->schedule(schedule_selector(GameScene::Factory_Left_CreatUnitCheck), 0.1f);

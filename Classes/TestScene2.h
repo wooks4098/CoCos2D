@@ -12,6 +12,10 @@ private:
 	std::vector<Bubble*> bubblesRight;
 	BUBBLE val;
 	int randnum;
+
+	Sprite* DeleteZoneL;
+	Sprite* DeleteZoneR;
+
 public:
 	static cocos2d::Scene* createScene();
 
