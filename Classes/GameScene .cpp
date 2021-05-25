@@ -141,11 +141,11 @@ BUBBLE GameScene::GetPP(int lev)
 		switch (randnum)
 		{
 		case C2_Blue:
-			val.Damage = 10;
+			val.Defense = 10;
 			val.key = 6;
 			break;
 		case C2_Red:
-			val.Defense = 10;
+			val.Hp = 10;
 			val.key = 7;
 			break;
 		case C2_Yellow:
@@ -153,7 +153,7 @@ BUBBLE GameScene::GetPP(int lev)
 			val.key = 8;
 			break;
 		case R2_Blue:
-			val.MoveSpeed = 3;
+			val.Damage = 3;
 			val.key = 9;
 			break;
 		case R2_Red:
@@ -161,7 +161,7 @@ BUBBLE GameScene::GetPP(int lev)
 			val.key = 10;
 			break;
 		case R2_Yellow:
-			val.Hp = 15;
+			val.MoveSpeed = 15;
 			val.key = 11;
 			break;
 		default:
