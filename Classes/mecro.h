@@ -1,4 +1,6 @@
 #pragma once
+#define FACTORY_RIGHT 0
+#define FACTORY_LEFT 1
 struct BUBBLE
 {
 	bool iscircle;		//모양 true = 원 | false = 마름모
