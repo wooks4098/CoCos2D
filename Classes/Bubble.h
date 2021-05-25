@@ -14,7 +14,6 @@ public:
 	void onExit();
 	bool isMove();
 	bool _isMove = false;
-	//void DimuTick(float t);
 	Bubble* Bubble_rt() { return pBub; }
 	BUBBLE BubbleStat_rt() { return b_stat; }
 private:

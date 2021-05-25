@@ -176,7 +176,7 @@ void TestScene2::myTick(float f)
 							bubblesLeft.erase(bubblesLeft.begin() + j - 1);
 						}
 						//new 버블 생성 코드
-						ClickToCreateBubble1(this, 2);
+						ClickToCreateBubble1(this, 2, true);
 						return;
 					}
 				}
