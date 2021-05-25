@@ -20,7 +20,7 @@ bool GameScene::init()
 	Create_BackGround();
 	Creat_Factory();
 
-	//팩토리 스케줄 등록
+	//스케줄 등록
 	this->schedule(schedule_selector(GameScene::Factory_Right_CreatUnitCheck), 0.1f);
 	this->schedule(schedule_selector(GameScene::Factory_Left_CreatUnitCheck), 0.1f);
 	this->schedule(schedule_selector(GameScene::Update));
