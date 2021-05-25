@@ -93,7 +93,7 @@ void GameScene::Create_BackGround()
 	UI_Left_bottom_Info->setPosition(0, 0);
 	this->addChild(UI_Left_bottom_Info);
 
-	UI_Left_bottom_Inven = Sprite::create("UI/UI_bottom_Inventory.png");
+	UI_Left_bottom_Inven = Sprite::create("UI/UI_bottom_Inven.png");
 	UI_Left_bottom_Inven->setAnchorPoint(Vec2(0, 0));
 	UI_Left_bottom_Inven->setPosition(UI_Left_bottom_Info->getContentSize().width, 0);
 	this->addChild(UI_Left_bottom_Inven);
@@ -108,7 +108,7 @@ void GameScene::Create_BackGround()
 	UI_Right_bottom_Info->setPosition(winSize.width, 0);
 	this->addChild(UI_Right_bottom_Info);
 
-	UI_Right_bottom_Inven = Sprite::create("UI/UI_bottom_Inventory.png");
+	UI_Right_bottom_Inven = Sprite::create("UI/UI_bottom_Inven.png");
 	UI_Right_bottom_Inven->setAnchorPoint(Vec2(1, 0));
 	UI_Right_bottom_Inven->setPosition(winSize.width - UI_Right_bottom_Info->getContentSize().width, 0);
 	this->addChild(UI_Right_bottom_Inven);
