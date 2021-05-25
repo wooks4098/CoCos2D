@@ -265,7 +265,9 @@ void Factory::SetPos_Bubble()
 
 			Rhombus_bubble_sprite[i]->setAnchorPoint(Vec2(0.5, 0.5));
 			Rhombus_bubble_sprite[i]->setPosition( Vec2(195, 245));
-
+			if (i == 6) break;
+			Circle_bubble_sprite[i]->runAction(action);
+			Rhombus_bubble_sprite[i]->runAction(action1);
 		}
 	}
 	Circle_bubble_sprite[7]->setPosition(Vec2(-3000, -3000));
