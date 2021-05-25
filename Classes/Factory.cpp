@@ -183,7 +183,8 @@ void Factory::Change_Bubble(BUBBLE _Bubble)
 	case R1_Blue:
 	case R1_Red:
 	case R1_Yellow:
-		Circle_bubble_sprite[Circle_bubble.key]->runAction(hide);
+		if(Circle_bubble.key != None_Circle)
+			Circle_bubble_sprite[Circle_bubble.key]->runAction(hide);
 		Circle_bubble = _Bubble;
 		Circle_bubble_sprite[Circle_bubble.key]->runAction(show);
 		break;
@@ -193,7 +194,8 @@ void Factory::Change_Bubble(BUBBLE _Bubble)
 	case R2_Blue:
 	case R2_Red:
 	case R2_Yellow:
-		Rhombus_bubble_sprite[Rhombus_bubble.key]->runAction(hide);
+		if (Rhombus_bubble.key != None_Rhombus)
+			Rhombus_bubble_sprite[Rhombus_bubble.key]->runAction(hide);
 		Rhombus_bubble = _Bubble;
 		Rhombus_bubble_sprite[Rhombus_bubble.key]->runAction(show);
 		break;
