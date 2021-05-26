@@ -16,6 +16,8 @@ public:
     void Scene0(Ref* pSender);
     void Scene1(Ref* pSender);
     void Scene2(Ref* pSender);
+	void GameScene(Ref* pSender);
+	void MenuScene(Ref* pSender);
   
 };
 

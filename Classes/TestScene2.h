@@ -8,11 +8,12 @@
 class TestScene2 : public cocos2d::Scene
 {
 private:
-	std::vector<Bubble*> bubbles;
-	std::vector<int> bubbleis;
+	std::vector<Bubble*> bubblesLeft;
+	std::vector<Bubble*> bubblesRight;
 	BUBBLE val;
-	//BUBBLE addval;
 	int randnum;
+
+
 public:
 	static cocos2d::Scene* createScene();
 
@@ -24,8 +25,9 @@ public:
 	Bubble* bubbleA;
 	Bubble* bubbleB;
 
+
 	BUBBLE GetPP(int lev);
-	void ClickToCreateBubble1(Ref* pSender,int lev);
+	void ClickToCreateBubble1(Ref* pSender,int lev, bool isRight);
 	void Click2(Ref* pSender);
 	void myTick(float f);
 

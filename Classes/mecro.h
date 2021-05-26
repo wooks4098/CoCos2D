@@ -1,4 +1,6 @@
 #pragma once
+#define FACTORY_RIGHT 0
+#define FACTORY_LEFT 1
 struct BUBBLE
 {
 	bool iscircle;		//모양 true = 원 | false = 마름모
@@ -11,7 +13,14 @@ struct BUBBLE
 	int key;			//번호
 };
 
+struct INVENPOS
+{
+	int x;
+	int y;
+	bool isFull;
+};
+
 enum Type
 {
-	C1_Blue, C1_Red, C1_Yellow, R1_Blue, R1_Red, R1_Yellow, C2_Blue, C2_Red, C2_Yellow, R2_Blue, R2_Red, R2_Yellow
+	C1_Blue, C1_Red, C1_Yellow, R1_Blue, R1_Red, R1_Yellow, C2_Blue, C2_Red, C2_Yellow, R2_Blue, R2_Red, R2_Yellow, None_Circle, None_Rhombus
 };

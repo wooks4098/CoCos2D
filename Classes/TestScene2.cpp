@@ -15,14 +15,17 @@ bool TestScene2::init()
     }
 	srand(time(NULL));
 
-
+	//DeleteZoneL = Sprite::create("UI_bottom_Delet.png");
+	//DeleteZoneR = Sprite::create("UI_bottom_Delet.png");
+	//DeleteZoneL->setPosition(Vec2(200, 100));
+	//this->addChild(DeleteZoneL);
 
     auto wlayer = LayerColor::create(Color4B(100,255,255,100));
     this->addChild(wlayer);
 
 	#pragma region menu
-	auto m_3 = MenuItemImage::create("btn-play-normal.png", "btn-play-selected.png", CC_CALLBACK_1(TestScene2::ClickToCreateBubble1, this,1));
-	auto m_4 = MenuItemImage::create("end1.PNG", "end2.PNG", CC_CALLBACK_1(TestScene2::ClickToCreateBubble1, this,1));
+	auto m_3 = MenuItemImage::create("btn-play-normal.png", "btn-play-selected.png", CC_CALLBACK_1(TestScene2::ClickToCreateBubble1, this,1,true));
+	auto m_4 = MenuItemImage::create("end1.PNG", "end2.PNG", CC_CALLBACK_1(TestScene2::ClickToCreateBubble1, this,1, false));
 	m_3->setTag(1);
 	m_4->setTag(2);
 	auto menu1 = Menu::create(m_3, m_4, nullptr);
@@ -127,7 +130,7 @@ BUBBLE TestScene2::GetPP(int lev)
 	return val;
 }
 
-void TestScene2::ClickToCreateBubble1(Ref* pSender,int lev)
+void TestScene2::ClickToCreateBubble1(Ref* pSender,int lev, bool isRight)
 {
 	//bubbles.push_back(new Bubble);
 	//bubbles.back()->BubbleCreate(GetPP(1));
@@ -135,10 +138,9 @@ void TestScene2::ClickToCreateBubble1(Ref* pSender,int lev)
 	//bubbles.back()->setPrWiththis(false);
 	//this->addChild(bubbles.back()->Bubble_rt());
 
-	bubbles.push_back(new Bubble);
-	bubbles.back()=bubbles.back()->BubbleCreate(GetPP(lev));
-
-	this->addChild(bubbles.back());
+	bubblesLeft.push_back(new Bubble);
+	bubblesLeft.back()=bubblesLeft.back()->BubbleCreate(GetPP(lev));
+	this->addChild(bubblesLeft.back());
 }
 
 void TestScene2::Click2(Ref* pSender)
@@ -150,36 +152,40 @@ void TestScene2::Click2(Ref* pSender)
 
 void TestScene2::myTick(float f)
 {
-	for (int i = 0; i < bubbles.size(); i++)
+	for (int i = 0; i < bubblesLeft.size(); i++)
 	{
-		if (bubbles[i]->isMove())//움직이고 있다면 충돌처리를 하지 않는다.
+		if (bubblesLeft[i]->isMove())//움직이고 있다면 충돌처리를 하지 않는다.
 		{
 			return;
 		}
 	}
 	//충돌철이//첫 생성 시 겹쳐서 생성되면 바로 합쳐진다...
-	if(bubbles.size()>=2)
+	if(bubblesLeft.size()>=2)
 	{
-		for (int i = 0; i < bubbles.size(); i++)
+		for (int i = 0; i < bubblesLeft.size(); i++)
 		{
-			for (int j = i+1; j < bubbles.size(); j++)
+			for (int j = i+1; j < bubblesLeft.size(); j++)
 			{
-				if (bubbles[i]->getBoundingBox().intersectsRect(bubbles[j]->getBoundingBox()))
+				if (bubblesLeft[i]->getBoundingBox().intersectsRect(bubblesLeft[j]->getBoundingBox()))
 				{
-					if (bubbles[i]->BubbleStat_rt().key <= 5 && bubbles[i]->BubbleStat_rt().key == bubbles[j]->BubbleStat_rt().key)
+					if (bubblesLeft[i]->BubbleStat_rt().key <= 5 && bubblesLeft[i]->BubbleStat_rt().key == bubblesLeft[j]->BubbleStat_rt().key)
 					{
 						log("C Check");
-						bubbles[i]->removeFromParentAndCleanup(true);
-						bubbles.erase(bubbles.begin() + i);
+						bubblesLeft[i]->removeFromParentAndCleanup(true);
+						bubblesLeft.erase(bubblesLeft.begin() + i);
 						if (i!=j)
 						{
-							bubbles[j-1]->removeFromParentAndCleanup(true);
-							bubbles.erase(bubbles.begin() + j - 1);
+							bubblesLeft[j-1]->removeFromParentAndCleanup(true);
+							bubblesLeft.erase(bubblesLeft.begin() + j - 1);
 						}
 						//new 버블 생성 코드
-						ClickToCreateBubble1(this, 2);
+						ClickToCreateBubble1(this, 2, true);
 						return;
 					}
+				}
+				//else if (bubbles[i]->getBoundingBox().intersectsRect())
+				{
+
 				}
 			}
 		}
