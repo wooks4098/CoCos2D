@@ -20,24 +20,26 @@ private:
 	Vec2 myFactory;
 	Vec2 enemyFactory;
 
-
-	MoveTo* move;
-
 public:
 	static Unit* createUnit(Vec2 v); //유닛 생성
-	void unitAni(); //유닛 애니메이션 //수정해야함
-	void initUnit();
+	void initUnit(); //유닛 초기화
+	void unitAni(); //유닛 애니메이션
+	
 	void moveUnit(float speed); //유닛 이동
 	void stopUnit(); //유닛 이동 정지
-	void collision(float f); //유닛 충돌
 	void hit(float f); //적유닛을 공격하는 함수
 	void damaged(); //적유닛에게 공격 받는 함수
 	void die(); //유닛 사망
 
+	//get
 	float getHp() { return hp; }
 	Vec2 getMyFac() { return myFactory; }
 
+	//공격할 대상
 	Unit* enemy;
+
+	//애니메이션
+	MoveTo* move;
 
 	Animation* moveAni;
 	Animation* attackAni;
@@ -49,12 +51,14 @@ public:
 
 	RepeatForever* rep;
 
+	//스케줄 함수
 	void actionMove(float f);
 	void actionAttack(float f);
 	void actionDie(float f);
+	
+	void update(float f) override;
 
+	//HP바
 	Sprite* emptyHP;
 	Sprite* fullHP;
-
-	void update(float f) override;
 };

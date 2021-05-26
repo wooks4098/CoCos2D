@@ -51,6 +51,7 @@ Unit* Unit::createUnit(Vec2 v)
 }
 #pragma endregion
 
+#pragma region init
 void Unit::initUnit()
 {
 	Size unitSize = this->getContentSize(); //왜 적용이 안되냐
@@ -162,7 +163,9 @@ void Unit::initUnit()
 		 dieAct = Animate::create(dieAni);
 	 }
 }
+#pragma endregion
 
+#pragma region animation
  void Unit::actionMove(float f)
  {
 	 rep = RepeatForever::create(moveAct);
@@ -178,7 +181,10 @@ void Unit::initUnit()
 	 rep = RepeatForever::create(dieAct);
 	 this->runAction(rep);
  }
+#pragma endregion
 
+#pragma region action
+ //이동
 void Unit::moveUnit(float speed)
 {
 	float distance = fabs(enemyFactory.x - this->getPosition().x);
@@ -186,14 +192,10 @@ void Unit::moveUnit(float speed)
 	this->runAction(move);
 }
 
+//이동 정지
 void Unit::stopUnit()
 {
 	this->stopAction(move);
-}
-
-void Unit::collision(float f)
-{
-
 }
 
 //공격 받을 때
@@ -207,18 +209,23 @@ void Unit::damaged()
 	}
 }
 
+//사망 처리
+void Unit::die()
+{
+	log("\n\ndie\n\n");
+}
+#pragma endregion
+
+#pragma region schedule function
 //공격할 때
 void Unit::hit(float f)
 {
 	enemy->damaged();
 }
 
-void Unit::die()
-{
-	log("\n\ndie\n\n");
-}
-
+//충돌 체크
 void Unit::update(float f)
 {
 	fullHP->setTextureRect(Rect(0, 0, fullHP->getContentSize().width * hp / maxHp, fullHP->getContentSize().height));
 }
+#pragma endregion
