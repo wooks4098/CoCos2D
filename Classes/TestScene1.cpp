@@ -1,5 +1,4 @@
 #include "TestScene1.h"
-//#include "HelloWorldScene.h"
 using namespace cocos2d;
 
 #pragma region singleton
@@ -32,32 +31,42 @@ bool TestScene1::init()
     initData(); //데이터 초기화
 
     //유닛 생성
-    createUnit(facL);
-    createUnit(facR);
+    this->schedule(schedule_selector(TestScene1::addUnitL), 3);
+    this->schedule(schedule_selector(TestScene1::addUnitR), 3);
 
     this->scheduleUpdate();
 
     return true;
 }
 
-void TestScene1::createUnit(Vec2 v)
+#pragma region createUnit
+//유닛 생성 함수 (스케줄 함수로 생성할 때 쓰임)
+void TestScene1::createUnitL()
 {
-    Unit* unit = Unit::createUnit(v);
-    if(v == facL)
-        unitsL.pushBack(unit);
-    else
-        unitsR.pushBack(unit);
+    Unit* unit = Unit::createUnitL();
+    unitsL.pushBack(unit);
 
     this->addChild(unit);
-    unit->moveUnit(300);
-
+    unit->moveUnit();
 }
 
+void TestScene1::createUnitR()
+{
+    Unit* unit = Unit::createUnitR();
+    unitsR.pushBack(unit);
+
+    this->addChild(unit);
+    unit->moveUnit();
+}
+#pragma endregion
+
+#pragma region init
 void TestScene1::initData()
 {
     unitsL.clear();
     unitsR.clear();
 }
+#pragma endregion
 
 void TestScene1::update(float f)
 {
@@ -68,40 +77,42 @@ void TestScene1::update(float f)
         {
             Rect rectU2 = u2->getBoundingBox();
             
-            //u1->schedule(schedule_selector(Unit::actionMove), 2.0f);
-            //u2->schedule(schedule_selector(Unit::actionMove), 2.0f);
-            this->schedule(schedule_selector(Unit::actionMove), 2.0f);
-
-
             //두 유닛이 충돌했을 때
             if (rectU1.intersectsRect(rectU2))
             {
-                log("unit1 unit2 collision");
-
-                log("%f", u1->getHp());
-                log("%f", u2->getHp());
-
-                u1->enemy = u2;
-                u2->enemy = u1;
-
-                u1->hit(0);
-                //u1->schedule(schedule_selector(Unit::hit, 2.0f));
-                u1->stopUnit();
-                //u1->schedule(schedule_selector(Unit::actionAttack), 2.0f);
-
-                u2->hit(0);
-                //u2->schedule(schedule_selector(Unit::hit, 2.0f));
-                u2->stopUnit();
-                //u2->schedule(schedule_selector(Unit::actionAttack), 2.0f);
-
-
-                if (u1->getHp() <= 0)
+                //적 유닛일 때
+                if (u1->myFactory != u2->myFactory)
                 {
-                    removeUnit(u1);
-                }
-                if (u2->getHp() <= 0)
-                {
-                    removeUnit(u2);
+                    log("unit1 unit2 collision");
+
+                    //log("%f", u1->getHp());
+                    //log("%f", u2->getHp());
+
+                    u1->enemy = u2;
+                    u2->enemy = u1;
+
+                    if (u1->time > u1->delay)
+                        u1->attack();
+
+                    if (u2->time > u2->delay)
+                        u2->attack();
+
+                        //u2->stopAction(u2->move);
+                        //u2->schedule(schedule_selector(Unit::scheduleAttack, 2.0f));
+                        //u2->stopUnit();
+                        //u2->schedule(schedule_selector(Unit::actionAttack), 2.0f);
+
+
+                    /*
+                    if (u1->getHp() <= 0)
+                    {
+                        removeUnit(u1);
+                    }
+                    if (u2->getHp() <= 0)
+                    {
+                        removeUnit(u2);
+                    }
+                    */
                 }
             }
             else
@@ -117,8 +128,10 @@ void TestScene1::update(float f)
             }*/
         }
     }
+    
 }
 
+/*
 void TestScene1::removeUnit(Ref* pSender)
 {
     auto u = (Unit*)pSender;
@@ -137,31 +150,15 @@ void TestScene1::removeUnit(Ref* pSender)
     this->removeChild(u);
 
 }
+*/
+#pragma region schedule fuunction
+void TestScene1::addUnitL(float f)
+{
+    createUnitL();
+}
 
-//
-//void TestScene1::fightUnit()
-//{
-//    this->stopAction(moveUnit1);
-//    this->stopAction(moveUnit2);
-//
-//    if (num < 300)
-//    {
-//        log("unit fight!!! - %d", num);
-//        num++;
-//    }
-//    else
-//    {
-//        log("unit die!!!");
-//        num = 0;
-//
-//        unit1->removeFromParentAndCleanup(true);
-//        unit1 = nullptr;
-//        this->removeChild(unit1);
-//
-//        unit2->removeFromParentAndCleanup(true);
-//        unit2 = nullptr;
-//        this->removeChild(unit2);
-//
-//    }
-//
-//
+void TestScene1::addUnitR(float f)
+{
+    createUnitR();
+}
+#pragma endregion

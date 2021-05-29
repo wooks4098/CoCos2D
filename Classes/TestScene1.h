@@ -27,13 +27,19 @@ public:
 	void initData();
 
 	//유닛 생성
-	void createUnit(Vec2 v);
+	void createUnitL();
+	void createUnitR();
 
 	//유닛 충돌
 	void update(float f) override;
 
 	//유닛 제거
 	void removeUnit(Ref* pSender);
+
+	//스케줄 함수
+	void addUnitL(float f); //유닛 추가
+	void addUnitR(float f); //유닛 추가
+
 
 	CREATE_FUNC(TestScene1);
 };
