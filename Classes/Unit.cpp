@@ -2,24 +2,20 @@
 #include "TestScene1.h"
 
 #pragma region create&init unit
-Unit* Unit::createUnitL()
+Unit* LeftUnit::createUnitL()
 {
 	//정상적으로 Unit이 생성되지 않은 경우 프로그램이 죽지 않도록 예외처리
-	Unit* sprite = new (std::nothrow)Unit();
+	Unit* sprite = new (std::nothrow)LeftUnit();
 
 	const char* fileName;
 
 	fileName = "Character/C/CMove_0.png";
+
 	sprite->myFactory = TestScene1::getInstance()->facL;
 	sprite->enemyFactory = TestScene1::getInstance()->facR;
 
-	sprite->maxHp = 50;
-	sprite->hp = 50;
-	sprite->speed = 200;
-	sprite->power = 5;
-	
 	sprite->initUnit();
-	sprite->initAni();
+
 	sprite->scheduleUpdate();
 
 	if (sprite && sprite->initWithFile(fileName))
@@ -32,24 +28,19 @@ Unit* Unit::createUnitL()
 	return nullptr;
 }
 
-Unit* Unit::createUnitR()
+Unit* RightUnit::createUnitR()
 {
 	//정상적으로 Unit이 생성되지 않은 경우 프로그램이 죽지 않도록 예외처리
-	Unit* sprite = new (std::nothrow)Unit();
+	Unit* sprite = new (std::nothrow)RightUnit();
 
 	const char* fileName;
 
 	fileName = "Character/A/AMove_0.png";
+
 	sprite->myFactory = TestScene1::getInstance()->facR;
 	sprite->enemyFactory = TestScene1::getInstance()->facL;
 
-	sprite->maxHp = 20;
-	sprite->hp = 20;
-	sprite->speed = 100;
-	sprite->power = 2;
-
-	sprite->initUnit();
-	sprite->initAni();
+	sprite->initUnit(); //유닛 초기화
 
 	sprite->scheduleUpdate();
 
@@ -62,198 +53,212 @@ Unit* Unit::createUnitR()
 	CC_SAFE_DELETE(sprite); //사용이 끝난 스프라이트 제거
 	return nullptr;
 }
-
 #pragma endregion
 
 #pragma region init
 //유닛 초기화
 void Unit::initUnit()
 {
-	Size unitSize = this->getContentSize(); //왜 적용이 안되냐
+	Size unitSize = getContentSize(); //왜 적용이 안되냐
 	this->setPosition(this->myFactory);
-	/*
+	
 	//hp바
 	emptyHP = Sprite::create("Character/emptyHP.png");
 	fullHP = Sprite::create("Character/fullHP.png");
 
-	emptyHP->setPosition(Vec2(unitSize.width + 150, unitSize.height + 300));
-	fullHP->setPosition(Vec2(unitSize.width + 150, unitSize.height + 300));
+	emptyHP->setPosition(Vec2(0, unitSize.height + 300));
+	fullHP->setPosition(Vec2(0, unitSize.height + 300));
+
+	emptyHP->setAnchorPoint(Vec2(0, 0));
+	fullHP->setAnchorPoint(Vec2(0, 0));
 
 	this->addChild(emptyHP, 3);
 	this->addChild(fullHP, 4);
-	*/
 }
 
-//애니메이션 초기화
-void Unit::initAni()
+void Unit::initUnitL()
 {
-	if (this->enemyFactory == TestScene1::getInstance()->facL)
-	{
-		//이동 애니메이션
-		moveAni = Animation::create();
-		moveAni->setDelayPerUnit(0.3f);
+	maxHp = 50;
+	hp = maxHp;
+	speed = 300;
+	power = 10;
+	log("Left HP : %d", hp);
+}
 
-		moveAni->addSpriteFrameWithFile("Character/A/AMove_0.png");
-		moveAni->addSpriteFrameWithFile("Character/A/AMove_1.png");
-		moveAni->addSpriteFrameWithFile("Character/A/AMove_2.png");
-		moveAni->addSpriteFrameWithFile("Character/A/AMove_3.png");
-		moveAni->addSpriteFrameWithFile("Character/A/AMove_4.png");
-		moveAni->addSpriteFrameWithFile("Character/A/AMove_5.png");
-
-		moveAct = Animate::create(moveAni);
-
-		//공격 애니메이션
-		attackAni = Animation::create();
-		attackAni->setDelayPerUnit(0.3f);
-
-		attackAni->addSpriteFrameWithFile("Character/A/AAttack_0.png");
-		attackAni->addSpriteFrameWithFile("Character/A/AAttack_1.png");
-		attackAni->addSpriteFrameWithFile("Character/A/AAttack_2.png");
-		attackAni->addSpriteFrameWithFile("Character/A/AAttack_3.png");
-		attackAni->addSpriteFrameWithFile("Character/A/AAttack_4.png");
-		attackAni->addSpriteFrameWithFile("Character/A/AAttack_5.png");
-
-		attackAct = Animate::create(attackAni);
-
-		//사망 애니메이션
-		dieAni = Animation::create();
-		dieAni->setDelayPerUnit(0.3f);
-
-		dieAni->addSpriteFrameWithFile("Character/A/ADeath_0.png");
-		dieAni->addSpriteFrameWithFile("Character/A/ADeath_1.png");
-		dieAni->addSpriteFrameWithFile("Character/A/ADeath_2.png");
-		dieAni->addSpriteFrameWithFile("Character/A/ADeath_3.png");
-		dieAni->addSpriteFrameWithFile("Character/A/ADeath_4.png");
-		dieAni->addSpriteFrameWithFile("Character/A/ADeath_5.png");
-		dieAni->addSpriteFrameWithFile("Character/A/ADeath_6.png");
-		dieAni->addSpriteFrameWithFile("Character/A/ADeath_7.png");
-		dieAni->addSpriteFrameWithFile("Character/A/ADeath_8.png");
-		dieAni->addSpriteFrameWithFile("Character/A/ADeath_9.png");
-		dieAni->addSpriteFrameWithFile("Character/A/ADeath_10.png");
-		dieAni->addSpriteFrameWithFile("Character/A/ADeath_11.png");
-
-		dieAct = Animate::create(dieAni);
-	}
-	else
-	{
-		//이동 애니메이션
-		moveAni = Animation::create();
-		moveAni->setDelayPerUnit(0.3f);
-
-		moveAni->addSpriteFrameWithFile("Character/C/CMove_0.png");
-		moveAni->addSpriteFrameWithFile("Character/C/CMove_1.png");
-		moveAni->addSpriteFrameWithFile("Character/C/CMove_2.png");
-		moveAni->addSpriteFrameWithFile("Character/C/CMove_3.png");
-		moveAni->addSpriteFrameWithFile("Character/C/CMove_4.png");
-		moveAni->addSpriteFrameWithFile("Character/C/CMove_5.png");
-
-		moveAct = Animate::create(moveAni);
-
-		//공격 애니메이션
-		attackAni = Animation::create();
-		attackAni->setDelayPerUnit(0.3f);
-
-		attackAni->addSpriteFrameWithFile("Character/C/CAttack_0.png");
-		attackAni->addSpriteFrameWithFile("Character/C/CAttack_1.png");
-		attackAni->addSpriteFrameWithFile("Character/C/CAttack_2.png");
-		attackAni->addSpriteFrameWithFile("Character/C/CAttack_3.png");
-		attackAni->addSpriteFrameWithFile("Character/C/CAttack_4.png");
-		attackAni->addSpriteFrameWithFile("Character/C/CAttack_5.png");
-
-		attackAct = Animate::create(attackAni);
-
-		//사망 애니메이션
-		dieAni = Animation::create();
-		dieAni->setDelayPerUnit(0.3f);
-
-		dieAni->addSpriteFrameWithFile("Character/C/CDeath_0.png");
-		dieAni->addSpriteFrameWithFile("Character/C/CDeath_1.png");
-		dieAni->addSpriteFrameWithFile("Character/C/CDeath_2.png");
-		dieAni->addSpriteFrameWithFile("Character/C/CDeath_3.png");
-		dieAni->addSpriteFrameWithFile("Character/C/CDeath_4.png");
-		dieAni->addSpriteFrameWithFile("Character/C/CDeath_5.png");
-		dieAni->addSpriteFrameWithFile("Character/C/CDeath_6.png");
-		dieAni->addSpriteFrameWithFile("Character/C/CDeath_7.png");
-		dieAni->addSpriteFrameWithFile("Character/C/CDeath_8.png");
-		dieAni->addSpriteFrameWithFile("Character/C/CDeath_9.png");
-		dieAni->addSpriteFrameWithFile("Character/C/CDeath_10.png");
-		dieAni->addSpriteFrameWithFile("Character/C/CDeath_11.png");
-
-		dieAct = Animate::create(dieAni);
-	}
+void Unit::initUnitR()
+{
+	maxHp = 20;
+	hp = maxHp;
+	speed = 200;
+	power = 2;
+	log("Right HP : %d", hp);
 }
 #pragma endregion
 
 #pragma region animation & action
-//이동 액션, 애니메이션
-void Unit::moveUnit()
+//이동
+void LeftUnit::moveUnit()
 {
-	float distance = fabs(enemyFactory.x - this->getPosition().x);
-	move = MoveTo::create(distance / this->speed, enemyFactory);
-	this->runAction(move);
+	float distance = fabs(enemyFactory.x - getPosition().x);
+	auto move = MoveTo::create(distance / speed, enemyFactory);
 
-	auto moveRep = RepeatForever::create(moveAct);
-	this->runAction(moveRep);
+	//Right 이동 애니메이션
+	auto moveAni = Animation::create();
+	moveAni->setDelayPerUnit(0.3f);
+	moveAni->addSpriteFrameWithFile("Character/C/CMove_0.png");
+	moveAni->addSpriteFrameWithFile("Character/C/CMove_1.png");
+	moveAni->addSpriteFrameWithFile("Character/C/CMove_2.png");
+	moveAni->addSpriteFrameWithFile("Character/C/CMove_3.png");
+	moveAni->addSpriteFrameWithFile("Character/C/CMove_4.png");
+	moveAni->addSpriteFrameWithFile("Character/C/CMove_5.png");
+	auto animate = Animate::create(moveAni);
+
+	auto spawn = Spawn::create(Repeat::create(animate,-1), move, nullptr);
+	this->runAction(spawn);
 }
-#pragma endregion
-
-/*
-#pragma region animation
- void Unit::actionMove(float f)
- {
-	 rep = RepeatForever::create(moveAct);
-	 this->runAction(rep);
- }
- void Unit::actionAttack(float f)
- {
-	 rep = RepeatForever::create(attackAct);
-	 this->runAction(rep);
- }
- void Unit::actionDie(float f)
- {
-	 rep = RepeatForever::create(dieAct);
-	 this->runAction(rep);
- }
-#pragma endregion
-
-#pragma region action
- //이동
-
-
-
-//공격 받을 때
-void Unit::damaged()
+void RightUnit::moveUnit()
 {
-	hp -= enemy->power;
+	float distance = fabs(enemyFactory.x - getPosition().x);
+	auto move = MoveTo::create(distance / speed, enemyFactory);
 
+	//Left 이동 애니메이션
+	auto moveAni = Animation::create();
+	moveAni->setDelayPerUnit(0.3f);
+	moveAni->addSpriteFrameWithFile("Character/A/AMove_0.png");
+	moveAni->addSpriteFrameWithFile("Character/A/AMove_1.png");
+	moveAni->addSpriteFrameWithFile("Character/A/AMove_2.png");
+	moveAni->addSpriteFrameWithFile("Character/A/AMove_3.png");
+	moveAni->addSpriteFrameWithFile("Character/A/AMove_4.png");
+	moveAni->addSpriteFrameWithFile("Character/A/AMove_5.png");
+	auto animate = Animate::create(moveAni);
+
+	auto spawn = Spawn::create(Repeat::create(animate, -1), move, nullptr);
+	this->runAction(spawn);
+}
+
+//공격
+void LeftUnit::attackUnit()
+{
+	this->stopAllActions();
+	this->isFighting = true;
+
+	//Right 공격 애니메이션
+	auto attackAni = Animation::create();
+	attackAni->setDelayPerUnit(0.3f);
+	attackAni->addSpriteFrameWithFile("Character/C/CAttack_0.png");
+	attackAni->addSpriteFrameWithFile("Character/C/CAttack_1.png");
+	attackAni->addSpriteFrameWithFile("Character/C/CAttack_2.png");
+	attackAni->addSpriteFrameWithFile("Character/C/CAttack_3.png");
+	attackAni->addSpriteFrameWithFile("Character/C/CAttack_4.png");
+	attackAni->addSpriteFrameWithFile("Character/C/CAttack_5.png");
+	auto spawn = Spawn::create(Animate::create(attackAni), CallFunc::create(CC_CALLBACK_0(LeftUnit::callbackAttack, this)), nullptr); //애니메이션, 공격 동시에
+	auto seq = Sequence::create(spawn, DelayTime::create(1.0f), nullptr); //애니메이션+공격, 딜레이 순차적으로
+	auto rep = Repeat::create(seq, -1); //애니메이션, 공격, 딜레이
+	this->runAction(rep);
+}
+void RightUnit::attackUnit()
+{
+	this->stopAllActions();
+	this->isFighting = true;
+
+	//Left공격 애니메이션
+	auto attackAni = Animation::create();
+	attackAni->setDelayPerUnit(0.3f);
+	attackAni->addSpriteFrameWithFile("Character/A/AAttack_0.png");
+	attackAni->addSpriteFrameWithFile("Character/A/AAttack_1.png");
+	attackAni->addSpriteFrameWithFile("Character/A/AAttack_2.png");
+	attackAni->addSpriteFrameWithFile("Character/A/AAttack_3.png");
+	attackAni->addSpriteFrameWithFile("Character/A/AAttack_4.png");
+	attackAni->addSpriteFrameWithFile("Character/A/AAttack_5.png");
+	auto spawn = Spawn::create(Animate::create(attackAni), CallFunc::create(CC_CALLBACK_0(RightUnit::callbackAttack, this)), nullptr); //애니메이션, 공격 동시에
+	auto seq = Sequence::create(spawn, DelayTime::create(1.5f), nullptr); //애니메이션+공격, 딜레이 순차적으로
+	auto rep = Repeat::create(seq, -1); //애니메이션, 공격, 딜레이
+	this->runAction(rep);
+}
+
+//사망
+void LeftUnit::dieUnit()
+{
+	this->stopAllActions();
+	isDied = true;
+
+	auto dieAni = Animation::create();
+	dieAni->setDelayPerUnit(0.3f);
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_0.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_1.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_2.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_3.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_4.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_5.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_6.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_7.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_8.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_9.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_10.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_11.png");
+	auto animate = Animate::create(dieAni);
+
+	auto seq = Sequence::create(animate, DelayTime::create(2.0f), nullptr);
+}
+void RightUnit::dieUnit()
+{
+	this->stopAllActions();
+	isDied = true;
+
+	auto dieAni = Animation::create();
+	dieAni->setDelayPerUnit(0.3f);
+	dieAni->addSpriteFrameWithFile("Character/C/CDeath_0.png");
+	dieAni->addSpriteFrameWithFile("Character/C/CDeath_1.png");
+	dieAni->addSpriteFrameWithFile("Character/C/CDeath_2.png");
+	dieAni->addSpriteFrameWithFile("Character/C/CDeath_3.png");
+	dieAni->addSpriteFrameWithFile("Character/C/CDeath_4.png");
+	dieAni->addSpriteFrameWithFile("Character/C/CDeath_5.png");
+	dieAni->addSpriteFrameWithFile("Character/C/CDeath_6.png");
+	dieAni->addSpriteFrameWithFile("Character/C/CDeath_7.png");
+	dieAni->addSpriteFrameWithFile("Character/C/CDeath_8.png");
+	dieAni->addSpriteFrameWithFile("Character/C/CDeath_9.png");
+	dieAni->addSpriteFrameWithFile("Character/C/CDeath_10.png");
+	dieAni->addSpriteFrameWithFile("Character/C/CDeath_11.png");
+	auto animate = Animate::create(dieAni);
+
+	auto seq = Sequence::create(animate, DelayTime::create(2.0f), nullptr);
+}
+
+#pragma endregion
+
+#pragma region function
+//공격 받을 때
+void Unit::damaged(float damage)
+{
+	hp -= damage;
 	if (hp <= 0)
 	{
-		die();
+		hp = 0;
+		//dieUnit();
+		isDied = true;
 	}
 }
+#pragma endregion
 
-//사망 처리
-void Unit::die()
+#pragma region callback function
+void LeftUnit::callbackAttack()
 {
-	log("\n\ndie\n\n");
+	enemy->damaged(power);
+	if(enemy->isDied)
+		moveUnit();
+}
+
+void RightUnit::callbackAttack()
+{
+	enemy->damaged(power);
+	if (enemy->isDied)
+		moveUnit();
 }
 #pragma endregion
-*/
+
 #pragma region schedule function
-void Unit::attack()
-{
-	this->stopAction(move);
-	this->runAction(attackAct);
-
-	//this->schedule(schedule_selector(Unit::scheduleAttack, 1));
-}
-
-/*
-//충돌 체크
 void Unit::update(float f)
 {
-	fullHP->setTextureRect(Rect(0, 0, fullHP->getContentSize().width * hp / maxHp, fullHP->getContentSize().height));
+	fullHP->setScaleX(hp / maxHp);
 }
-*/
 #pragma endregion
-

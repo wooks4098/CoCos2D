@@ -12,68 +12,67 @@ class Unit : public cocos2d::Sprite
 {
 public:
 	//스테이터스
-	float maxHp;
-	float hp;
-	float speed;
-	float power;
-	float delay = 1.0f;
-	float time = 0;
-	
-	//공격할 대상
-	Unit* enemy;
+	float maxHp; //최대 체력
+	float hp; //현재 체력
+	float speed; //이동속도
+	float power; //힘
 
+	bool isFighting = false; //싸우는 중인지
+	bool isDied = false; //죽었는지
+	
+	
 	//팩토리 정보
 	Vec2 myFactory;
 	Vec2 enemyFactory;
 
-	static Unit* createUnitL(); //유닛 생성
-	static Unit* createUnitR(); //유닛 생성
-	void initUnit(); //유닛 초기화
-	void initAni(); //유닛 애니메이션
-
-
-
-	//액션 & 애니메이션
-	MoveTo* move;
-
-	Animation* moveAni;
-	Animation* attackAni;
-	Animation* dieAni;
-
-	Animate* moveAct;
-	Animate* attackAct;
-	Animate* dieAct;
-
-	//스케줄 함수
-	void moveUnit(); //유닛 이동
-	void attack();
-	/*
-	
-	void damaged(); //적유닛에게 공격 받는 함수
-	void die(); //유닛 사망
-
-	//get
-	float getHp() { return hp; }
-	Vec2 getMyFac() { return myFactory; }
-
-
-	//애니메이션
-
-	
-
-
-
-
-
-	//스케줄 함수
-	void actionMove(float f);
-	void actionAttack(float f);
-	void actionDie(float f);
-	
-	void update(float f) override;
+	//공격할 대상
+	Unit* enemy;
 
 	//HP바
 	Sprite* emptyHP;
 	Sprite* fullHP;
-	*/
+
+
+	//함수
+	void initUnit(); //유닛 초기화
+	void initUnitL(); //유닛 초기화
+	void initUnitR(); //유닛 초기화
+
+	void virtual moveUnit() = 0; //유닛 이동
+	void virtual attackUnit() = 0; //적 유닛 공격하기
+	void damaged(float damage); //데미지를 입는 함수
+	void virtual dieUnit() = 0; //유닛 사망
+
+	//콜백 함수
+	void virtual callbackAttack() { }
+
+	//스케줄 함수
+	void update(float f) override;
+};
+
+class LeftUnit :public Unit
+{
+public:
+	static Unit* createUnitL(); //유닛 생성
+
+	void moveUnit() override; //유닛 이동
+	void attackUnit() override; //적유닛 공격하기
+	void dieUnit() override; //유닛 사망
+
+	//콜백 함수
+	void callbackAttack() override; //attackUnit에서 호출하는 함수
+};
+
+class RightUnit :public Unit
+{
+public:
+	static Unit* createUnitR(); //유닛 생성
+
+	//스케줄 함수
+	void moveUnit() override; //유닛 이동
+	void attackUnit() override; //적유닛 공격하기
+	void dieUnit() override; //유닛 사망
+
+	//콜백 함수
+	void callbackAttack() override; //attackUnit에서 호출하는 함수
 };

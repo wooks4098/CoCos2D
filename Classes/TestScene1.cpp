@@ -39,27 +39,6 @@ bool TestScene1::init()
     return true;
 }
 
-#pragma region createUnit
-//유닛 생성 함수 (스케줄 함수로 생성할 때 쓰임)
-void TestScene1::createUnitL()
-{
-    Unit* unit = Unit::createUnitL();
-    unitsL.pushBack(unit);
-
-    this->addChild(unit);
-    unit->moveUnit();
-}
-
-void TestScene1::createUnitR()
-{
-    Unit* unit = Unit::createUnitR();
-    unitsR.pushBack(unit);
-
-    this->addChild(unit);
-    unit->moveUnit();
-}
-#pragma endregion
-
 #pragma region init
 void TestScene1::initData()
 {
@@ -68,97 +47,92 @@ void TestScene1::initData()
 }
 #pragma endregion
 
-void TestScene1::update(float f)
-{
-    for (Unit* u1 : unitsL)
-    {
-        Rect rectU1 = u1->getBoundingBox();
-        for (Unit* u2 : unitsR)
-        {
-            Rect rectU2 = u2->getBoundingBox();
-            
-            //두 유닛이 충돌했을 때
-            if (rectU1.intersectsRect(rectU2))
-            {
-                //적 유닛일 때
-                if (u1->myFactory != u2->myFactory)
-                {
-                    log("unit1 unit2 collision");
-
-                    //log("%f", u1->getHp());
-                    //log("%f", u2->getHp());
-
-                    u1->enemy = u2;
-                    u2->enemy = u1;
-
-                    if (u1->time > u1->delay)
-                        u1->attack();
-
-                    if (u2->time > u2->delay)
-                        u2->attack();
-
-                        //u2->stopAction(u2->move);
-                        //u2->schedule(schedule_selector(Unit::scheduleAttack, 2.0f));
-                        //u2->stopUnit();
-                        //u2->schedule(schedule_selector(Unit::actionAttack), 2.0f);
-
-
-                    /*
-                    if (u1->getHp() <= 0)
-                    {
-                        removeUnit(u1);
-                    }
-                    if (u2->getHp() <= 0)
-                    {
-                        removeUnit(u2);
-                    }
-                    */
-                }
-            }
-            else
-            {
-            }
-            /*else
-            {
-                u1->enemy = nullptr;
-                u2->enemy = nullptr;
-
-                u1->unschedule(schedule_selector(Unit::hit, 2.0f));
-                u2->unschedule(schedule_selector(Unit::hit, 2.0f));
-            }*/
-        }
-    }
-    
-}
-
-/*
+#pragma region function
+//유닛 제거
 void TestScene1::removeUnit(Ref* pSender)
 {
-    auto u = (Unit*)pSender;
+    auto ru = (Unit*)pSender;
 
-    if (u->getMyFac() == facL)
+    if (unitsL.contains((LeftUnit*)ru))
     {
-        //unitsL.eraseObject(u);
-        u->unschedule(schedule_selector(Unit::actionAttack));
+        unitsL.eraseObject((LeftUnit*)ru);
     }
     else
     {
-        //unitsR.eraseObject(u);
-        u->schedule(schedule_selector(Unit::actionAttack));
+        unitsR.eraseObject((RightUnit*)ru);
     }
     
-    this->removeChild(u);
+    this->removeChild(ru);
+}
+#pragma endregion
+
+#pragma region schedule fuunction
+void TestScene1::update(float f)
+{
+    Unit* remove;
+
+    for (LeftUnit* u1 : unitsL)
+    {
+        if (u1->isDied)
+        {
+            remove = u1;
+            //auto remove = Sequence::create(DelayTime::create(2.0f), CallFunc::create(CC_CALLBACK_1(TestScene1::removeChild, this, u1)), nullptr);
+            //this->runAction(remove);
+        }
+
+        Rect rectU1 = u1->getBoundingBox();
+
+        for (RightUnit* u2 : unitsR)
+        {
+            if (u2->isDied)
+            {
+                remove = u2;
+            }
+
+            Rect rectU2 = u2->getBoundingBox();
+
+            //두 유닛이 충돌했을 때
+            if (rectU1.intersectsRect(rectU2))
+            {
+                u1->enemy = u2;
+                u2->enemy = u1;
+
+                if (!u1->isFighting && u1->enemy != nullptr)
+                    u1->attackUnit();
+
+                if (!u2->isFighting && u2->enemy != nullptr)
+                    u2->attackUnit();
+            }
+            else
+            {
+                u1->enemy = nullptr;
+                u2->enemy = nullptr;
+            }
+
+        }
+
+        removeUnit(remove);
+    }
 
 }
-*/
-#pragma region schedule fuunction
+
 void TestScene1::addUnitL(float f)
 {
-    createUnitL();
+    Unit* unit = LeftUnit::createUnitL();
+    unit->initUnitL();
+    unitsL.pushBack((LeftUnit*)unit);
+    this->addChild(unit);
+    unit->moveUnit();
+    //this->unschedule(schedule_selector(TestScene1::addUnitL)); //실험용
 }
 
 void TestScene1::addUnitR(float f)
 {
-    createUnitR();
+    Unit* unit = RightUnit::createUnitR();
+    unit->initUnitR();
+    unitsR.pushBack((RightUnit*)unit);
+    this->addChild(unit);
+    unit->moveUnit();
+    //this->unschedule(schedule_selector(TestScene1::addUnitR)); //실험용
 }
 #pragma endregion

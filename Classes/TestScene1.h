@@ -20,15 +20,11 @@ public:
 	Vec2 facR = Vec2(winSize.width, winSize.height / 2);
 
 	//모든 유닛 저장
-	Vector<Unit*> unitsL;
-	Vector<Unit*> unitsR;
+	Vector<LeftUnit*> unitsL;
+	Vector<RightUnit*> unitsR;
 
 	//데이터 초기화
 	void initData();
-
-	//유닛 생성
-	void createUnitL();
-	void createUnitR();
 
 	//유닛 충돌
 	void update(float f) override;
@@ -37,8 +33,8 @@ public:
 	void removeUnit(Ref* pSender);
 
 	//스케줄 함수
-	void addUnitL(float f); //유닛 추가
-	void addUnitR(float f); //유닛 추가
+	void addUnitL(float f);
+	void addUnitR(float f);
 
 
 	CREATE_FUNC(TestScene1);
