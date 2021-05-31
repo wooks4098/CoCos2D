@@ -4,12 +4,14 @@
 class TestScene1 : public cocos2d::Scene
 {
 private:
-	TestScene1() {};
+	TestScene1();
+	~TestScene1() {};
 	static TestScene1* instance;
 
 public:
 	static cocos2d::Scene* createScene();
 	static TestScene1* getInstance();
+	static void releaseInstance();
 
 	virtual bool init();
 
@@ -20,8 +22,10 @@ public:
 	Vec2 facR = Vec2(winSize.width, winSize.height / 2);
 
 	//모든 유닛 저장
-	Vector<LeftUnit*> unitsL;
-	Vector<RightUnit*> unitsR;
+	Vector<Unit*> unitsL;
+	Vector<Unit*> unitsR;
+
+	//Vector<Unit*> getVector(Vec2 fac);
 
 	//데이터 초기화
 	void initData();

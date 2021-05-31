@@ -25,9 +25,6 @@ public:
 	Vec2 myFactory;
 	Vec2 enemyFactory;
 
-	//공격할 대상
-	Unit* enemy;
-
 	//HP바
 	Sprite* emptyHP;
 	Sprite* fullHP;
@@ -39,15 +36,15 @@ public:
 	void initUnitR(); //유닛 초기화
 
 	void virtual moveUnit() = 0; //유닛 이동
-	void virtual attackUnit() = 0; //적 유닛 공격하기
+	void virtual attackUnit(Unit* enemy) = 0; //적 유닛 공격하기
 	void damaged(float damage); //데미지를 입는 함수
 	void virtual dieUnit() = 0; //유닛 사망
 
 	//콜백 함수
-	void virtual callbackAttack() { }
+	void virtual callbackAttack(Unit* enemy) { }
 
 	//스케줄 함수
-	void update(float f) override;
+	void virtual update(float f) = 0;
 };
 
 class LeftUnit :public Unit
@@ -56,11 +53,12 @@ public:
 	static Unit* createUnitL(); //유닛 생성
 
 	void moveUnit() override; //유닛 이동
-	void attackUnit() override; //적유닛 공격하기
+	void attackUnit(Unit* enemy) override; //적유닛 공격하기
 	void dieUnit() override; //유닛 사망
+	void update(float f) override;
 
 	//콜백 함수
-	void callbackAttack() override; //attackUnit에서 호출하는 함수
+	void callbackAttack(Unit* enemy) override; //attackUnit에서 호출하는 함수
 };
 
 class RightUnit :public Unit
@@ -70,9 +68,10 @@ public:
 
 	//스케줄 함수
 	void moveUnit() override; //유닛 이동
-	void attackUnit() override; //적유닛 공격하기
+	void attackUnit(Unit* enemy) override; //적유닛 공격하기
 	void dieUnit() override; //유닛 사망
+	void update(float f) override;
 
 	//콜백 함수
-	void callbackAttack() override; //attackUnit에서 호출하는 함수
+	void callbackAttack(Unit* enemy) override; //attackUnit에서 호출하는 함수
 };

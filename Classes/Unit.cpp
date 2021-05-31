@@ -137,7 +137,7 @@ void RightUnit::moveUnit()
 }
 
 //공격
-void LeftUnit::attackUnit()
+void LeftUnit::attackUnit(Unit* enemy)
 {
 	this->stopAllActions();
 	this->isFighting = true;
@@ -151,12 +151,12 @@ void LeftUnit::attackUnit()
 	attackAni->addSpriteFrameWithFile("Character/C/CAttack_3.png");
 	attackAni->addSpriteFrameWithFile("Character/C/CAttack_4.png");
 	attackAni->addSpriteFrameWithFile("Character/C/CAttack_5.png");
-	auto spawn = Spawn::create(Animate::create(attackAni), CallFunc::create(CC_CALLBACK_0(LeftUnit::callbackAttack, this)), nullptr); //애니메이션, 공격 동시에
+	auto spawn = Spawn::create(Animate::create(attackAni), CallFunc::create(CC_CALLBACK_0(LeftUnit::callbackAttack, this, enemy)), nullptr); //애니메이션, 공격 동시에
 	auto seq = Sequence::create(spawn, DelayTime::create(1.0f), nullptr); //애니메이션+공격, 딜레이 순차적으로
 	auto rep = Repeat::create(seq, -1); //애니메이션, 공격, 딜레이
 	this->runAction(rep);
 }
-void RightUnit::attackUnit()
+void RightUnit::attackUnit(Unit* enemy)
 {
 	this->stopAllActions();
 	this->isFighting = true;
@@ -170,7 +170,7 @@ void RightUnit::attackUnit()
 	attackAni->addSpriteFrameWithFile("Character/A/AAttack_3.png");
 	attackAni->addSpriteFrameWithFile("Character/A/AAttack_4.png");
 	attackAni->addSpriteFrameWithFile("Character/A/AAttack_5.png");
-	auto spawn = Spawn::create(Animate::create(attackAni), CallFunc::create(CC_CALLBACK_0(RightUnit::callbackAttack, this)), nullptr); //애니메이션, 공격 동시에
+	auto spawn = Spawn::create(Animate::create(attackAni), CallFunc::create(CC_CALLBACK_0(RightUnit::callbackAttack, this, enemy)), nullptr); //애니메이션, 공격 동시에
 	auto seq = Sequence::create(spawn, DelayTime::create(1.5f), nullptr); //애니메이션+공격, 딜레이 순차적으로
 	auto rep = Repeat::create(seq, -1); //애니메이션, 공격, 딜레이
 	this->runAction(rep);
@@ -241,14 +241,14 @@ void Unit::damaged(float damage)
 #pragma endregion
 
 #pragma region callback function
-void LeftUnit::callbackAttack()
+void LeftUnit::callbackAttack(Unit* enemy)
 {
 	enemy->damaged(power);
 	if(enemy->isDied)
 		moveUnit();
 }
 
-void RightUnit::callbackAttack()
+void RightUnit::callbackAttack(Unit* enemy)
 {
 	enemy->damaged(power);
 	if (enemy->isDied)
@@ -257,8 +257,61 @@ void RightUnit::callbackAttack()
 #pragma endregion
 
 #pragma region schedule function
-void Unit::update(float f)
+void LeftUnit::update(float f)
 {
 	fullHP->setScaleX(hp / maxHp);
+
+	Unit* remove;
+
+	if (isDied)
+	{
+		remove = this;
+	}
+
+	Rect myRect = getBoundingBox();
+
+	for (Unit* enemy : TestScene1::getInstance()->unitsL)
+	{
+		Rect enemyRect = enemy->getBoundingBox();
+
+		//두 유닛이 충돌했을 때
+		if (myRect.intersectsRect(enemyRect))
+		{
+			if (!isFighting && !enemy->isDied)
+				attackUnit(enemy);
+		}
+	}
+
+	TestScene1::getInstance()->removeUnit(remove);
+	remove = nullptr;
+}
+
+void RightUnit::update(float f)
+{
+	fullHP->setScaleX(hp / maxHp);
+
+	Unit* remove;
+
+	if (isDied)
+	{
+		remove = this;
+	}
+
+	Rect myRect = getBoundingBox();
+
+	for (Unit* enemy : TestScene1::getInstance()->unitsR)
+	{
+		Rect enemyRect = enemy->getBoundingBox();
+
+		//두 유닛이 충돌했을 때
+		if (myRect.intersectsRect(enemyRect))
+		{
+			if (!isFighting && !enemy->isDied)
+				attackUnit(enemy);
+		}
+	}
+
+	TestScene1::getInstance()->removeUnit(remove);
+	remove = nullptr;
 }
 #pragma endregion
