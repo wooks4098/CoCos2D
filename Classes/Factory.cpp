@@ -163,7 +163,15 @@ void Factory::Factory_Hit_Check(Sprite* _unit)
 void Factory::Factory_Hp_Down()
 {
 	if (CurHp <= 0)
+	{
+		if(isRight)
+			GameManager::GetInstance()->Die_Right_Factory();
+		else
+			GameManager::GetInstance()->Die_Left_Factory();
+
 		return;
+
+	}
 	Factory_Damage_Action();
 	CurHp -= 10;
 	if (CurHp <= 0)
@@ -199,7 +207,7 @@ int Factory::Change_Key(int _key)
 
 void Factory::Change_Bubble(BUBBLE _Bubble)
 {
-
+	Change_Bubble_Setting(_Bubble);
 	auto hide = Hide::create();
 	auto show = Show::create();
 	switch (_Bubble.key)
@@ -235,7 +243,16 @@ void Factory::Change_Bubble(BUBBLE _Bubble)
 
 	
 }
-
+void Factory::Change_Bubble_Setting(BUBBLE _Bubble)
+{
+	switch (_Bubble.key)
+	{
+	case C1_Yellow:
+	case C2_Yellow:
+		CreatUnit_time = CreatUnit_time_Base - _Bubble.SpawnSpeed;
+		break;
+	}
+}
 void Factory::SetPos_Bubble()
 {
 	if (isRight)

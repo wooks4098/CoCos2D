@@ -344,7 +344,14 @@ void GameScene::ClickToCreateBubble1(Ref* pSender, int lev, bool isRight)
 
 void GameScene::Update(float f)
 {
-
+	if (GameManager::GetInstance()->Return_isRightFactory_Die)
+	{
+		//¿À¸¥ÂÊ ÆÑÅä¸® »ç¸Á
+	}
+	if (GameManager::GetInstance()->Return_isLeftFactory_Die)
+	{
+		//¿ÞÂÊ ÆÑÅä¸® »ç¸Á
+	}
 }
 
 void GameScene::Factory_Right_CreatUnitCheck(float f)
