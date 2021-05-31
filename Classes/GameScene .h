@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include "Factory.h"
 #include "mecro.h"
+#include "GameManager.h"
 using namespace cocos2d;
 
 class GameScene : public cocos2d::Scene

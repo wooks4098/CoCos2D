@@ -2,6 +2,7 @@
 #include "cocos2d.h"
 #include <string>
 #include "Bubble.h"
+#include "GameManager.h"
 #define FACTORY_RIGHT 0
 #define FACTORY_LEFT 1
 using namespace cocos2d; 
@@ -14,8 +15,9 @@ private:
 	int MaxHp;		//최대 체력
 	int CurHp;		//현재 체력
 	bool isRight;	//공장이 오른쪽에 있는지
-	int CreatUnit_timeCheck;	//유닛 생성 쿨타임 체크
-	int CreatUnit_time;		//유닛 생성 쿨타임
+	float CreatUnit_timeCheck;	//유닛 생성 쿨타임 체크
+	float CreatUnit_time;		//유닛 생성 쿨타임
+	float CreatUnit_time_Base = 30;	//유닛 생성 쿨타임 초기값
 
 	BUBBLE Circle_bubble;
 	BUBBLE Rhombus_bubble;
@@ -42,8 +44,8 @@ public:
 	void Factory_Hit_Check(Sprite* _unit);//팩토리 충돌 체크
 
 	void Change_Bubble(BUBBLE _Bubble);	//버블 변경
-
 	void SetPos_Bubble();
+	void Change_Bubble_Setting(BUBBLE _Bubble);//버블 변경 시 팩토리 체력 스폰속도 변경
 
 	//Sprite creat
 	void Create_HpBar();
