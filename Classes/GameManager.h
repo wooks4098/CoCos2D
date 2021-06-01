@@ -1,3 +1,4 @@
+#pragma once
 #include "mecro.h"
 
 class GameManager
@@ -20,8 +21,8 @@ private:
 	bool isLeftFactory_Die = false;
 
 public:
-	bool Die_Right_Factory();
-	bool Die_Left_Factory();
+	void Die_Right_Factory();
+	void Die_Left_Factory();
 
 
 	bool Return_isRightFactory_Die() { return isRightFactory_Die; };
