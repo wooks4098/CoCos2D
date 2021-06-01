@@ -105,18 +105,20 @@ void LeftUnit::idleUnit()
 	this->stopAllActions();
 
 	auto idleAni = Animation::create();
+	idleAni->setDelayPerUnit(0.3f);
 	idleAni->addSpriteFrameWithFile("Character/C/CMove_0.png");
-	auto animate = Animate::create(idleAni);
-	this->runAction(animate);
+	auto rep = Repeat::create(Animate::create(idleAni), -1);
+	this->runAction(rep);
 }
 void RightUnit::idleUnit()
 {
 	this->stopAllActions();
 
 	auto idleAni = Animation::create();
+	idleAni->setDelayPerUnit(0.3f);
 	idleAni->addSpriteFrameWithFile("Character/A/AMove_0.png");
-	auto animate = Animate::create(idleAni);
-	this->runAction(animate);
+	auto rep = Repeat::create(Animate::create(idleAni), -1);
+	this->runAction(rep);
 }
 
 //이동
@@ -324,9 +326,20 @@ void LeftUnit::update(float f)
 		if (myRect.intersectsRect(buddyRect))
 		{
 			//유닛보다 충돌한 아군 유닛이 더 상대편 팩토리와 가까울 때
-			if (myRect.origin.x < buddyRect.origin.x)
+			if (myRect.origin.x < buddyRect.origin.x && isStop == false)
 			{
+				isStop = true;
+				buddyUnit = b;
 				idleUnit();
+			}
+		}
+		else
+		{
+			if (b == buddyUnit)
+			{
+				isStop = false;
+				buddyUnit = nullptr;
+				moveUnit();
 			}
 		}
 	}
@@ -359,9 +372,20 @@ void RightUnit::update(float f)
 		if (myRect.intersectsRect(buddyRect))
 		{
 			//유닛보다 충돌한 아군 유닛이 더 상대편 팩토리와 가까울 때
-			if (myRect.origin.x > buddyRect.origin.x)
+			if (buddyRect.origin.x < myRect.origin.x && isStop == false)
 			{
+				isStop = true;
+				buddyUnit = b;
 				idleUnit();
+			}
+		}
+		else
+		{
+			if (b == buddyUnit)
+			{
+				isStop = false;
+				buddyUnit = nullptr;
+				moveUnit();
 			}
 		}
 	}

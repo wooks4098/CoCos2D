@@ -19,6 +19,10 @@ public:
 
 	bool isFighting = false; //싸우는 중인지
 	bool isDied = false; //죽었는지
+	bool isStop = false; //아군 유닛 충돌에 의해 정지했는지
+
+	//충돌한 아군 유닛
+	Unit* buddyUnit = nullptr;
 
 	//팩토리 정보
 	Vec2 myFactory;
