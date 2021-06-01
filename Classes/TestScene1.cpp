@@ -1,6 +1,10 @@
 #include "TestScene1.h"
 using namespace cocos2d;
 
+//모든 유닛 저장
+Vector<Unit*> unitsL;
+Vector<Unit*> unitsR;
+
 #pragma region singleton
 TestScene1* TestScene1::instance = nullptr;
 TestScene1* TestScene1::getInstance()
@@ -43,8 +47,8 @@ bool TestScene1::init()
     //initData(); //데이터 초기화
 
     //유닛 생성
-    this->schedule(schedule_selector(TestScene1::addUnitL), 3);
-    this->schedule(schedule_selector(TestScene1::addUnitR), 3);
+    this->schedule(schedule_selector(TestScene1::addUnitL), 5);
+    this->schedule(schedule_selector(TestScene1::addUnitR), 5);
 
     this->scheduleUpdate();
 
@@ -61,76 +65,25 @@ void TestScene1::initData()
 
 #pragma region function
 //유닛 제거
-void TestScene1::removeUnit(Ref* pSender)
+void TestScene1::callbackRemove(Unit* unit)
 {
-    auto ru = (Unit*)pSender;
-
-    if (unitsL.contains(ru))
+    if (unitsL.contains(unit))
     {
-        unitsL.eraseObject(ru);
+        unitsL.eraseObject(unit);
     }
-    else if(unitsR.contains(ru))
+    else if(unitsR.contains(unit))
     {
-        unitsR.eraseObject(ru);
+        unitsR.eraseObject(unit);
     }
     
-    this->removeChild(ru);
+    this->removeChild(unit);
 }
-/*
-Vector<Unit*> TestScene1::getVector(Vec2 fac)
-{
-    if (fac == facL)
-        return unitsL;
-    else
-        return unitsR;
-}*/
 #pragma endregion
 
 #pragma region schedule fuunction
 void TestScene1::update(float f)
 {
-    /*
-    Unit* remove;
 
-    for (LeftUnit* u1 : unitsL)
-    {
-        if (u1->isDied)
-        {
-            remove = u1;
-            //auto remove = Sequence::create(DelayTime::create(2.0f), CallFunc::create(CC_CALLBACK_1(TestScene1::removeChild, this, u1)), nullptr);
-            //this->runAction(remove);
-        }
-
-        Rect rectU1 = u1->getBoundingBox();
-
-        for (RightUnit* u2 : unitsR)
-        {
-            if (u2->isDied)
-            {
-                remove = u2;
-            }
-
-            Rect rectU2 = u2->getBoundingBox();
-
-            //두 유닛이 충돌했을 때
-            if (rectU1.intersectsRect(rectU2))
-            {
-                if (!u1->isFighting && !u2->isDied)
-                    u1->attackUnit(u2);
-
-                if (!u2->isFighting && !u1->isDied)
-                    u2->attackUnit(u1);
-            }
-            else
-            {
-
-            }
-
-        }
-
-        removeUnit(remove);
-    }
-    */
 }
 
 void TestScene1::addUnitL(float f)

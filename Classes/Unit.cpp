@@ -1,6 +1,9 @@
 #include "Unit.h"
 #include "TestScene1.h"
 
+extern Vector<Unit*> unitsL;
+extern Vector<Unit*> unitsR;
+
 #pragma region create&init unit
 Unit* LeftUnit::createUnitL()
 {
@@ -96,9 +99,31 @@ void Unit::initUnitR()
 #pragma endregion
 
 #pragma region animation & action
+//대기
+void LeftUnit::idleUnit()
+{
+	this->stopAllActions();
+
+	auto idleAni = Animation::create();
+	idleAni->addSpriteFrameWithFile("Character/C/CMove_0.png");
+	auto animate = Animate::create(idleAni);
+	this->runAction(animate);
+}
+void RightUnit::idleUnit()
+{
+	this->stopAllActions();
+
+	auto idleAni = Animation::create();
+	idleAni->addSpriteFrameWithFile("Character/A/AMove_0.png");
+	auto animate = Animate::create(idleAni);
+	this->runAction(animate);
+}
+
 //이동
 void LeftUnit::moveUnit()
 {
+	this->stopAllActions();
+
 	float distance = fabs(enemyFactory.x - getPosition().x);
 	auto move = MoveTo::create(distance / speed, enemyFactory);
 
@@ -118,6 +143,8 @@ void LeftUnit::moveUnit()
 }
 void RightUnit::moveUnit()
 {
+	this->stopAllActions();
+
 	float distance = fabs(enemyFactory.x - getPosition().x);
 	auto move = MoveTo::create(distance / speed, enemyFactory);
 
@@ -236,7 +263,15 @@ void Unit::damaged(float damage)
 		hp = 0;
 		//dieUnit();
 		isDied = true;
+		removeUnit();
 	}
+}
+
+//제거할 때
+void Unit::removeUnit()
+{
+	auto removeSelf = RemoveSelf::create(true);
+	this->runAction(removeSelf);
 }
 #pragma endregion
 
@@ -244,15 +279,21 @@ void Unit::damaged(float damage)
 void LeftUnit::callbackAttack(Unit* enemy)
 {
 	enemy->damaged(power);
-	if(enemy->isDied)
+	if (enemy->isDied)
+	{
+		isFighting = false;
 		moveUnit();
+	}
 }
 
 void RightUnit::callbackAttack(Unit* enemy)
 {
 	enemy->damaged(power);
 	if (enemy->isDied)
+	{
+		isFighting = false;
 		moveUnit();
+	}
 }
 #pragma endregion
 
@@ -261,57 +302,69 @@ void LeftUnit::update(float f)
 {
 	fullHP->setScaleX(hp / maxHp);
 
-	Unit* remove;
-
-	if (isDied)
-	{
-		remove = this;
-	}
-
 	Rect myRect = getBoundingBox();
 
-	for (Unit* enemy : TestScene1::getInstance()->unitsL)
+	//적군과 충돌할 때
+	for (Unit* e : unitsR)
 	{
-		Rect enemyRect = enemy->getBoundingBox();
+		Rect enemyRect = e->getBoundingBox();
 
-		//두 유닛이 충돌했을 때
 		if (myRect.intersectsRect(enemyRect))
 		{
-			if (!isFighting && !enemy->isDied)
-				attackUnit(enemy);
+			if (!isFighting && !e->isDied)
+				attackUnit(e);
 		}
 	}
 
-	TestScene1::getInstance()->removeUnit(remove);
-	remove = nullptr;
+	//아군과 충돌할 때
+	for (Unit* b : unitsL)
+	{
+		Rect buddyRect = b->getBoundingBox();
+
+		if (myRect.intersectsRect(buddyRect))
+		{
+			//유닛보다 충돌한 아군 유닛이 더 상대편 팩토리와 가까울 때
+			if (myRect.origin.x < buddyRect.origin.x)
+			{
+				idleUnit();
+			}
+		}
+	}
 }
 
 void RightUnit::update(float f)
 {
 	fullHP->setScaleX(hp / maxHp);
 
-	Unit* remove;
-
-	if (isDied)
-	{
-		remove = this;
-	}
-
 	Rect myRect = getBoundingBox();
 
-	for (Unit* enemy : TestScene1::getInstance()->unitsR)
+	//적군과 충돌할 때
+	for (Unit* e : unitsL)
 	{
-		Rect enemyRect = enemy->getBoundingBox();
+		Rect enemyRect = e->getBoundingBox();
 
 		//두 유닛이 충돌했을 때
 		if (myRect.intersectsRect(enemyRect))
 		{
-			if (!isFighting && !enemy->isDied)
-				attackUnit(enemy);
+			if (!isFighting && !e->isDied)
+				attackUnit(e);
 		}
 	}
 
-	TestScene1::getInstance()->removeUnit(remove);
-	remove = nullptr;
+	//아군과 충돌할 때
+	for (Unit* b : unitsR)
+	{
+		Rect buddyRect = b->getBoundingBox();
+
+		if (myRect.intersectsRect(buddyRect))
+		{
+			//유닛보다 충돌한 아군 유닛이 더 상대편 팩토리와 가까울 때
+			if (myRect.origin.x > buddyRect.origin.x)
+			{
+				idleUnit();
+			}
+		}
+	}
+
 }
 #pragma endregion
