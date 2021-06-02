@@ -38,7 +38,7 @@
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '14.0' and exists('$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A')">v140_xp</PlatformToolset>
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0' and exists('$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A')">v141_xp</PlatformToolset>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -157,7 +157,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\GameManager.cpp" />
     <ClCompile Include="..\Classes\GameScene .cpp" />
     <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
+    <ClCompile Include="..\Classes\LeftUnit.cpp" />
     <ClCompile Include="..\Classes\MenuScene .cpp" />
+    <ClCompile Include="..\Classes\RightUnit.cpp" />
     <ClCompile Include="..\Classes\TestScene0.cpp" />
     <ClCompile Include="..\Classes\TestScene1.cpp" />
     <ClCompile Include="..\Classes\TestScene2.cpp" />
@@ -171,8 +173,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\GameManager.h" />
     <ClInclude Include="..\Classes\GameScene .h" />
     <ClInclude Include="..\Classes\HelloWorldScene.h" />
+    <ClInclude Include="..\Classes\LeftUnit.h" />
     <ClInclude Include="..\Classes\mecro.h" />
     <ClInclude Include="..\Classes\MenuScene .h" />
+    <ClInclude Include="..\Classes\RightUnit.h" />
     <ClInclude Include="..\Classes\TestScene0.h" />
     <ClInclude Include="..\Classes\TestScene1.h" />
     <ClInclude Include="..\Classes\TestScene2.h" />

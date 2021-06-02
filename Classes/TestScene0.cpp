@@ -2,6 +2,10 @@
 #include "HelloWorldScene.h"
 using namespace cocos2d;
 
+//모든 유닛 저장
+Vector<Unit*> unitsL;
+Vector<Unit*> unitsR;
+
 Scene* TestScene0::createScene()
 {
 	return TestScene0::create();
@@ -18,12 +22,15 @@ bool TestScene0::init()
     auto wlayer = LayerColor::create(Color4B::WHITE);
     this->addChild(wlayer);
 
+	unitsL.clear();
+	unitsR.clear();
+
 	Create_BackGround();
 	Creat_Factory();
 
 	//팩토리 스케줄 등록
-	this->schedule(schedule_selector(TestScene0::Factory_Right_CreatUnitCheck), 0.1f);
-	this->schedule(schedule_selector(TestScene0::Factory_Left_CreatUnitCheck), 0.1f);
+	this->schedule(schedule_selector(TestScene0::Factory_Right_CreatUnitCheck), 1);
+	this->schedule(schedule_selector(TestScene0::Factory_Left_CreatUnitCheck), 1);
 	this->schedule(schedule_selector(TestScene0::Update));
     return true;
 }
@@ -106,9 +113,40 @@ void TestScene0::Update(float f)
 void TestScene0::Factory_Right_CreatUnitCheck(float f)
 {
 	//factory[FACTORY_RIGHT].CreatUnit();
+	//if (!test1)
+	{
+		CreatUnitR();
+		test1 = !test1;
+	}
 }
 
 void TestScene0::Factory_Left_CreatUnitCheck(float f)
 {
 	//factory[FACTORY_LEFT].CreatUnit();
+	//if (!test0)
+	{
+		CreatUnitL();
+		test0 = !test0;
+	}
+}
+
+void TestScene0::CreatUnitL()
+{
+	Unit* unit = LeftUnit::createUnitL(&factory[FACTORY_LEFT], &factory[FACTORY_RIGHT]);
+	unit->initUnit();
+	unitsL.pushBack(unit);
+	this->addChild(unit);
+	unit->moveUnit();
+	//this->unschedule(schedule_selector(TestScene1::addUnitL)); //실험용
+}
+
+void TestScene0::CreatUnitR()
+{
+	Unit* unit = RightUnit::createUnitR(&factory[FACTORY_RIGHT], &factory[FACTORY_LEFT]);
+	unit->initUnit();
+	unitsR.pushBack(unit);
+	this->addChild(unit);
+	unit->moveUnit();
+
+	//this->unschedule(schedule_selector(TestScene1::addUnitR)); //실험용
 }

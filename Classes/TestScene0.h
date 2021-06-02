@@ -3,6 +3,9 @@
 
 #include "cocos2d.h"
 #include "Factory.h"
+#include "Unit.h"
+#include "LeftUnit.h"
+#include "RightUnit.h"
 
 #define FACTORY_RIGHT 0
 #define FACTORY_LEFT 1
@@ -26,6 +29,9 @@ private:
 
 	Menu* Bubble_Menu;
 
+	bool test0 = false;
+	bool test1 = false;
+
 public:
 	static cocos2d::Scene* createScene();
 	virtual bool init();
@@ -38,6 +44,8 @@ public:
 
 	void Creat_Factory();
 	void Create_BackGround();
+	void CreatUnitL();
+	void CreatUnitR();
 
 	//스케줄
 	void Factory_Right_CreatUnitCheck(float f);	//팩토리(Right) 유닛 생성 체크
