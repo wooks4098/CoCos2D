@@ -3,7 +3,7 @@
 extern Vector<Unit*> unitsL;
 extern Vector<Unit*> unitsR;
 
-Unit* LeftUnit::createUnitL(Factory* myFac, Factory* enemyFac)
+Unit* LeftUnit::createUnit(Factory* myFac, Factory* enemyFac)
 {
 	//정상적으로 Unit이 생성되지 않은 경우 프로그램이 죽지 않도록 예외처리
 	Unit* sprite = new (std::nothrow)LeftUnit();
@@ -30,6 +30,16 @@ Unit* LeftUnit::createUnitL(Factory* myFac, Factory* enemyFac)
 	return nullptr;
 }
 
+void LeftUnit::initUnit()
+{
+	initData();
+	maxHp = 50;
+	hp = maxHp;
+	speed = 300;
+	power = 10;
+}
+
+#pragma region action & animation
 void LeftUnit::idleUnit()
 {
 	this->stopAllActions();
@@ -106,31 +116,7 @@ void LeftUnit::dieUnit()
 
 	auto seq = Sequence::create(animate, DelayTime::create(2.0f), nullptr);
 }
-
-void LeftUnit::initUnit()
-{
-	this->setPosition(this->myFactory->return_Factory_Sp()->getPosition());
-
-	//hp바
-	emptyHP = Sprite::create("Character/emptyHP.png");
-	fullHP = Sprite::create("Character/fullHP.png");
-
-	emptyHP->setPosition(Vec2(0, 300));
-	fullHP->setPosition(Vec2(0,  300));
-
-	emptyHP->setAnchorPoint(Vec2(0, 0));
-	fullHP->setAnchorPoint(Vec2(0, 0));
-
-	this->addChild(emptyHP, 3);
-	this->addChild(fullHP, 4);
-
-
-	maxHp = 50;
-	hp = maxHp;
-	speed = 300;
-	power = 10;
-	log("Left HP : %d", hp);
-}
+#pragma endregion
 
 void LeftUnit::callbackAttack(Unit* enemy)
 {

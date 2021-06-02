@@ -1,13 +1,7 @@
 #pragma once
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-#endif
-
 #include "cocos2d.h"
 #include "Factory.h"
-
 using namespace cocos2d;
-
-class TestScene1;
 
 class Unit : public cocos2d::Sprite
 {
@@ -35,8 +29,8 @@ public:
 
 
 	//함수
-	void virtual initUnit()=0; //유닛 초기화
-
+	void initData();
+	void virtual initUnit() = 0; //유닛 초기화
 	void virtual idleUnit() = 0; //유닛 대기
 	void virtual moveUnit() = 0; //유닛 이동
 	void virtual attackUnit(Unit* enemy) = 0; //적 유닛 공격하기
@@ -44,7 +38,7 @@ public:
 	void virtual dieUnit() = 0; //유닛 사망
 
 	//콜백 함수
-	void virtual callbackAttack(Unit* enemy) { }
+	void virtual callbackAttack(Unit* enemy) = 0;
 	void removeUnit();
 
 	//스케줄 함수

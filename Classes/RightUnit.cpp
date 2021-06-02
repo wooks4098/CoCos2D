@@ -3,7 +3,7 @@
 extern Vector<Unit*> unitsL;
 extern Vector<Unit*> unitsR;
 
-Unit* RightUnit::createUnitR(Factory* myFac, Factory* enemyFac)
+Unit* RightUnit::createUnit(Factory* myFac, Factory* enemyFac)
 {
 	//정상적으로 Unit이 생성되지 않은 경우 프로그램이 죽지 않도록 예외처리
 	Unit* sprite = new (std::nothrow)RightUnit();
@@ -11,8 +11,6 @@ Unit* RightUnit::createUnitR(Factory* myFac, Factory* enemyFac)
 	const char* fileName;
 
 	fileName = "Character/A/AMove_0.png";
-
-
 
 	sprite->myFactory = myFac;
 	sprite->enemyFactory = enemyFac;
@@ -31,6 +29,18 @@ Unit* RightUnit::createUnitR(Factory* myFac, Factory* enemyFac)
 	return nullptr;
 }
 
+void RightUnit::initUnit()
+{
+	initData();
+
+	maxHp = 20;
+	hp = maxHp;
+	speed = 200;
+	power = 2;
+	log("Right HP : %d", hp);
+}
+
+#pragma region action & animation
 void RightUnit::idleUnit()
 {
 	this->stopAllActions();
@@ -41,6 +51,7 @@ void RightUnit::idleUnit()
 	auto rep = Repeat::create(Animate::create(idleAni), -1);
 	this->runAction(rep);
 }
+
 void RightUnit::moveUnit()
 {
 	this->stopAllActions();
@@ -62,6 +73,7 @@ void RightUnit::moveUnit()
 	auto spawn = Spawn::create(Repeat::create(animate, -1), move, nullptr);
 	this->runAction(spawn);
 }
+
 void RightUnit::attackUnit(Unit* enemy)
 {
 	this->stopAllActions();
@@ -81,6 +93,7 @@ void RightUnit::attackUnit(Unit* enemy)
 	auto rep = Repeat::create(seq, -1); //애니메이션, 공격, 딜레이
 	this->runAction(rep);
 }
+
 void RightUnit::dieUnit()
 {
 	this->stopAllActions();
@@ -104,31 +117,8 @@ void RightUnit::dieUnit()
 
 	auto seq = Sequence::create(animate, DelayTime::create(2.0f), nullptr);
 }
-void RightUnit::initUnit()
-{
+#pragma endregion
 
-	this->setPosition(this->myFactory->return_Factory_Sp()->getPosition());
-
-	//hp바
-	emptyHP = Sprite::create("Character/emptyHP.png");
-	fullHP = Sprite::create("Character/fullHP.png");
-
-	emptyHP->setPosition(Vec2(0,  300));
-	fullHP->setPosition(Vec2(0,  300));
-
-	emptyHP->setAnchorPoint(Vec2(0, 0));
-	fullHP->setAnchorPoint(Vec2(0, 0));
-
-	this->addChild(emptyHP, 3);
-	this->addChild(fullHP, 4);
-
-
-	maxHp = 20;
-	hp = maxHp;
-	speed = 200;
-	power = 2;
-	log("Right HP : %d", hp);
-}
 void RightUnit::callbackAttack(Unit* enemy)
 {
 	enemy->damaged(power);
@@ -138,6 +128,7 @@ void RightUnit::callbackAttack(Unit* enemy)
 		moveUnit();
 	}
 }
+
 void RightUnit::update(float f)
 {
 	fullHP->setScaleX(hp / maxHp);

@@ -132,7 +132,7 @@ void TestScene0::Factory_Left_CreatUnitCheck(float f)
 
 void TestScene0::CreatUnitL()
 {
-	Unit* unit = LeftUnit::createUnitL(&factory[FACTORY_LEFT], &factory[FACTORY_RIGHT]);
+	Unit* unit = LeftUnit::createUnit(&factory[FACTORY_LEFT], &factory[FACTORY_RIGHT]);
 	unit->initUnit();
 	unitsL.pushBack(unit);
 	this->addChild(unit);
@@ -142,7 +142,7 @@ void TestScene0::CreatUnitL()
 
 void TestScene0::CreatUnitR()
 {
-	Unit* unit = RightUnit::createUnitR(&factory[FACTORY_RIGHT], &factory[FACTORY_LEFT]);
+	Unit* unit = RightUnit::createUnit(&factory[FACTORY_RIGHT], &factory[FACTORY_LEFT]);
 	unit->initUnit();
 	unitsR.pushBack(unit);
 	this->addChild(unit);

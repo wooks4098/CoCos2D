@@ -4,7 +4,7 @@
 class RightUnit :public Unit
 {
 public:
-	static Unit* createUnitR(Factory* myFac, Factory* enemyFac); //À¯´Ö »ý¼º
+	static Unit* createUnit(Factory* myFac, Factory* enemyFac); //À¯´Ö »ý¼º
 
 	void initUnit() override; //À¯´Ö ÃÊ±âÈ­
 
