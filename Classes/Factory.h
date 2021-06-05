@@ -3,6 +3,7 @@
 #include <string>
 #include "Bubble.h"
 #include "GameManager.h"
+#include "SoundManager.h"
 #define FACTORY_RIGHT 0
 #define FACTORY_LEFT 1
 using namespace cocos2d; 
