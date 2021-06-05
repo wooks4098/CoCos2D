@@ -41,12 +41,10 @@ private:
 	int lCount;
 	int RCount;
 	std::vector<Bubble*> bubblesLeft;
-	std::vector<Bubble*> bubblesRight;
+	std::vector<Bubble*> bubblesRight2;
+	cocos2d::Vector<Bubble*> bubblesLeft1;
+	cocos2d::Vector<Bubble*> bubblesRight;
 	cocos2d::Vector<Bubble*> bubblesTest;
-	Vector<Bubble*>::iterator itor;
-	Vector<Bubble*>::iterator itor2;
-	BUBBLE val;
-	int randnum;
 	int bitCoinL;
 	int bubbleCostL;
 	int bitCoinR;
@@ -54,6 +52,8 @@ private:
 	static bool isMove;
 	
 	int coinAmount;
+	BUBBLE val;
+	int randnum;
 
 public:
     static cocos2d::Scene* createScene();

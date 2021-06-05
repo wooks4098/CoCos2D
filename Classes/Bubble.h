@@ -6,7 +6,7 @@ class Bubble : public cocos2d::Sprite
 {
 public:
 	static Bubble* create(const std::string& filename);// , BUBBLE b_slot);
-	static Bubble* create(float a);
+	static Bubble* create();
 	Bubble* BubbleCreate(BUBBLE info);
 	void setPr(int fixedPr);
 	void setP1r(int fixedPr);
