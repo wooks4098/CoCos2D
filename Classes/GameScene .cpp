@@ -27,17 +27,15 @@ bool GameScene::init()
 	Creat_Factory();
 
 #pragma region menu
-	auto m_3 = MenuItemImage::create("UI/UI_bottom_Bubble.png", "UI/UI_bottom_Bubble1.png", CC_CALLBACK_1(GameScene::ClickToCreateBubble1, this, 1, true));
-	auto m_4 = MenuItemImage::create("UI/UI_bottom_Bubble.png", "UI/UI_bottom_Bubble1.png", CC_CALLBACK_1(GameScene::ClickToCreateBubble1, this, 1, false));
-	m_3->setTag(1);
-	m_4->setTag(2);
-	auto menu1 = Menu::create(m_3, m_4, nullptr);
-	m_3->setPosition(Vec2(480, 320));
-	m_3->setAnchorPoint(Vec2(1, 1));
-	m_4->setPosition(Vec2(0, 320));
-	m_4->setAnchorPoint(Vec2(0, 1));
-	this->addChild(menu1);
-	menu1->setPosition(Vec2::ZERO);
+	//m_3->setTag(1);
+	//m_4->setTag(2);
+	//auto menu1 = Menu::create(m_3, m_4, nullptr);
+	//m_3->setPosition(Vec2(480, 320));
+	//m_3->setAnchorPoint(Vec2(1, 1));
+	//m_4->setPosition(Vec2(0, 320));
+	//m_4->setAnchorPoint(Vec2(0, 1));
+	//this->addChild(menu1);
+	//menu1->setPosition(Vec2::ZERO);
 #pragma endregion
 
 
@@ -105,7 +103,7 @@ void GameScene::Create_BackGround()
 
 	UI_Left_bottom_Inven = Sprite::create("UI/UI_bottom_Inven.png");
 	UI_Left_bottom_Inven->setAnchorPoint(Vec2(0, 0));
-	//UI_Left_bottom_Inven->setPosition(UI_Left_bottom_Info->getContentSize().width+ UI_Left_bottom_Bubble->getContentSize().width, 0);
+	UI_Left_bottom_Inven->setPosition(UI_Left_bottom_Info->getContentSize().width+ UI_Left_bottom_Bubble->getContentSize().width, 0);
 	this->addChild(UI_Left_bottom_Inven);
 
 	UI_Left_bottom_Delet = Sprite::create("UI/UI_bottom_Delet.png");
@@ -115,7 +113,7 @@ void GameScene::Create_BackGround()
 
 	Lcoin = Label::createWithTTF("333","fonts/Marker Felt.ttf", 28);
 	Lcoin->setString(StringUtils::format("%d", bitCoinL));
-	Lcoin->setPosition(Vec2(70, 73));
+	Lcoin->setPosition(Vec2(71, 73));
 	Lcoin->setColor(Color3B::BLACK);
 	this->addChild(Lcoin);
 
@@ -145,7 +143,7 @@ void GameScene::Create_BackGround()
 
 	UI_Right_bottom_Inven = Sprite::create("UI/UI_bottom_Inven.png");
 	UI_Right_bottom_Inven->setAnchorPoint(Vec2(1, 0));
-	//UI_Right_bottom_Inven->setPosition(winSize.width - UI_Right_bottom_Info->getContentSize().width - UI_Right_bottom_Bubble->getContentSize().width, 0);
+	UI_Right_bottom_Inven->setPosition(winSize.width - UI_Right_bottom_Info->getContentSize().width - UI_Right_bottom_Bubble->getContentSize().width, 0);
 	this->addChild(UI_Right_bottom_Inven);
 
 	UI_Right_bottom_Delet = Sprite::create("UI/UI_bottom_Delet.png");
@@ -155,7 +153,7 @@ void GameScene::Create_BackGround()
 
 	Rcoin = Label::createWithTTF("333", "fonts/Marker Felt.ttf", 28);
 	Rcoin->setString(StringUtils::format("%d", bitCoinR));
-	Rcoin->setPosition(Vec2(winSize.width- 120, 73));
+	Rcoin->setPosition(Vec2(winSize.width- 75, 73));
 	Rcoin->setColor(Color3B::BLACK);
 	this->addChild(Rcoin);
 
@@ -165,22 +163,22 @@ void GameScene::Create_BackGround()
 
 	Rbitcoincost = Label::createWithTTF("333", "fonts/Marker Felt.ttf", 24);
 	Rbitcoincost->setString(StringUtils::format("%d", bubbleCostR));
-	Rbitcoincost->setPosition(Vec2(winSize.width - 335, 20));
+	Rbitcoincost->setPosition(Vec2(winSize.width - 332, 20));
 	Rbitcoincost->setColor(Color3B::BLACK);
 	this->addChild(Rbitcoincost);
 
 	//인벤칸 초기화
 	for (int i = 0; i < 4; i++)
 	{
-		invenPos_Left[i].x = UI_Left_bottom_Info->getContentSize().width + UI_Left_bottom_Bubble->getContentSize().width + 43 + i * 70;
-		invenPos_Left[i + 4].x = UI_Left_bottom_Info->getContentSize().width + UI_Left_bottom_Bubble->getContentSize().width + 43 + i * 70;
-		invenPos_Left[i].y = UI_Right_bottom_Bubble->getContentSize().height + 34;
-		invenPos_Left[i + 4].y = UI_Right_bottom_Bubble->getContentSize().height - 34;
+		invenPos_Left[i].x = UI_Left_bottom_Info->getContentSize().width + UI_Left_bottom_Bubble->getContentSize().width + 43 + i * 68;
+		invenPos_Left[i + 4].x = UI_Left_bottom_Info->getContentSize().width + UI_Left_bottom_Bubble->getContentSize().width + 43 + i * 68;
+		invenPos_Left[i].y = UI_Right_bottom_Bubble->getContentSize().height + 35;
+		invenPos_Left[i + 4].y = UI_Right_bottom_Bubble->getContentSize().height - 33;
 
-		invenPos_Right[3-i].x = winSize.width - (UI_Left_bottom_Info->getContentSize().width + UI_Left_bottom_Bubble->getContentSize().width + 43 + i * 70);
-		invenPos_Right[3-i + 4].x = winSize.width - (UI_Left_bottom_Info->getContentSize().width + UI_Left_bottom_Bubble->getContentSize().width + 43 + i * 70);
-		invenPos_Right[i].y = UI_Right_bottom_Bubble->getContentSize().height + 34;
-		invenPos_Right[i + 4].y = UI_Right_bottom_Bubble->getContentSize().height - 34;
+		invenPos_Right[3-i].x = winSize.width - (UI_Left_bottom_Info->getContentSize().width + UI_Left_bottom_Bubble->getContentSize().width + 43 + i * 68);
+		invenPos_Right[3-i + 4].x = winSize.width - (UI_Left_bottom_Info->getContentSize().width + UI_Left_bottom_Bubble->getContentSize().width + 43 + i * 68);
+		invenPos_Right[i].y = UI_Right_bottom_Bubble->getContentSize().height + 35;
+		invenPos_Right[i + 4].y = UI_Right_bottom_Bubble->getContentSize().height - 33;
 	}
 }
 void GameScene::GetCoinInTime(float f)
@@ -324,7 +322,7 @@ void GameScene::ClickToCreateBubble1(Ref* pSender, int lev, bool isRight)
 		if (bubblesLeft.size() < 8 && (bitCoinL > bubbleCostL||lev==2))
 		{
 			Bubble* bb = Bubble::create();
-			bubblesLeft.push_back(bb->BubbleCreate(GetPP(lev)));
+			bubblesLeft.pushBack(bb->BubbleCreate(GetPP(lev)));
 			for (int i = 0; i < 8; i++)
 			{
 				if (!invenPos_Left[i].isFull)
@@ -460,7 +458,7 @@ void GameScene::OneTwoThreeFourBubbleBubbleLeft(float f)
 {
 	for (int i = 0; i < bubblesLeft.size(); i++)
 	{
-		if (bubblesLeft[i]->isMove())//움직이고 있다면 충돌처리를 하지 않는다.
+		if (bubblesLeft.at(i)->isMove())//움직이고 있다면 충돌처리를 하지 않는다.
 		{
 			return;
 		}
@@ -472,18 +470,18 @@ void GameScene::OneTwoThreeFourBubbleBubbleLeft(float f)
 		{
 			for (int j = i + 1; j < bubblesLeft.size(); j++)
 			{
-				if (bubblesLeft[i]->getBoundingBox().intersectsRect(bubblesLeft[j]->getBoundingBox()))
+				if (bubblesLeft.at(i)->getBoundingBox().intersectsRect(bubblesLeft.at(j)->getBoundingBox()))
 				{
-					if (bubblesLeft[i]->BubbleStat_rt().key <= 5 && bubblesLeft[i]->BubbleStat_rt().key == bubblesLeft[j]->BubbleStat_rt().key)
+					if (bubblesLeft.at(i)->BubbleStat_rt().key <= 5 && bubblesLeft.at(i)->BubbleStat_rt().key == bubblesLeft.at(j)->BubbleStat_rt().key)
 					{
 						log("L C Check");
-						invenPos_Left[bubblesLeft[i]->GetPosNum()].isFull = false;
-						bubblesLeft[i]->removeFromParentAndCleanup(true);
+						invenPos_Left[bubblesLeft.at(i)->GetPosNum()].isFull = false;
+						bubblesLeft.at(i)->removeFromParentAndCleanup(true);
 						bubblesLeft.erase(bubblesLeft.begin() + i);
 						if (i != j)
 						{
-							invenPos_Left[bubblesLeft[j - 1]->GetPosNum()].isFull = false;
-							bubblesLeft[j - 1]->removeFromParentAndCleanup(true);
+							invenPos_Left[bubblesLeft.at(j-1)->GetPosNum()].isFull = false;
+							bubblesLeft.at(j-1)->removeFromParentAndCleanup(true);
 							bubblesLeft.erase(bubblesLeft.begin() + j - 1);
 						}
 						//new 버블 생성 코드
@@ -498,26 +496,26 @@ void GameScene::OneTwoThreeFourBubbleBubbleLeft(float f)
 	//left
 	for (int i = 0; i < bubblesLeft.size(); i++)
 	{
-		if (bubblesLeft[i]->getBoundingBox().intersectsRect(factory[FACTORY_LEFT].return_Factory_Sp()->getBoundingBox()))
+		if (bubblesLeft.at(i)->getBoundingBox().intersectsRect(factory[FACTORY_LEFT].return_Factory_Sp()->getBoundingBox()))
 		{
-			factory[FACTORY_LEFT].Change_Bubble(bubblesLeft[i]->BubbleStat_rt());
-			invenPos_Left[bubblesLeft[i]->GetPosNum()].isFull = false;
-			bubblesLeft[i]->removeFromParentAndCleanup(true);
+			factory[FACTORY_LEFT].Change_Bubble(bubblesLeft.at(i)->BubbleStat_rt());
+			invenPos_Left[bubblesLeft.at(i)->GetPosNum()].isFull = false;
+			bubblesLeft.at(i)->removeFromParentAndCleanup(true);
 			bubblesLeft.erase(bubblesLeft.begin() + i);
 			break;
 		}
 	
-		if (bubblesLeft[i]->getBoundingBox().intersectsRect(UI_Left_bottom_Delet->getBoundingBox()))
+		if (bubblesLeft.at(i)->getBoundingBox().intersectsRect(UI_Left_bottom_Delet->getBoundingBox()))
 		{
 			bitCoinL += bubbleCostL * 0.5f - 10;
 			Lcoin->setString(StringUtils::format("%d", bitCoinL));
-			invenPos_Left[bubblesLeft[i]->GetPosNum()].isFull = false;
-			bubblesLeft[i]->removeFromParentAndCleanup(true);
+			invenPos_Left[bubblesLeft.at(i)->GetPosNum()].isFull = false;
+			bubblesLeft.at(i)->removeFromParentAndCleanup(true);
 			bubblesLeft.erase(bubblesLeft.begin() + i);
 		}
 		else
 		{
-			bubblesLeft[i]->setPosition(Vec2(invenPos_Left[bubblesLeft[i]->GetPosNum()].x, invenPos_Left[bubblesLeft[i]->GetPosNum()].y));
+			bubblesLeft.at(i)->setPosition(Vec2(invenPos_Left[bubblesLeft.at(i)->GetPosNum()].x, invenPos_Left[bubblesLeft.at(i)->GetPosNum()].y));
 		}
 	}
 }

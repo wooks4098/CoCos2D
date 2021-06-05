@@ -40,9 +40,9 @@ private:
 	INVENPOS invenPos_Right[8];
 	int lCount;
 	int RCount;
-	std::vector<Bubble*> bubblesLeft;
+	std::vector<Bubble*> bubblesLeft1;
 	std::vector<Bubble*> bubblesRight2;
-	cocos2d::Vector<Bubble*> bubblesLeft1;
+	cocos2d::Vector<Bubble*> bubblesLeft;
 	cocos2d::Vector<Bubble*> bubblesRight;
 	cocos2d::Vector<Bubble*> bubblesTest;
 	int bitCoinL;
