@@ -3,6 +3,7 @@
 extern Vector<Unit*> unitsL;
 extern Vector<Unit*> unitsR;
 
+#pragma region create
 Unit* RightUnit::createUnit(Factory* myFac, Factory* enemyFac)
 {
 	//정상적으로 Unit이 생성되지 않은 경우 프로그램이 죽지 않도록 예외처리
@@ -28,7 +29,9 @@ Unit* RightUnit::createUnit(Factory* myFac, Factory* enemyFac)
 	CC_SAFE_DELETE(sprite); //사용이 끝난 스프라이트 제거
 	return nullptr;
 }
+#pragma endregion
 
+#pragma region init
 void RightUnit::initUnit()
 {
 	initData();
@@ -37,13 +40,16 @@ void RightUnit::initUnit()
 	hp = maxHp;
 	speed = 200;
 	power = 2;
-	log("Right HP : %d", hp);
+
+	fullHP->setScaleX(0.5); //실험 중...
 }
+#pragma endregion
 
 #pragma region action & animation
 void RightUnit::idleUnit()
 {
 	this->stopAllActions();
+	isFighting = false;
 
 	auto idleAni = Animation::create();
 	idleAni->setDelayPerUnit(0.3f);
@@ -55,6 +61,7 @@ void RightUnit::idleUnit()
 void RightUnit::moveUnit()
 {
 	this->stopAllActions();
+	isFighting = false;
 
 	float distance = fabs(enemyFactory->return_Factory_Sp()->getPosition().x - getPosition().x);
 	auto move = MoveTo::create(distance / speed, enemyFactory->return_Factory_Sp()->getPosition());
@@ -88,8 +95,28 @@ void RightUnit::attackUnit(Unit* enemy)
 	attackAni->addSpriteFrameWithFile("Character/A/AAttack_3.png");
 	attackAni->addSpriteFrameWithFile("Character/A/AAttack_4.png");
 	attackAni->addSpriteFrameWithFile("Character/A/AAttack_5.png");
-	auto spawn = Spawn::create(Animate::create(attackAni), CallFunc::create(CC_CALLBACK_0(RightUnit::callbackAttack, this, enemy)), nullptr); //애니메이션, 공격 동시에
-	auto seq = Sequence::create(spawn, DelayTime::create(1.5f), nullptr); //애니메이션+공격, 딜레이 순차적으로
+	
+	auto seq = Sequence::create(Animate::create(attackAni), CallFunc::create(CC_CALLBACK_0(RightUnit::callbackAttack, this, enemy)), DelayTime::create(1.5f), nullptr); //애니메이션+공격, 딜레이 순차적으로
+	auto rep = Repeat::create(seq, -1); //애니메이션, 공격, 딜레이
+	this->runAction(rep);
+}
+
+void RightUnit::attackFactory()
+{
+	this->stopAllActions();
+	this->isFighting = true;
+
+	//Left공격 애니메이션
+	auto attackAni = Animation::create();
+	attackAni->setDelayPerUnit(0.3f);
+	attackAni->addSpriteFrameWithFile("Character/A/AAttack_0.png");
+	attackAni->addSpriteFrameWithFile("Character/A/AAttack_1.png");
+	attackAni->addSpriteFrameWithFile("Character/A/AAttack_2.png");
+	attackAni->addSpriteFrameWithFile("Character/A/AAttack_3.png");
+	attackAni->addSpriteFrameWithFile("Character/A/AAttack_4.png");
+	attackAni->addSpriteFrameWithFile("Character/A/AAttack_5.png");
+
+	auto seq = Sequence::create(Animate::create(attackAni), CallFunc::create(CC_CALLBACK_0(RightUnit::callbackAttackFac, this)), DelayTime::create(1.5f), nullptr); //애니메이션+공격, 딜레이 순차적으로
 	auto rep = Repeat::create(seq, -1); //애니메이션, 공격, 딜레이
 	this->runAction(rep);
 }
@@ -97,43 +124,76 @@ void RightUnit::attackUnit(Unit* enemy)
 void RightUnit::dieUnit()
 {
 	this->stopAllActions();
-	isDied = true;
+	isDieAct = true;
 
 	auto dieAni = Animation::create();
 	dieAni->setDelayPerUnit(0.3f);
-	dieAni->addSpriteFrameWithFile("Character/C/CDeath_0.png");
-	dieAni->addSpriteFrameWithFile("Character/C/CDeath_1.png");
-	dieAni->addSpriteFrameWithFile("Character/C/CDeath_2.png");
-	dieAni->addSpriteFrameWithFile("Character/C/CDeath_3.png");
-	dieAni->addSpriteFrameWithFile("Character/C/CDeath_4.png");
-	dieAni->addSpriteFrameWithFile("Character/C/CDeath_5.png");
-	dieAni->addSpriteFrameWithFile("Character/C/CDeath_6.png");
-	dieAni->addSpriteFrameWithFile("Character/C/CDeath_7.png");
-	dieAni->addSpriteFrameWithFile("Character/C/CDeath_8.png");
-	dieAni->addSpriteFrameWithFile("Character/C/CDeath_9.png");
-	dieAni->addSpriteFrameWithFile("Character/C/CDeath_10.png");
-	dieAni->addSpriteFrameWithFile("Character/C/CDeath_11.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_0.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_1.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_2.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_3.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_4.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_5.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_6.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_7.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_8.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_9.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_10.png");
+	dieAni->addSpriteFrameWithFile("Character/A/ADeath_11.png");
+
 	auto animate = Animate::create(dieAni);
 
-	auto seq = Sequence::create(animate, DelayTime::create(2.0f), nullptr);
+	auto removeFromVector = CallFunc::create(CC_CALLBACK_0(RightUnit::removeUnitFromVector, this));
+	auto remove = CallFunc::create(CC_CALLBACK_0(Unit::removeUnit, this));
+
+	auto seq = Sequence::create(animate, removeFromVector, remove, nullptr);
+	this->runAction(seq);
 }
 #pragma endregion
 
+#pragma region callback function
 void RightUnit::callbackAttack(Unit* enemy)
 {
 	enemy->damaged(power);
 	if (enemy->isDied)
 	{
-		isFighting = false;
 		moveUnit();
 	}
 }
 
+void RightUnit::callbackAttackFac()
+{
+	enemyFactory->Factory_Hp_Down();
+}
+
+//공격 받는 함수
+void RightUnit::damaged(float damage)
+{
+	hp -= damage;
+
+	if (hp <= 0)
+	{	
+		hp = 0;
+		isDied = true;
+		if(!isDieAct)
+			this->dieUnit();
+	}
+}
+
+void RightUnit::removeUnitFromVector()
+{
+	if (unitsL.contains(this))
+		unitsL.eraseObject(this);
+	else
+		unitsR.eraseObject(this);
+}
+#pragma endregion
+
+#pragma region schedule function
 void RightUnit::update(float f)
 {
-	fullHP->setScaleX(hp / maxHp);
-
 	Rect myRect = getBoundingBox();
+	Rect enemyFacRect = enemyFactory->return_Factory_Sp()->getBoundingBox();
 
 	//적군과 충돌할 때
 	for (Unit* e : unitsL)
@@ -141,12 +201,22 @@ void RightUnit::update(float f)
 		Rect enemyRect = e->getBoundingBox();
 
 		//두 유닛이 충돌했을 때
-		if (myRect.intersectsRect(enemyRect))
+		if (myRect.intersectsRect(enemyRect) && !e->isDied)
 		{
-			if (!isFighting && !e->isDied)
+			if (!isFighting)
 				attackUnit(e);
 		}
 	}
+
+	//적군과 충돌하지 않을 때 (우선 순위 = 적 > 적 팩토리) 수정해야함
+	if (myRect.intersectsRect(enemyFacRect))
+	{
+		//팩토리 공격
+		log("Attack the enemy factory");
+		if (!isFighting)
+			attackFactory();
+	}
+
 
 	//아군과 충돌할 때
 	for (Unit* b : unitsR)
@@ -175,3 +245,4 @@ void RightUnit::update(float f)
 	}
 
 }
+#pragma endregion

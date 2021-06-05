@@ -29,7 +29,7 @@ bool TestScene0::init()
 	Creat_Factory();
 
 	//팩토리 스케줄 등록
-	this->schedule(schedule_selector(TestScene0::Factory_Right_CreatUnitCheck), 1);
+	this->schedule(schedule_selector(TestScene0::Factory_Right_CreatUnitCheck), 10);
 	this->schedule(schedule_selector(TestScene0::Factory_Left_CreatUnitCheck), 1);
 	this->schedule(schedule_selector(TestScene0::Update));
     return true;

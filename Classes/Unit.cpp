@@ -14,27 +14,14 @@ void Unit::initData()
 
 	emptyHP->setAnchorPoint(Vec2(0, 0));
 	fullHP->setAnchorPoint(Vec2(0, 0));
-
-	this->addChild(emptyHP, 3);
-	this->addChild(fullHP, 4);
-}
-
-//공격 받는 함수
-void Unit::damaged(float damage)
-{
-	hp -= damage;
-	if (hp <= 0)
-	{
-		hp = 0;
-		isDied = true;
-		removeUnit();
-	}
+	
+	this->addChild(emptyHP, 4);
+	this->addChild(fullHP, 5);
 }
 
 //제거하는 함수
 void Unit::removeUnit()
 {
-	//애니메이션 추가
 	auto removeSelf = RemoveSelf::create(true);
 	this->runAction(removeSelf);
 }
