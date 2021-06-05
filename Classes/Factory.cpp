@@ -318,6 +318,7 @@ void Factory::CreatUnit()
 
 void Factory::HpDown(Ref* Sender)
 {
+	SoundManager::GetInstance()->Play(0);
 	if (CurHp <= 0)
 		return;
 	Factory_Damage_Action();
