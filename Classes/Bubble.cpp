@@ -15,6 +15,19 @@ Bubble* Bubble::create(const std::string& filename)//, BUBBLE b_slot)
 	return nullptr;
 }
 
+Bubble* Bubble::create(float a)
+{
+	Bubble* sprite = new(std::nothrow)Bubble(); // nothrow > 몬스터 잘못 생성될때 프로그래 죽지않도록
+	if (sprite && sprite->init())
+	{
+		sprite->autorelease();
+		return sprite;
+	}
+
+	CC_SAFE_DELETE(sprite);
+	return nullptr;
+}
+
 Bubble* Bubble::BubbleCreate(BUBBLE info)
 {
 	b_stat = info;
@@ -86,6 +99,7 @@ Bubble* Bubble::BubbleCreate(BUBBLE info)
 	pBub->setPrWiththis(true);
 	return pBub;
 }
+
 
 bool Bubble::isMove()
 {

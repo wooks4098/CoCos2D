@@ -279,6 +279,7 @@ BUBBLE GameScene::GetPP(int lev)
 
 	return val;
 }
+
 void GameScene::ClickToCreateBubble1(Ref* pSender, int lev, bool isRight)
 {
 	//bubbles.push_back(new Bubble);
@@ -384,17 +385,28 @@ void GameScene::OneTwoThreeFourBubbleBubbleRight(float f)
 				{
 					if (bubblesRight[i]->BubbleStat_rt().key <= 5 && bubblesRight[i]->BubbleStat_rt().key == bubblesRight[j]->BubbleStat_rt().key)
 					{
+						auto removebb=Bubble::create(1);
 						log("R C Check");
 						invenPos_Right[bubblesRight[i]->GetPosNum()].isFull = false;
-						bubblesRight[i]->removeFromParentAndCleanup(true);
+						
+						removebb = bubblesRight[i];
+						this->removeChild(bubblesRight[i]);
+
+						//bubblesRight[i]->removeFromParentAndCleanup(true);
+
 						bubblesRight.erase(bubblesRight.begin() + i);
 						if (i != j)
 						{
 							invenPos_Right[bubblesRight[j - 1]->GetPosNum()].isFull = false;
-							bubblesRight[j - 1]->removeFromParentAndCleanup(true);
+							
+							removebb = bubblesRight[j - 1];
+							this->removeChild(bubblesRight[j - 1]);
+							//bubblesRight[j - 1]->removeFromParentAndCleanup(true);
 							bubblesRight.erase(bubblesRight.begin() + j - 1);
 						}
 						//new 버블 생성 코드
+						//if(bubblesTest.era)
+
 						ClickToCreateBubble1(this, 2, true);
 						return;
 					}
@@ -410,7 +422,11 @@ void GameScene::OneTwoThreeFourBubbleBubbleRight(float f)
 		{
 			factory[FACTORY_RIGHT].Change_Bubble(bubblesRight[i]->BubbleStat_rt());
 			invenPos_Right[bubblesRight[i]->GetPosNum()].isFull = false;
-			bubblesRight[i]->removeFromParentAndCleanup(true);
+			
+			//bubblesRight[i]->removeFromParentAndCleanup(true);
+			removebb = bubblesRight[j - 1];
+			this->removeChild(bubblesRight[j - 1]);
+
 			bubblesRight.erase(bubblesRight.begin() + i);
 			break;
 		}
@@ -491,6 +507,84 @@ void GameScene::OneTwoThreeFourBubbleBubbleLeft(float f)
 		else
 		{
 			bubblesLeft[i]->setPosition(Vec2(invenPos_Left[bubblesLeft[i]->GetPosNum()].x, invenPos_Left[bubblesLeft[i]->GetPosNum()].y));
+		}
+	}
+}
+
+void GameScene::OneTwoThreeFourBubbleBubbleTest(float f)
+{
+	for (int i = 0; i < bubblesTest.size(); i++)
+	{
+		if (bubblesTest[i]->isMove())//움직이고 있다면 충돌처리를 하지 않는다.
+		{
+			return;
+		}
+	}
+	//충돌철이//첫 생성 시 겹쳐서 생성되면 바로 합쳐진다...
+	if (bubblesTest.size() >= 2)
+	{
+		for (int i = 0; i < bubblesTest.size(); i++)
+		{
+			for (int j = i + 1; j < bubblesTest.size(); j++)
+			{
+				if (bubblesTest.at(i)->getBoundingBox().intersectsRect(bubblesTest.at(j)->getBoundingBox()))
+				{
+					if (bubblesTest.at(i)->BubbleStat_rt().key <= 5 && bubblesTest.at(i)->BubbleStat_rt().key == bubblesTest.at(j)->BubbleStat_rt().key)
+					{
+						auto removebb = Bubble::create(1);
+						log("R C Check");
+						invenPos_Right[bubblesTest.at(i)->GetPosNum()].isFull = false;
+
+						removebb = bubblesTest.at(i);
+						this->removeChild(bubblesTest.at(i));
+						bubblesTest.eraseObject(*bubblesTest.begin() + i);
+
+						if (i != j)
+						{
+							invenPos_Right[bubblesTest.at(j - 1)->GetPosNum()].isFull = false;
+
+							removebb = bubblesTest.at(j - 1);
+							this->removeChild(bubblesTest.at(j - 1));
+							bubblesTest.eraseObject(*bubblesTest.begin() + j - 1,false);
+						}
+						//new 버블 생성 코드
+						//if(bubblesTest.era)
+
+						ClickToCreateBubble1(this, 2, true);
+						return;
+					}
+				}
+			}
+		}
+	}
+
+	//right
+	for (int i = 0; i < bubblesRight.size(); i++)
+	{
+		if (bubblesRight[i]->getBoundingBox().intersectsRect(factory[FACTORY_RIGHT].return_Factory_Sp()->getBoundingBox()))
+		{
+			factory[FACTORY_RIGHT].Change_Bubble(bubblesRight[i]->BubbleStat_rt());
+			invenPos_Right[bubblesRight[i]->GetPosNum()].isFull = false;
+
+			//bubblesRight[i]->removeFromParentAndCleanup(true);
+			removebb = bubblesRight[j - 1];
+			this->removeChild(bubblesRight[j - 1]);
+
+			bubblesRight.erase(bubblesRight.begin() + i);
+			break;
+		}
+
+		if (bubblesRight[i]->getBoundingBox().intersectsRect(UI_Right_bottom_Delet->getBoundingBox()))
+		{
+			bitCoinR += bubbleCostR * 0.5f - 10;
+			Rcoin->setString(StringUtils::format("%d", bitCoinR));
+			invenPos_Right[bubblesRight[i]->GetPosNum()].isFull = false;
+			bubblesRight[i]->removeFromParentAndCleanup(true);
+			bubblesRight.erase(bubblesRight.begin() + i);
+		}
+		else
+		{
+			bubblesRight[i]->setPosition(Vec2(invenPos_Right[bubblesRight[i]->GetPosNum()].x, invenPos_Right[bubblesRight[i]->GetPosNum()].y));
 		}
 	}
 }

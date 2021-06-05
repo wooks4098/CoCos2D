@@ -42,6 +42,9 @@ private:
 	int RCount;
 	std::vector<Bubble*> bubblesLeft;
 	std::vector<Bubble*> bubblesRight;
+	cocos2d::Vector<Bubble*> bubblesTest;
+	Vector<Bubble*>::iterator itor;
+	Vector<Bubble*>::iterator itor2;
 	BUBBLE val;
 	int randnum;
 	int bitCoinL;
@@ -62,6 +65,7 @@ public:
 
 	BUBBLE GetPP(int lev);
 	void ClickToCreateBubble1(Ref* pSender, int lev, bool isRight);
+	void initData() { bubblesLeft.clear(); bubblesRight.clear(); }
 
 	//스케줄
 	void Factory_Right_CreatUnitCheck(float f);	//팩토리(Right) 유닛 생성 체크
@@ -69,6 +73,7 @@ public:
 	void Update(float f);//업데이트
 	void OneTwoThreeFourBubbleBubbleRight(float f);
 	void OneTwoThreeFourBubbleBubbleLeft(float f);
+	void OneTwoThreeFourBubbleBubbleTest(float f);
 	void GetCoinInTime(float f);
 };
 
