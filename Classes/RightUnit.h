@@ -14,9 +14,9 @@ public:
 	void damaged(float damage) override; //데미지 입는 함수
 	void dieUnit() override; //유닛 사망
 	void update(float f) override; //유닛 충돌 체크
+	void removeUnit() override; //유닛 제거
 
 	//콜백 함수
 	void callbackAttack(Unit* enemy) override; //attackUnit에서 호출하는 함수
 	void callbackAttackFac() override; //공격할 때 호출
-	void removeUnitFromVector() override; //dieUnit에서 호출하는 콜백 함수
 };

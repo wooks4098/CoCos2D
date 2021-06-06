@@ -16,6 +16,7 @@ Unit* RightUnit::createUnit(Factory* myFac, Factory* enemyFac)
 	sprite->myFactory = myFac;
 	sprite->enemyFactory = enemyFac;
 
+	sprite->initData();
 	sprite->initUnit(); //유닛 초기화
 
 	sprite->scheduleUpdate();
@@ -34,14 +35,23 @@ Unit* RightUnit::createUnit(Factory* myFac, Factory* enemyFac)
 #pragma region init
 void RightUnit::initUnit()
 {
-	initData();
-
 	maxHp = 20;
 	hp = maxHp;
 	speed = 200;
 	power = 2;
 
-	fullHP->setScaleX(0.5); //실험 중...
+	fullHP->setScaleX(1); //실험 중...
+}
+#pragma endregion
+
+#pragma region remove
+//제거하는 함수
+void RightUnit::removeUnit()
+{
+	if (unitsR.contains(this))
+		unitsR.eraseObject(this);
+	auto removeSelf = RemoveSelf::create(true);
+	this->runAction(removeSelf);
 }
 #pragma endregion
 
@@ -50,6 +60,7 @@ void RightUnit::idleUnit()
 {
 	this->stopAllActions();
 	isFighting = false;
+	isAttackFac = false;
 
 	auto idleAni = Animation::create();
 	idleAni->setDelayPerUnit(0.3f);
@@ -62,6 +73,7 @@ void RightUnit::moveUnit()
 {
 	this->stopAllActions();
 	isFighting = false;
+	isAttackFac = false;
 
 	float distance = fabs(enemyFactory->return_Factory_Sp()->getPosition().x - getPosition().x);
 	auto move = MoveTo::create(distance / speed, enemyFactory->return_Factory_Sp()->getPosition());
@@ -85,6 +97,7 @@ void RightUnit::attackUnit(Unit* enemy)
 {
 	this->stopAllActions();
 	this->isFighting = true;
+	isAttackFac = false;
 
 	//Left공격 애니메이션
 	auto attackAni = Animation::create();
@@ -104,7 +117,7 @@ void RightUnit::attackUnit(Unit* enemy)
 void RightUnit::attackFactory()
 {
 	this->stopAllActions();
-	this->isFighting = true;
+	isAttackFac = true;
 
 	//Left공격 애니메이션
 	auto attackAni = Animation::create();
@@ -140,14 +153,14 @@ void RightUnit::dieUnit()
 	dieAni->addSpriteFrameWithFile("Character/A/ADeath_9.png");
 	dieAni->addSpriteFrameWithFile("Character/A/ADeath_10.png");
 	dieAni->addSpriteFrameWithFile("Character/A/ADeath_11.png");
-
 	auto animate = Animate::create(dieAni);
 
-	auto removeFromVector = CallFunc::create(CC_CALLBACK_0(RightUnit::removeUnitFromVector, this));
-	auto remove = CallFunc::create(CC_CALLBACK_0(Unit::removeUnit, this));
-
-	auto seq = Sequence::create(animate, removeFromVector, remove, nullptr);
+	auto remove = CallFunc::create(CC_CALLBACK_0(RightUnit::removeUnit, this));
+	auto seq = Sequence::create(animate, remove, nullptr);
 	this->runAction(seq);
+
+	auto fadeout = Spawn::create(DelayTime::create(2.4f), FadeOut::create(1.2f), nullptr);
+	emptyHP->runAction(fadeout);
 }
 #pragma endregion
 
@@ -179,19 +192,13 @@ void RightUnit::damaged(float damage)
 			this->dieUnit();
 	}
 }
-
-void RightUnit::removeUnitFromVector()
-{
-	if (unitsL.contains(this))
-		unitsL.eraseObject(this);
-	else
-		unitsR.eraseObject(this);
-}
 #pragma endregion
 
 #pragma region schedule function
 void RightUnit::update(float f)
 {
+	fullHP->setScaleX(static_cast<float>(hp) / static_cast<float>(maxHp));
+
 	Rect myRect = getBoundingBox();
 	Rect enemyFacRect = enemyFactory->return_Factory_Sp()->getBoundingBox();
 
@@ -208,15 +215,14 @@ void RightUnit::update(float f)
 		}
 	}
 
-	//적군과 충돌하지 않을 때 (우선 순위 = 적 > 적 팩토리) 수정해야함
-	if (myRect.intersectsRect(enemyFacRect))
+	//적군과 충돌하지 않을 때 (우선 순위 = 적 > 적 팩토리)
+	if (!isFighting && myRect.intersectsRect(enemyFacRect))
 	{
 		//팩토리 공격
 		log("Attack the enemy factory");
-		if (!isFighting)
+		if (!isAttackFac)
 			attackFactory();
 	}
-
 
 	//아군과 충돌할 때
 	for (Unit* b : unitsR)

@@ -16,6 +16,7 @@ public:
 	bool isDied = false; //죽었는지
 	bool isStop = false; //아군 유닛 충돌에 의해 정지한 상태인지
 	bool isDieAct = false;
+	bool isAttackFac = false;
 
 	//충돌한 아군 유닛
 	Unit* buddyUnit = nullptr;
@@ -41,9 +42,7 @@ public:
 	//콜백 함수
 	void virtual callbackAttack(Unit* enemy) = 0; //공격할 때 호출
 	void virtual callbackAttackFac() = 0; //공격할 때 호출
-	void removeUnit(); //사망할 때 호출
-	void virtual removeUnitFromVector() = 0;
-
+	void virtual removeUnit() = 0; //사망할 때 호출
 
 	//스케줄 함수
 	void virtual update(float f) = 0;

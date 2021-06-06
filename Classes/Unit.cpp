@@ -18,10 +18,3 @@ void Unit::initData()
 	this->addChild(emptyHP, 4);
 	this->addChild(fullHP, 5);
 }
-
-//제거하는 함수
-void Unit::removeUnit()
-{
-	auto removeSelf = RemoveSelf::create(true);
-	this->runAction(removeSelf);
-}
