@@ -37,7 +37,7 @@ bool TestScene2::init()
 	menu1->setPosition(Vec2::ZERO);
 #pragma endregion
 
-	this->schedule(schedule_selector(TestScene2::myTick));
+	this->schedule(static_cast<cocos2d::SEL_SCHEDULE>(&TestScene2::myTick));
 
     return true;
 }

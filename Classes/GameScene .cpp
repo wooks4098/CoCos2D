@@ -40,12 +40,12 @@ bool GameScene::init()
 
 
 	//스케줄 등록
-	this->schedule(schedule_selector(GameScene::Factory_Right_CreatUnitCheck), 0.1f);
-	this->schedule(schedule_selector(GameScene::Factory_Left_CreatUnitCheck), 0.1f);
-	this->schedule(schedule_selector(GameScene::Update));
-	this->schedule(schedule_selector(GameScene::OneTwoThreeFourBubbleBubbleLeft));
-	this->schedule(schedule_selector(GameScene::OneTwoThreeFourBubbleBubbleRight));
-	this->schedule(schedule_selector(GameScene::GetCoinInTime),1.0f);
+	this->schedule(static_cast<cocos2d::SEL_SCHEDULE>(&GameScene::Factory_Right_CreatUnitCheck), 0.1f);
+	this->schedule(static_cast<cocos2d::SEL_SCHEDULE>(&GameScene::Factory_Left_CreatUnitCheck), 0.1f);
+	this->schedule(static_cast<cocos2d::SEL_SCHEDULE>(&GameScene::Update));
+	this->schedule(static_cast<cocos2d::SEL_SCHEDULE>(&GameScene::OneTwoThreeFourBubbleBubbleLeft));
+	this->schedule(static_cast<cocos2d::SEL_SCHEDULE>(&GameScene::OneTwoThreeFourBubbleBubbleRight));
+	this->schedule(static_cast<cocos2d::SEL_SCHEDULE>(&GameScene::GetCoinInTime),1.0f);
 	return true;
 }
 
