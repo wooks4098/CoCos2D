@@ -370,12 +370,21 @@ BUBBLE Factory::return_bubble()
 	Circle_bubble;
 	Rhombus_bubble;
 
-	_bubble.AttackSpeed = Circle_bubble.AttackSpeed + Rhombus_bubble.AttackSpeed;
-	_bubble.Damage = Circle_bubble.Damage + Rhombus_bubble.Damage;
-	_bubble.Defense = Circle_bubble.Defense + Rhombus_bubble.Defense;
-	_bubble.Hp = Circle_bubble.Hp + Rhombus_bubble.Hp;
-	_bubble.MoveSpeed= Circle_bubble.MoveSpeed + Rhombus_bubble.MoveSpeed;
+	_bubble.AttackSpeed = Circle_bubble.AttackSpeed + Rhombus_bubble.AttackSpeed + Upgraid_attackSpeed;
+	_bubble.Damage = Circle_bubble.Damage + Rhombus_bubble.Damage + Upgraid_damage;
+	_bubble.Defense = Circle_bubble.Defense + Rhombus_bubble.Defense + Upgraid_defense;
+	_bubble.Hp = Circle_bubble.Hp + Rhombus_bubble.Hp + Upgraid_hp;
+	_bubble.MoveSpeed= Circle_bubble.MoveSpeed + Rhombus_bubble.MoveSpeed + Upgraid_moveSpeed;
 
 	return _bubble;
 
+}
+
+void Factory::UnitUpgraid()
+{
+	Upgraid_hp += 10;
+	Upgraid_defense += 2;
+	Upgraid_damage += 3;
+	Upgraid_attackSpeed += 0.2f;
+	Upgraid_moveSpeed = 2;
 }

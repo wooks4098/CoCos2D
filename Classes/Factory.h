@@ -15,10 +15,18 @@ private:
 
 	int MaxHp;		//최대 체력
 	int CurHp;		//현재 체력
+	
 	bool isRight;	//공장이 오른쪽에 있는지
 	float CreatUnit_timeCheck;	//유닛 생성 쿨타임 체크
 	float CreatUnit_time;		//유닛 생성 쿨타임
 	float CreatUnit_time_Base = 30;	//유닛 생성 쿨타임 초기값
+
+	float Upgraid_hp = 0;
+	float Upgraid_defense = 0;
+	float Upgraid_damage = 0;
+	float Upgraid_attackSpeed = 0;
+	float Upgraid_moveSpeed = 0;
+
 
 	BUBBLE Circle_bubble;
 	BUBBLE Rhombus_bubble;
@@ -58,7 +66,7 @@ public:
 	void Test();
 	int Change_Key(int _key);
 
-
+	void UnitUpgraid();
 
 	//Scene에 등록시키기 위한 리턴
 	Sprite* return_HpBar() { return Hp_Bar; };
