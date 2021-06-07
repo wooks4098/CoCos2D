@@ -247,12 +247,12 @@ void RightUnit::update(float f)
 	//아군과 충돌할 때
 	for (Unit* b : unitsR)
 	{
-		Rect buddyRect = b->getBoundingBox();
-
-		if (myRect.intersectsRect(buddyRect))
+		Rect bRect = b->getBoundingBox();
+		
+		if (myRect.intersectsRect(bRect))
 		{
 			//나보다 버디 유닛이 상대편 팩토리와 더 가까울 때
-			if (buddyRect.origin.x < myRect.origin.x && isStop == false)
+			if (bRect.origin.x < myRect.origin.x && isStop == false)
 			{
 				isStop = true;
 				buddyUnit = b;
@@ -261,6 +261,7 @@ void RightUnit::update(float f)
 		}
 		else
 		{
+			//전투 후 다시 이동
 			if (b == buddyUnit)
 			{
 				isStop = false;
@@ -268,6 +269,17 @@ void RightUnit::update(float f)
 				moveUnit();
 			}
 		}
+
+		Rect buddyRect;
+		if(buddyUnit != nullptr)
+			buddyRect = buddyUnit->getBoundingBox();
+
+		if (!myRect.intersectsRect(buddyRect) && buddyUnit == nullptr)
+		{
+			isStop = false;
+			moveUnit();
+		}
+
 	}
 
 }

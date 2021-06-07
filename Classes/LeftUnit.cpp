@@ -249,7 +249,7 @@ void LeftUnit::update(float f)
 	{
 		Rect buddyRect = b->getBoundingBox();
 
-		if (myRect.intersectsRect(buddyRect))
+		if (myRect.intersectsRect(buddyRect) && !b->isDied)
 		{
 			//나보다 버디 유닛이 상대편 팩토리와 더 가까울 때
 			if (myRect.origin.x < buddyRect.origin.x && isStop == false)
@@ -261,6 +261,7 @@ void LeftUnit::update(float f)
 		}
 		else
 		{
+			//전투 후 다시 이동
 			if (b == buddyUnit)
 			{
 				isStop = false;
