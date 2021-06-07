@@ -1,7 +1,7 @@
 
 #include "HelloWorldScene.h"
 #include "GameScene .h"
-
+#include "MenuScene .h"
 using namespace cocos2d;
 
 Scene* GameScene::createScene()
@@ -181,6 +181,40 @@ void GameScene::Create_BackGround()
 		invenPos_Right[i + 4].y = UI_Right_bottom_Bubble->getContentSize().height - 33;
 	}
 }
+
+void GameScene::Creat_End_Menu(bool isRightWin)
+{
+
+	if (isRightWin)
+	{
+		end_Image = Sprite::create("UI/GameEnd/WUI_Green.png");
+		end_Image->setAnchorPoint(Vec2(0.5, 0.5));
+		end_Image->setPosition(winSize.width/2, winSize.height/2);
+		this->addChild(end_Image);
+	}
+	else
+	{
+		end_Image = Sprite::create("UI/GameEnd/WUI_Red.png");
+		end_Image->setAnchorPoint(Vec2(0.5, 0.5));
+		end_Image->setPosition(winSize.width / 2, winSize.height / 2);
+		this->addChild(end_Image);
+	}
+	auto _Play = cocos2d::MenuItemImage::create("UI/GameEnd/WUI_RB00.png", "UI/GameEnd/WUI_RB0.png", CC_CALLBACK_1(GameScene::go_Play, this));
+	_Play->setAnchorPoint(Vec2(1, 0));
+
+	auto _Menu = cocos2d::MenuItemImage::create("UI/GameEnd/WUI_HB00.png", "UI/GameEnd/WUI_HB0.png", CC_CALLBACK_1(GameScene::go_Menu, this));
+	_Menu->setAnchorPoint(Vec2(0, 0));
+
+
+	End_menu = Menu::create(_Play, _Menu, nullptr);
+	End_menu->setAnchorPoint(Vec2(0, 0));
+	End_menu->setPosition(Vec2(winSize.width/2, 230));
+	this->addChild(End_menu);
+
+
+	
+}
+
 void GameScene::GetCoinInTime(float f)
 {
 	bitCoinL += coinAmount;
@@ -348,14 +382,16 @@ void GameScene::ClickToCreateBubble1(Ref* pSender, int lev, bool isRight)
 
 void GameScene::Update(float f)
 {
-	//if (GameManager::GetInstance()->Return_isRightFactory_Die)
-	//{
-	//	//¿À¸¥ÂÊ ÆÑÅä¸® »ç¸Á
-	//}
-	//if (GameManager::GetInstance()->Return_isLeftFactory_Die)
-	//{
-	//	//¿ÞÂÊ ÆÑÅä¸® »ç¸Á
-	//}
+	if (GameManager::GetInstance()->Return_isRightFactory_Die())
+	{
+		//¿À¸¥ÂÊ ÆÑÅä¸® »ç¸Á
+		Creat_End_Menu(false);
+	}
+	if (GameManager::GetInstance()->Return_isLeftFactory_Die())
+	{
+		//¿ÞÂÊ ÆÑÅä¸® »ç¸Á
+		Creat_End_Menu(true);
+	}
 }
 
 void GameScene::Factory_Right_CreatUnitCheck(float f)
@@ -599,3 +635,19 @@ void GameScene::OneTwoThreeFourBubbleBubbleLeft(float f)
 //}
 #pragma endregion
 
+void GameScene::go_Menu(Ref* pSender)
+{
+
+	auto _MenuScene = MenuScene::createScene();
+	Director::getInstance()->replaceScene(_MenuScene);
+
+
+}
+
+void GameScene::go_Play(Ref* pSender)
+{
+
+	auto _GameScene = GameScene::createScene();
+	Director::getInstance()->replaceScene(_GameScene);
+
+}

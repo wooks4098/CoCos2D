@@ -32,13 +32,13 @@ void Factory::Create_Factory_Sp()
 	{//공장 위치: 오른쪽
 		Factory_sp = Sprite::create("Factory/Bg_Fatory_R.png");
 		Factory_sp->setAnchorPoint(Vec2(1, 0.5));
-		Factory_sp->setPosition(winSize.width, winSize.height / 2+80);
+		Factory_sp->setPosition(winSize.width, winSize.height / 2+30);
 	}
 	else
 	{//공장 위치 왼쪽
 		Factory_sp = Sprite::create("Factory/Bg_Factory_L.png");
 		Factory_sp->setAnchorPoint(Vec2(0, 0.5));
-		Factory_sp->setPosition(0, winSize.height / 2 + 80);
+		Factory_sp->setPosition(0, winSize.height / 2 +30);
 	}
 	
 
@@ -164,10 +164,18 @@ void Factory::Factory_Hp_Down()
 {
 	if (CurHp <= 0)
 	{
-		if(isRight)
+		if (isRight)
+		{
+
 			GameManager::GetInstance()->Die_Right_Factory();
+
+		}
 		else
+		{
+
+			
 			GameManager::GetInstance()->Die_Left_Factory();
+		}
 
 		return;
 
@@ -300,15 +308,15 @@ void Factory::Change_CreatUnit_Time(float time)
 	CreatUnit_timeCheck = 0;
 }
 
-void Factory::CreatUnit()
+bool Factory::CreatUnit()
 {
 	CreatUnit_time += 0.1f;
 	if (CreatUnit_time >= CreatUnit_timeCheck)
 	{
-		//유닛 생성 함수 등록
 		CreatUnit_time = 0;
+		return false;
 	}
-
+	return false;
 }
 
 #pragma endregion
@@ -318,6 +326,24 @@ void Factory::CreatUnit()
 
 void Factory::HpDown(Ref* Sender)
 {
+	if (CurHp <= 0)
+	{
+		if (isRight)
+		{
+
+			GameManager::GetInstance()->Die_Right_Factory();
+
+		}
+		else
+		{
+
+
+			GameManager::GetInstance()->Die_Left_Factory();
+		}
+
+		return;
+
+	}
 	SoundManager::GetInstance()->Play(0);
 	if (CurHp <= 0)
 		return;

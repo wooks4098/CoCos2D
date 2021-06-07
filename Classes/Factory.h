@@ -37,7 +37,7 @@ public:
 
 	//Creat
 	void Create(int factoryNumber);//팩토리 생성 함수
-	void CreatUnit(); //유닛 생성 함수
+	bool CreatUnit(); //유닛 생성 함수
 	void Change_CreatUnit_Time(float time); //유닛 생성 쿨타임 변경 함수
 
 	void Factory_Hp_Down();//팩토리 Hp 감소

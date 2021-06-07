@@ -16,6 +16,9 @@ private:
 	//Sprite
 	Sprite* UI_Hp_top;
 	Sprite* Factory_Back;
+	Sprite* end_Image;
+	//menu
+	Menu *End_menu;
 
 	//Bubble UI
 	Sprite* UI_Left_bottom_Info;
@@ -62,6 +65,7 @@ public:
 
 	void Creat_Factory();
 	void Create_BackGround();
+	void Creat_End_Menu(bool isRightWin);
 
 	BUBBLE GetPP(int lev);
 	void ClickToCreateBubble1(Ref* pSender, int lev, bool isRight);
@@ -75,6 +79,10 @@ public:
 	void OneTwoThreeFourBubbleBubbleLeft(float f);
 	void OneTwoThreeFourBubbleBubbleTest(float f);
 	void GetCoinInTime(float f);
+
+	//ฤÝน้
+	void go_Play(Ref* pSender);
+	void go_Menu(Ref* pSender);
 };
 
 #endif // _SceneTrans__GameScene
