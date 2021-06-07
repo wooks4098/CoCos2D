@@ -1,16 +1,19 @@
 #pragma once
 #include "cocos2d.h"
 #include "Factory.h"
+#include "mecro.h"
 using namespace cocos2d;
 
 class Unit : public cocos2d::Sprite
 {
 public:
 	//스테이터스
-	float maxHp; //최대 체력
+	float startHp; //초기 체력
+	float startSpeed; //초기 이속
+	float startPower; //초기 힘
 	float hp; //현재 체력
 	float speed; //이동속도
-	float power; //힘
+	float damage; //힘
 
 	bool isFighting = false; //싸우는 중인지
 	bool isDied = false; //죽었는지
@@ -31,7 +34,8 @@ public:
 
 	//함수
 	void initData();
-	void virtual initUnit() = 0; //유닛 초기화
+	void virtual initUnit(BUBBLE bubble) = 0; //유닛 초기화
+	void virtual upgradeUnit() = 0; //유닛 업그레이드
 	void virtual idleUnit() = 0; //유닛 대기
 	void virtual moveUnit() = 0; //유닛 이동
 	void virtual attackUnit(Unit* enemy) = 0; //적 유닛 공격하기

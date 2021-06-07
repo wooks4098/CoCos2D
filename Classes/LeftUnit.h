@@ -4,8 +4,9 @@
 class LeftUnit :public Unit
 {
 public:
-	static Unit* createUnit(Factory* myFac, Factory* enemyFac); //유닛 생성
-	void initUnit() override; //유닛 초기화
+	static Unit* createUnit(Factory* myFac, Factory* enemyFac, BUBBLE bubble); //유닛 생성
+	void initUnit(BUBBLE bubble) override; //유닛 초기화
+	void upgradeUnit() override; //유닛 업그레이드
 
 	void idleUnit() override; //유닛 대기
 	void moveUnit() override; //유닛 이동

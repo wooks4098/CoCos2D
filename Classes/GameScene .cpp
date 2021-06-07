@@ -1,8 +1,11 @@
-
 #include "HelloWorldScene.h"
 #include "GameScene .h"
 #include "MenuScene .h"
 using namespace cocos2d;
+
+//모든 유닛 저장
+Vector<Unit*> unitsL;
+Vector<Unit*> unitsR;
 
 Scene* GameScene::createScene()
 {
@@ -16,6 +19,9 @@ bool GameScene::init()
 	auto wlayer = LayerColor::create(Color4B::WHITE);
 	addChild(wlayer);
 	winSize = Director::getInstance()->getWinSize(); //화면의 사이즈 구하기
+	
+	unitsL.clear();
+	unitsR.clear();
 
 	bitCoinL = 150;
 	bitCoinR = 150;
@@ -401,11 +407,17 @@ void GameScene::Factory_Right_CreatUnitCheck(float f)
 	if (factory[FACTORY_RIGHT].CreatUnit())
 	{
 		BUBBLE _bubble = factory[FACTORY_RIGHT].return_bubble();
-		_bubble.AttackSpeed;
+		/*_bubble.AttackSpeed;
 		_bubble.Damage;
 		_bubble.Defense;
 		_bubble.Hp;
-		_bubble.MoveSpeed;
+		_bubble.MoveSpeed;*/
+
+		Unit* unit = RightUnit::createUnit(&factory[FACTORY_RIGHT], &factory[FACTORY_LEFT], _bubble);
+		unit->initUnit(_bubble);
+		unitsR.pushBack(unit);
+		this->addChild(unit);
+		unit->moveUnit();
 	}
 }
 
@@ -414,11 +426,17 @@ void GameScene::Factory_Left_CreatUnitCheck(float f)
 	if (factory[FACTORY_LEFT].CreatUnit())
 	{
 		BUBBLE _bubble = factory[FACTORY_LEFT].return_bubble();
-		_bubble.AttackSpeed;
+		/*_bubble.AttackSpeed;
 		_bubble.Damage;
 		_bubble.Defense;
 		_bubble.Hp;
-		_bubble.MoveSpeed;
+		_bubble.MoveSpeed;*/
+
+		Unit* unit = LeftUnit::createUnit(&factory[FACTORY_LEFT], &factory[FACTORY_RIGHT], _bubble);
+		unit->initUnit(_bubble);
+		unitsL.pushBack(unit);
+		this->addChild(unit);
+		unit->moveUnit();
 	}
 }
 

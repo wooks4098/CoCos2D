@@ -4,7 +4,7 @@ extern Vector<Unit*> unitsL;
 extern Vector<Unit*> unitsR;
 
 #pragma region create
-Unit* RightUnit::createUnit(Factory* myFac, Factory* enemyFac)
+Unit* RightUnit::createUnit(Factory* myFac, Factory* enemyFac, BUBBLE bubble)
 {
 	//정상적으로 Unit이 생성되지 않은 경우 프로그램이 죽지 않도록 예외처리
 	Unit* sprite = new (std::nothrow)RightUnit();
@@ -17,7 +17,7 @@ Unit* RightUnit::createUnit(Factory* myFac, Factory* enemyFac)
 	sprite->enemyFactory = enemyFac;
 
 	sprite->initData();
-	sprite->initUnit(); //유닛 초기화
+	sprite->initUnit(bubble); //유닛 초기화
 
 	sprite->scheduleUpdate();
 
@@ -33,16 +33,24 @@ Unit* RightUnit::createUnit(Factory* myFac, Factory* enemyFac)
 #pragma endregion
 
 #pragma region init
-void RightUnit::initUnit()
+void RightUnit::initUnit(BUBBLE bubble)
 {
-	maxHp = 20;
-	hp = maxHp;
-	speed = 200;
-	power = 2;
+	startHp = bubble.Hp;
+	hp = startHp;
+	speed = bubble.MoveSpeed;
+	damage = bubble.Damage;
 
 	fullHP->setScaleX(1); //실험 중...
 }
 #pragma endregion
+
+#pragma region upgrade
+void RightUnit::upgradeUnit()
+{
+
+}
+#pragma endregion
+
 
 #pragma region remove
 //제거하는 함수
@@ -167,7 +175,7 @@ void RightUnit::dieUnit()
 #pragma region callback function
 void RightUnit::callbackAttack(Unit* enemy)
 {
-	enemy->damaged(power);
+	enemy->damaged(damage);
 	if (enemy->isDied)
 	{
 		moveUnit();
@@ -180,9 +188,9 @@ void RightUnit::callbackAttackFac()
 }
 
 //공격 받는 함수
-void RightUnit::damaged(float damage)
+void RightUnit::damaged(float d)
 {
-	hp -= damage;
+	hp -= d;
 
 	if (hp <= 0)
 	{	
@@ -197,7 +205,7 @@ void RightUnit::damaged(float damage)
 #pragma region schedule function
 void RightUnit::update(float f)
 {
-	fullHP->setScaleX(static_cast<float>(hp) / static_cast<float>(maxHp));
+	fullHP->setScaleX(static_cast<float>(hp) / static_cast<float>(startHp));
 
 	Rect myRect = getBoundingBox();
 	Rect enemyFacRect = enemyFactory->return_Factory_Sp()->getBoundingBox();

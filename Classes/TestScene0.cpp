@@ -3,8 +3,8 @@
 using namespace cocos2d;
 
 //모든 유닛 저장
-Vector<Unit*> unitsL;
-Vector<Unit*> unitsR;
+//Vector<Unit*> unitsL;
+//Vector<Unit*> unitsR;
 
 Scene* TestScene0::createScene()
 {
@@ -22,8 +22,8 @@ bool TestScene0::init()
     auto wlayer = LayerColor::create(Color4B::WHITE);
     this->addChild(wlayer);
 
-	unitsL.clear();
-	unitsR.clear();
+	//unitsL.clear();
+	//unitsR.clear();
 
 	Create_BackGround();
 	Creat_Factory();
@@ -132,21 +132,21 @@ void TestScene0::Factory_Left_CreatUnitCheck(float f)
 
 void TestScene0::CreatUnitL()
 {
-	Unit* unit = LeftUnit::createUnit(&factory[FACTORY_LEFT], &factory[FACTORY_RIGHT]);
+	/*Unit* unit = LeftUnit::createUnit(&factory[FACTORY_LEFT], &factory[FACTORY_RIGHT]);
 	unit->initUnit();
 	unitsL.pushBack(unit);
 	this->addChild(unit);
-	unit->moveUnit();
+	unit->moveUnit();*/
 	//this->unschedule(schedule_selector(TestScene1::addUnitL)); //실험용
 }
 
 void TestScene0::CreatUnitR()
 {
-	Unit* unit = RightUnit::createUnit(&factory[FACTORY_RIGHT], &factory[FACTORY_LEFT]);
+	/*Unit* unit = RightUnit::createUnit(&factory[FACTORY_RIGHT], &factory[FACTORY_LEFT], bubble);
 	unit->initUnit();
 	unitsR.pushBack(unit);
 	this->addChild(unit);
-	unit->moveUnit();
+	unit->moveUnit();*/
 
 	//this->unschedule(schedule_selector(TestScene1::addUnitR)); //실험용
 }
