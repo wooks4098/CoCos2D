@@ -3,7 +3,7 @@
 Factory::Factory()
 {
 	winSize = Director::getInstance()->getWinSize(); //화면의 사이즈 구하기
-	CreatUnit_timeCheck = 30;	
+	CreatUnit_timeCheck = 1;	
 	CreatUnit_time = 0;		
 	MaxHp = 100;
 	CurHp = MaxHp;
@@ -314,7 +314,7 @@ bool Factory::CreatUnit()
 	if (CreatUnit_time >= CreatUnit_timeCheck)
 	{
 		CreatUnit_time = 0;
-		return false;
+		return true;
 	}
 	return false;
 }

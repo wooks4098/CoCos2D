@@ -19,7 +19,7 @@ private:
 	bool isRight;	//공장이 오른쪽에 있는지
 	float CreatUnit_timeCheck;	//유닛 생성 쿨타임 체크
 	float CreatUnit_time;		//유닛 생성 쿨타임
-	float CreatUnit_time_Base = 30;	//유닛 생성 쿨타임 초기값
+	float CreatUnit_time_Base = 1;	//유닛 생성 쿨타임 초기값
 
 	float Upgraid_hp = 0;
 	float Upgraid_defense = 0;
