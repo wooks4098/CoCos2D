@@ -35,12 +35,22 @@ Unit* RightUnit::createUnit(Factory* myFac, Factory* enemyFac, BUBBLE bubble)
 #pragma region init
 void RightUnit::initUnit(BUBBLE bubble)
 {
-	startHp = bubble.Hp;
+	//수정해야함
+	if(bubble.Hp == 0)
+		startHp = 40;
+	else
+		startHp = bubble.Hp;
 	hp = startHp;
-	speed = bubble.MoveSpeed;
-	damage = bubble.Damage;
 
-	fullHP->setScaleX(1); //실험 중...
+	if (bubble.MoveSpeed == 0)
+		speed = 300;
+	else
+		speed = bubble.MoveSpeed;
+
+	if (bubble.Damage == 0)
+		damage = 10;
+	else
+		damage = bubble.Damage;
 }
 #pragma endregion
 
@@ -83,10 +93,10 @@ void RightUnit::moveUnit()
 	isFighting = false;
 	isAttackFac = false;
 
-	float distance = fabs(enemyFactory->return_Factory_Sp()->getPosition().x - myFactory->return_Factory_Sp()->getPosition().x);
-	auto move = MoveTo::create(distance / speed, enemyFactory->return_Factory_Sp()->getPosition());
+	float distance = fabs(myFactoryPos.x - enemyFactoryPos.x);
+	auto move = MoveTo::create(distance / speed, enemyFactoryPos);
 
-	//Left 이동 애니메이션
+	//Right 이동 애니메이션
 	auto moveAni = Animation::create();
 	moveAni->setDelayPerUnit(0.1f);
 	moveAni->addSpriteFrameWithFile("Character/A/AMove_0.png");
@@ -210,6 +220,7 @@ void RightUnit::update(float f)
 
 	Rect myRect = getBoundingBox();
 	Rect enemyFacRect = enemyFactory->return_Factory_Sp()->getBoundingBox();
+	//rect 범위 수정
 
 	//적군과 충돌할 때
 	for (Unit* e : unitsL)
@@ -240,7 +251,7 @@ void RightUnit::update(float f)
 
 		if (myRect.intersectsRect(buddyRect))
 		{
-			//유닛보다 충돌한 아군 유닛이 더 상대편 팩토리와 가까울 때
+			//나보다 버디 유닛이 상대편 팩토리와 더 가까울 때
 			if (buddyRect.origin.x < myRect.origin.x && isStop == false)
 			{
 				isStop = true;

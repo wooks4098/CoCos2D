@@ -27,6 +27,8 @@ public:
 	//팩토리 정보
 	Factory* myFactory;
 	Factory* enemyFactory;
+	Vec2 myFactoryPos;
+	Vec2 enemyFactoryPos;
 
 	//HP바
 	Sprite* emptyHP;
