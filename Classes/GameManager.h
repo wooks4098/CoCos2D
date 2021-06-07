@@ -23,7 +23,7 @@ private:
 public:
 	void Die_Right_Factory();
 	void Die_Left_Factory();
-
+	void Reset();
 
 	bool Return_isRightFactory_Die() { return isRightFactory_Die; };
 	bool Return_isLeftFactory_Die() { return isLeftFactory_Die; };

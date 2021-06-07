@@ -382,15 +382,17 @@ void GameScene::ClickToCreateBubble1(Ref* pSender, int lev, bool isRight)
 
 void GameScene::Update(float f)
 {
-	if (GameManager::GetInstance()->Return_isRightFactory_Die())
+	if (GameManager::GetInstance()->Return_isRightFactory_Die()&& !isEndOpen)
 	{
 		//¿À¸¥ÂÊ ÆÑÅä¸® »ç¸Á
 		Creat_End_Menu(false);
+		isEndOpen = true;
 	}
-	if (GameManager::GetInstance()->Return_isLeftFactory_Die())
+	if (GameManager::GetInstance()->Return_isLeftFactory_Die()&& !isEndOpen)
 	{
 		//¿ÞÂÊ ÆÑÅä¸® »ç¸Á
 		Creat_End_Menu(true);
+		isEndOpen = true;
 	}
 }
 
@@ -637,17 +639,20 @@ void GameScene::OneTwoThreeFourBubbleBubbleLeft(float f)
 
 void GameScene::go_Menu(Ref* pSender)
 {
-
+	GameManager::GetInstance()->Reset();
+	//this->removeAllChildren();
 	auto _MenuScene = MenuScene::createScene();
 	Director::getInstance()->replaceScene(_MenuScene);
-
 
 }
 
 void GameScene::go_Play(Ref* pSender)
 {
+	GameManager::GetInstance()->Reset();
 
+	//this->removeAllChildren();
 	auto _GameScene = GameScene::createScene();
 	Director::getInstance()->replaceScene(_GameScene);
+
 
 }

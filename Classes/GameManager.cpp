@@ -11,3 +11,9 @@ void GameManager::Die_Left_Factory()
 {
 	isLeftFactory_Die = true;
 }
+
+void GameManager::Reset()
+{
+	isRightFactory_Die = false;
+	isLeftFactory_Die = false;
+}

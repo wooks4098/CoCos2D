@@ -19,7 +19,7 @@ private:
 	Sprite* end_Image;
 	//menu
 	Menu *End_menu;
-
+	bool isEndOpen = false;
 	//Bubble UI
 	Sprite* UI_Left_bottom_Info;
 	MenuItemImage* UI_Left_bottom_Bubble;
