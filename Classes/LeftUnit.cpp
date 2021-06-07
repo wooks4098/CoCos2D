@@ -82,12 +82,12 @@ void LeftUnit::moveUnit()
 	isFighting = false;
 	isAttackFac = false;
 
-	float distance = fabs(enemyFactory->return_Factory_Sp()->getPosition().x - getPosition().x);
+	float distance = fabs(enemyFactory->return_Factory_Sp()->getPosition().x - myFactory->return_Factory_Sp()->getPosition().x);
 	auto move = MoveTo::create(distance / speed, enemyFactory->return_Factory_Sp()->getPosition());
 
 	//Right 이동 애니메이션
 	auto moveAni = Animation::create();
-	moveAni->setDelayPerUnit(0.3f);
+	moveAni->setDelayPerUnit(0.1f);
 	moveAni->addSpriteFrameWithFile("Character/C/CMove_0.png");
 	moveAni->addSpriteFrameWithFile("Character/C/CMove_1.png");
 	moveAni->addSpriteFrameWithFile("Character/C/CMove_2.png");
@@ -95,9 +95,10 @@ void LeftUnit::moveUnit()
 	moveAni->addSpriteFrameWithFile("Character/C/CMove_4.png");
 	moveAni->addSpriteFrameWithFile("Character/C/CMove_5.png");
 	auto animate = Animate::create(moveAni);
-
-	auto spawn = Spawn::create(Repeat::create(animate, -1), move, nullptr);
-	this->runAction(spawn);
+	auto rep = Repeat::create(animate, -1);
+	
+	this->runAction(move);
+	this->runAction(rep);
 }
 
 void LeftUnit::attackUnit(Unit* enemy)
