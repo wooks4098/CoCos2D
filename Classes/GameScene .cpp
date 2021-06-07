@@ -398,12 +398,28 @@ void GameScene::Update(float f)
 
 void GameScene::Factory_Right_CreatUnitCheck(float f)
 {
-	//factory[FACTORY_RIGHT].CreatUnit();
+	if (factory[FACTORY_RIGHT].CreatUnit())
+	{
+		BUBBLE _bubble = factory[FACTORY_RIGHT].return_bubble();
+		_bubble.AttackSpeed;
+		_bubble.Damage;
+		_bubble.Defense;
+		_bubble.Hp;
+		_bubble.MoveSpeed;
+	}
 }
 
 void GameScene::Factory_Left_CreatUnitCheck(float f)
 {
-	//factory[FACTORY_LEFT].CreatUnit();
+	if (factory[FACTORY_LEFT].CreatUnit())
+	{
+		BUBBLE _bubble = factory[FACTORY_LEFT].return_bubble();
+		_bubble.AttackSpeed;
+		_bubble.Damage;
+		_bubble.Defense;
+		_bubble.Hp;
+		_bubble.MoveSpeed;
+	}
 }
 
 void GameScene::OneTwoThreeFourBubbleBubbleRight(float f)

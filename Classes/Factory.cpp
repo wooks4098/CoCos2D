@@ -363,3 +363,19 @@ void Factory::Test()
 	Circle_bubble_sprite[0]->runAction(show);
 
 }
+
+BUBBLE Factory::return_bubble()
+{
+	BUBBLE _bubble;
+	Circle_bubble;
+	Rhombus_bubble;
+
+	_bubble.AttackSpeed = Circle_bubble.AttackSpeed + Rhombus_bubble.AttackSpeed;
+	_bubble.Damage = Circle_bubble.Damage + Rhombus_bubble.Damage;
+	_bubble.Defense = Circle_bubble.Defense + Rhombus_bubble.Defense;
+	_bubble.Hp = Circle_bubble.Hp + Rhombus_bubble.Hp;
+	_bubble.MoveSpeed= Circle_bubble.MoveSpeed + Rhombus_bubble.MoveSpeed;
+
+	return _bubble;
+
+}
