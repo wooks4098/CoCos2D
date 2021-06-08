@@ -6,7 +6,6 @@ class RightUnit :public Unit
 public:
 	static Unit* createUnit(Factory* myFac, Factory* enemyFac, BUBBLE bubble); //유닛 생성
 	void initUnit(BUBBLE bubble) override; //유닛 초기화
-	void upgradeUnit() override; //유닛 업그레이드
 
 	void idleUnit() override; //유닛 대기
 	void moveUnit() override; //유닛 이동
@@ -16,6 +15,7 @@ public:
 	void dieUnit() override; //유닛 사망
 	void update(float f) override; //유닛 충돌 체크
 	void removeUnit() override; //유닛 제거
+	void removeVector() override;
 
 	//콜백 함수
 	void callbackAttack(Unit* enemy) override; //attackUnit에서 호출하는 함수

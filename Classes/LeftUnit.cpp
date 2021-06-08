@@ -45,23 +45,25 @@ void LeftUnit::initUnit(BUBBLE bubble)
 	if (bubble.MoveSpeed == 0)
 		speed = 400;
 	else
-		speed = bubble.MoveSpeed;
+		//speed = bubble.MoveSpeed;
+		speed = 300;
 
 	if (bubble.Damage == 0)
-		damage = 20;
+		damage = 10;
 	else
-		damage = bubble.Damage;
+		//damage = bubble.Damage;
+		damage = 10;
 }
 #pragma endregion
 
-#pragma region upgrade
-void LeftUnit::upgradeUnit()
-{
-
-}
-#pragma endregion
 
 #pragma region remove
+void LeftUnit::removeVector()
+{
+	if (unitsR.contains(this))
+		unitsR.eraseObject(this);
+}
+
 //제거하는 함수
 void LeftUnit::removeUnit()
 {
@@ -174,7 +176,8 @@ void LeftUnit::dieUnit()
 	auto animate = Animate::create(dieAni);
 
 	auto remove = CallFunc::create(CC_CALLBACK_0(LeftUnit::removeUnit, this));
-	auto seq = Sequence::create(animate, remove, nullptr);
+	auto removeV = CallFunc::create(CC_CALLBACK_0(LeftUnit::removeVector, this));
+	auto seq = Sequence::create(removeV, animate, remove, nullptr);
 	this->runAction(seq);
 
 	auto fadeout = Spawn::create(DelayTime::create(2.4f), FadeOut::create(1.2f), nullptr);
@@ -206,6 +209,13 @@ void LeftUnit::damaged(float d)
 	{
 		hp = 0;
 		isDied = true;
+
+		if (backBuddyUnit != nullptr && backBuddyUnit->isStop)
+		{
+			backBuddyUnit->buddyUnit = nullptr;
+			backBuddyUnit->moveUnit();
+		}
+
 		if(!isDieAct)
 			this->dieUnit();
 	}
@@ -218,8 +228,7 @@ void LeftUnit::update(float f)
 	fullHP->setScaleX(static_cast<float>(hp) / static_cast<float>(startHp));
 
 	Rect myRect = getBoundingBox();
-	Rect enemyFacRect = enemyFactory->return_Factory_Sp()->getBoundingBox();
-
+	Rect enemyFacRect = Rect(enemyFactoryPos.x + 200, enemyFactoryPos.y, enemyFactory->return_Factory_Sp()->getContentSize().width, enemyFactory->return_Factory_Sp()->getContentSize().height);
 
 	for (Unit* e : unitsR)
 	{
@@ -241,23 +250,23 @@ void LeftUnit::update(float f)
 			attackFactory();
 	}
 
-
-
-
 	//아군과 충돌할 때
 	for (Unit* b : unitsL)
 	{
 		Rect buddyRect = b->getBoundingBox();
 
-		if (myRect.intersectsRect(buddyRect) && !b->isDied)
+		if (myRect.intersectsRect(buddyRect))
 		{
-			//나보다 버디 유닛이 상대편 팩토리와 더 가까울 때
-			if (myRect.origin.x < buddyRect.origin.x && isStop == false)
+			//앞쪽 버디 유닛이 있는 경우
+			if (myRect.origin.x < buddyRect.origin.x && !isStop)
 			{
 				isStop = true;
 				buddyUnit = b;
 				idleUnit();
 			}
+			//뒷쪽 버디 유닛이 있는 경우
+			if (myRect.origin.x > buddyRect.origin.x)
+				backBuddyUnit = b;
 		}
 		else
 		{

@@ -23,6 +23,7 @@ public:
 
 	//충돌한 아군 유닛
 	Unit* buddyUnit = nullptr;
+	Unit* backBuddyUnit = nullptr;
 
 	//팩토리 정보
 	Factory* myFactory;
@@ -37,7 +38,6 @@ public:
 	//함수
 	void initData();
 	void virtual initUnit(BUBBLE bubble) = 0; //유닛 초기화
-	void virtual upgradeUnit() = 0; //유닛 업그레이드
 	void virtual idleUnit() = 0; //유닛 대기
 	void virtual moveUnit() = 0; //유닛 이동
 	void virtual attackUnit(Unit* enemy) = 0; //적 유닛 공격하기
@@ -49,6 +49,7 @@ public:
 	void virtual callbackAttack(Unit* enemy) = 0; //공격할 때 호출
 	void virtual callbackAttackFac() = 0; //공격할 때 호출
 	void virtual removeUnit() = 0; //사망할 때 호출
+	void virtual removeVector() = 0;
 
 	//스케줄 함수
 	void virtual update(float f) = 0;

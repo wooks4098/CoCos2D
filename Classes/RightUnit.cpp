@@ -45,29 +45,27 @@ void RightUnit::initUnit(BUBBLE bubble)
 	if (bubble.MoveSpeed == 0)
 		speed = 300;
 	else
-		speed = bubble.MoveSpeed;
+		//speed = bubble.MoveSpeed;
+		speed = 500;
 
 	if (bubble.Damage == 0)
-		damage = 10;
+		damage = 40;
 	else
-		damage = bubble.Damage;
+		//damage = bubble.Damage;
+		damage = 50;
 }
 #pragma endregion
-
-#pragma region upgrade
-void RightUnit::upgradeUnit()
-{
-
-}
-#pragma endregion
-
 
 #pragma region remove
 //제거하는 함수
-void RightUnit::removeUnit()
+void RightUnit::removeVector()
 {
 	if (unitsR.contains(this))
 		unitsR.eraseObject(this);
+}
+
+void RightUnit::removeUnit()
+{
 	auto removeSelf = RemoveSelf::create(true);
 	this->runAction(removeSelf);
 }
@@ -175,7 +173,8 @@ void RightUnit::dieUnit()
 	auto animate = Animate::create(dieAni);
 
 	auto remove = CallFunc::create(CC_CALLBACK_0(RightUnit::removeUnit, this));
-	auto seq = Sequence::create(animate, remove, nullptr);
+	auto removeV = CallFunc::create(CC_CALLBACK_0(RightUnit::removeVector, this));
+	auto seq = Sequence::create(removeV, animate, remove, nullptr);
 	this->runAction(seq);
 
 	auto fadeout = Spawn::create(DelayTime::create(2.4f), FadeOut::create(1.2f), nullptr);
@@ -207,6 +206,8 @@ void RightUnit::damaged(float d)
 	{	
 		hp = 0;
 		isDied = true;
+		//if (backBuddyUnit)
+			//backBuddyUnit->moveUnit();
 		if(!isDieAct)
 			this->dieUnit();
 	}
@@ -219,8 +220,7 @@ void RightUnit::update(float f)
 	fullHP->setScaleX(static_cast<float>(hp) / static_cast<float>(startHp));
 
 	Rect myRect = getBoundingBox();
-	Rect enemyFacRect = enemyFactory->return_Factory_Sp()->getBoundingBox();
-	//rect 범위 수정
+	Rect enemyFacRect = Rect(enemyFactoryPos.x - 200, enemyFactoryPos.y, enemyFactory->return_Factory_Sp()->getContentSize().width, enemyFactory->return_Factory_Sp()->getContentSize().height);
 
 	//적군과 충돌할 때
 	for (Unit* e : unitsL)
@@ -247,12 +247,12 @@ void RightUnit::update(float f)
 	//아군과 충돌할 때
 	for (Unit* b : unitsR)
 	{
-		Rect bRect = b->getBoundingBox();
+		Rect buddyRect = b->getBoundingBox();
 		
-		if (myRect.intersectsRect(bRect))
+		if (myRect.intersectsRect(buddyRect))
 		{
-			//나보다 버디 유닛이 상대편 팩토리와 더 가까울 때
-			if (bRect.origin.x < myRect.origin.x && isStop == false)
+			//앞쪽 버디 유닛
+			if (buddyRect.origin.x < myRect.origin.x && isStop == false)
 			{
 				isStop = true;
 				buddyUnit = b;
@@ -269,18 +269,6 @@ void RightUnit::update(float f)
 				moveUnit();
 			}
 		}
-
-		Rect buddyRect;
-		if(buddyUnit != nullptr)
-			buddyRect = buddyUnit->getBoundingBox();
-
-		if (!myRect.intersectsRect(buddyRect) && buddyUnit == nullptr)
-		{
-			isStop = false;
-			moveUnit();
-		}
-
 	}
-
 }
 #pragma endregion
