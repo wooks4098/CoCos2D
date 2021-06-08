@@ -203,12 +203,17 @@ void RightUnit::damaged(float d)
 	hp -= d;
 
 	if (hp <= 0)
-	{	
+	{
 		hp = 0;
 		isDied = true;
-		//if (backBuddyUnit)
-			//backBuddyUnit->moveUnit();
-		if(!isDieAct)
+
+		if (backBuddyUnit != nullptr && backBuddyUnit->isStop)
+		{
+			backBuddyUnit->buddyUnit = nullptr;
+			backBuddyUnit->moveUnit();
+		}
+
+		if (!isDieAct)
 			this->dieUnit();
 	}
 }
@@ -227,7 +232,6 @@ void RightUnit::update(float f)
 	{
 		Rect enemyRect = e->getBoundingBox();
 
-		//두 유닛이 충돌했을 때
 		if (myRect.intersectsRect(enemyRect) && !e->isDied)
 		{
 			if (!isFighting)
@@ -251,13 +255,16 @@ void RightUnit::update(float f)
 		
 		if (myRect.intersectsRect(buddyRect))
 		{
-			//앞쪽 버디 유닛
-			if (buddyRect.origin.x < myRect.origin.x && isStop == false)
+			//앞쪽 버디 유닛이 있는 경우
+			if (buddyRect.origin.x < myRect.origin.x && !isStop)
 			{
 				isStop = true;
 				buddyUnit = b;
 				idleUnit();
 			}
+			//뒷쪽 버디 유닛이 있는 경우
+			if (myRect.origin.x > buddyRect.origin.x)
+				backBuddyUnit = b;
 		}
 		else
 		{

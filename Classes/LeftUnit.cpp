@@ -56,19 +56,16 @@ void LeftUnit::initUnit(BUBBLE bubble)
 }
 #pragma endregion
 
-
 #pragma region remove
+//제거하는 함수
 void LeftUnit::removeVector()
 {
-	if (unitsR.contains(this))
-		unitsR.eraseObject(this);
+	if (unitsL.contains(this))
+		unitsL.eraseObject(this);
 }
 
-//제거하는 함수
 void LeftUnit::removeUnit()
 {
-	if(unitsL.contains(this))
-		unitsL.eraseObject(this);
 	auto removeSelf = RemoveSelf::create(true);
 	this->runAction(removeSelf);
 }
@@ -128,6 +125,7 @@ void LeftUnit::attackUnit(Unit* enemy)
 	attackAni->addSpriteFrameWithFile("Character/C/CAttack_3.png");
 	attackAni->addSpriteFrameWithFile("Character/C/CAttack_4.png");
 	attackAni->addSpriteFrameWithFile("Character/C/CAttack_5.png");
+	
 	auto seq = Sequence::create(Animate::create(attackAni), CallFunc::create(CC_CALLBACK_0(LeftUnit::callbackAttack, this, enemy)), DelayTime::create(1.5f), nullptr); //애니메이션+공격, 딜레이 순차적으로
 	auto rep = Repeat::create(seq, -1); //애니메이션, 공격, 딜레이
 	this->runAction(rep);
@@ -152,7 +150,6 @@ void LeftUnit::attackFactory()
 	auto rep = Repeat::create(seq, -1); //애니메이션, 공격, 딜레이
 	this->runAction(rep);
 }
-
 
 void LeftUnit::dieUnit()
 {
@@ -230,17 +227,18 @@ void LeftUnit::update(float f)
 	Rect myRect = getBoundingBox();
 	Rect enemyFacRect = Rect(enemyFactoryPos.x + 200, enemyFactoryPos.y, enemyFactory->return_Factory_Sp()->getContentSize().width, enemyFactory->return_Factory_Sp()->getContentSize().height);
 
+	//적군과 충돌할 때
 	for (Unit* e : unitsR)
 	{
 		Rect enemyRect = e->getBoundingBox();
 
-		//적군과 충돌할 때
 		if (myRect.intersectsRect(enemyRect) && !e->isDied)
 		{
 			if (!isFighting)
 				attackUnit(e);
 		}
 	}
+
 	//적군과 충돌하지 않을 때 (우선 순위 = 적 > 적 팩토리)
 	if (!isFighting && myRect.intersectsRect(enemyFacRect))
 	{
