@@ -106,8 +106,10 @@ void Factory::Create_Bubble()
 	Circle_bubble_sprite[3] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/C2_Blue.png");
 	Circle_bubble_sprite[4] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/C2_Red.png");
 	Circle_bubble_sprite[5] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/C2_Yellow.png");
-	Circle_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2_40.png");
-	Circle_bubble_sprite[7] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2_40.png");
+	//Circle_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2_40.png");
+	//Circle_bubble_sprite[7] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2_40.png");
+	Circle_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2.png");
+	Circle_bubble_sprite[7] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2.png");
 	//¸¶¸§¸ð
 	Rhombus_bubble_sprite[0] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R1_Blue.png");
 	Rhombus_bubble_sprite[1] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R1_Red.png");
@@ -115,8 +117,10 @@ void Factory::Create_Bubble()
 	Rhombus_bubble_sprite[3] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R2_Blue.png");
 	Rhombus_bubble_sprite[4] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R2_Red.png");
 	Rhombus_bubble_sprite[5] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R2_Yellow.png");
-	Rhombus_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1_40.png");
-	Rhombus_bubble_sprite[7] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1_40.png");
+	//Rhombus_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1_40.png");
+	//Rhombus_bubble_sprite[7] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1_40.png");
+	Rhombus_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1.png");
+	Rhombus_bubble_sprite[7] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1.png");
 	SetPos_Bubble();
 }
 

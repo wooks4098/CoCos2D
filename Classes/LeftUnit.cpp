@@ -45,27 +45,28 @@ void LeftUnit::initUnit(BUBBLE bubble)
 	if (bubble.MoveSpeed == 0)
 		speed = 400;
 	else
-		//speed = bubble.MoveSpeed;
-		speed = 300;
+		speed = bubble.MoveSpeed;
 
 	if (bubble.Damage == 0)
-		damage = 40;
+		damage = 20;
 	else
-		//damage = bubble.Damage;
-		damage = 40;
+		damage = bubble.Damage;
+}
+#pragma endregion
+
+#pragma region upgrade
+void LeftUnit::upgradeUnit()
+{
+
 }
 #pragma endregion
 
 #pragma region remove
 //제거하는 함수
-void LeftUnit::removeVector()
-{
-	if (unitsL.contains(this))
-		unitsL.eraseObject(this);
-}
-
 void LeftUnit::removeUnit()
 {
+	if(unitsL.contains(this))
+		unitsL.eraseObject(this);
 	auto removeSelf = RemoveSelf::create(true);
 	this->runAction(removeSelf);
 }
@@ -125,7 +126,6 @@ void LeftUnit::attackUnit(Unit* enemy)
 	attackAni->addSpriteFrameWithFile("Character/C/CAttack_3.png");
 	attackAni->addSpriteFrameWithFile("Character/C/CAttack_4.png");
 	attackAni->addSpriteFrameWithFile("Character/C/CAttack_5.png");
-	
 	auto seq = Sequence::create(Animate::create(attackAni), CallFunc::create(CC_CALLBACK_0(LeftUnit::callbackAttack, this, enemy)), DelayTime::create(1.5f), nullptr); //애니메이션+공격, 딜레이 순차적으로
 	auto rep = Repeat::create(seq, -1); //애니메이션, 공격, 딜레이
 	this->runAction(rep);
@@ -151,6 +151,7 @@ void LeftUnit::attackFactory()
 	this->runAction(rep);
 }
 
+
 void LeftUnit::dieUnit()
 {
 	this->stopAllActions();
@@ -173,8 +174,7 @@ void LeftUnit::dieUnit()
 	auto animate = Animate::create(dieAni);
 
 	auto remove = CallFunc::create(CC_CALLBACK_0(LeftUnit::removeUnit, this));
-	auto removeV = CallFunc::create(CC_CALLBACK_0(LeftUnit::removeVector, this));
-	auto seq = Sequence::create(removeV, animate, remove, nullptr);
+	auto seq = Sequence::create(animate, remove, nullptr);
 	this->runAction(seq);
 
 	auto fadeout = Spawn::create(DelayTime::create(2.4f), FadeOut::create(1.2f), nullptr);
@@ -206,13 +206,6 @@ void LeftUnit::damaged(float d)
 	{
 		hp = 0;
 		isDied = true;
-
-		if (backBuddyUnit != nullptr && backBuddyUnit->isStop)
-		{
-			backBuddyUnit->buddyUnit = nullptr;
-			backBuddyUnit->moveUnit();
-		}
-
 		if(!isDieAct)
 			this->dieUnit();
 	}
@@ -225,20 +218,20 @@ void LeftUnit::update(float f)
 	fullHP->setScaleX(static_cast<float>(hp) / static_cast<float>(startHp));
 
 	Rect myRect = getBoundingBox();
-	Rect enemyFacRect = Rect(enemyFactoryPos.x + 200, enemyFactoryPos.y, enemyFactory->return_Factory_Sp()->getContentSize().width, enemyFactory->return_Factory_Sp()->getContentSize().height);
+	Rect enemyFacRect = enemyFactory->return_Factory_Sp()->getBoundingBox();
 
-	//적군과 충돌할 때
+
 	for (Unit* e : unitsR)
 	{
 		Rect enemyRect = e->getBoundingBox();
 
+		//적군과 충돌할 때
 		if (myRect.intersectsRect(enemyRect) && !e->isDied)
 		{
 			if (!isFighting)
 				attackUnit(e);
 		}
 	}
-
 	//적군과 충돌하지 않을 때 (우선 순위 = 적 > 적 팩토리)
 	if (!isFighting && myRect.intersectsRect(enemyFacRect))
 	{
@@ -248,23 +241,23 @@ void LeftUnit::update(float f)
 			attackFactory();
 	}
 
+
+
+
 	//아군과 충돌할 때
 	for (Unit* b : unitsL)
 	{
 		Rect buddyRect = b->getBoundingBox();
 
-		if (myRect.intersectsRect(buddyRect))
+		if (myRect.intersectsRect(buddyRect) && !b->isDied)
 		{
-			//앞쪽 버디 유닛이 있는 경우
-			if (myRect.origin.x < buddyRect.origin.x && !isStop)
+			//나보다 버디 유닛이 상대편 팩토리와 더 가까울 때
+			if (myRect.origin.x < buddyRect.origin.x && isStop == false)
 			{
 				isStop = true;
 				buddyUnit = b;
 				idleUnit();
 			}
-			//뒷쪽 버디 유닛이 있는 경우
-			if (myRect.origin.x > buddyRect.origin.x)
-				backBuddyUnit = b;
 		}
 		else
 		{
@@ -274,11 +267,6 @@ void LeftUnit::update(float f)
 				isStop = false;
 				buddyUnit = nullptr;
 				moveUnit();
-			}
-
-			if (b == backBuddyUnit)
-			{
-				backBuddyUnit = nullptr;
 			}
 		}
 	}
