@@ -49,10 +49,10 @@ void LeftUnit::initUnit(BUBBLE bubble)
 		speed = 300;
 
 	if (bubble.Damage == 0)
-		damage = 10;
+		damage = 40;
 	else
 		//damage = bubble.Damage;
-		damage = 10;
+		damage = 40;
 }
 #pragma endregion
 
@@ -274,6 +274,11 @@ void LeftUnit::update(float f)
 				isStop = false;
 				buddyUnit = nullptr;
 				moveUnit();
+			}
+
+			if (b == backBuddyUnit)
+			{
+				backBuddyUnit = nullptr;
 			}
 		}
 	}

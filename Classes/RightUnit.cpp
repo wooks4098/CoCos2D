@@ -17,7 +17,7 @@ Unit* RightUnit::createUnit(Factory* myFac, Factory* enemyFac, BUBBLE bubble)
 	sprite->enemyFactory = enemyFac;
 
 	sprite->initData();
-	sprite->initUnit(bubble); //유닛 초기화
+	sprite->initUnit(bubble);
 
 	sprite->scheduleUpdate();
 
@@ -36,23 +36,23 @@ Unit* RightUnit::createUnit(Factory* myFac, Factory* enemyFac, BUBBLE bubble)
 void RightUnit::initUnit(BUBBLE bubble)
 {
 	//수정해야함
-	if(bubble.Hp == 0)
-		startHp = 40;
+	if (bubble.Hp == 0)
+		startHp = 20;
 	else
 		startHp = bubble.Hp;
 	hp = startHp;
 
 	if (bubble.MoveSpeed == 0)
-		speed = 300;
+		speed = 400;
 	else
 		//speed = bubble.MoveSpeed;
 		speed = 500;
 
 	if (bubble.Damage == 0)
-		damage = 40;
+		damage = 20;
 	else
 		//damage = bubble.Damage;
-		damage = 50;
+		damage = 20;
 }
 #pragma endregion
 
@@ -91,10 +91,10 @@ void RightUnit::moveUnit()
 	isFighting = false;
 	isAttackFac = false;
 
-	float distance = fabs(myFactoryPos.x - enemyFactoryPos.x);
+	float distance = fabs(enemyFactoryPos.x - myFactoryPos.x);
 	auto move = MoveTo::create(distance / speed, enemyFactoryPos);
 
-	//Right 이동 애니메이션
+	//Left 이동 애니메이션
 	auto moveAni = Animation::create();
 	moveAni->setDelayPerUnit(0.1f);
 	moveAni->addSpriteFrameWithFile("Character/A/AMove_0.png");
@@ -116,7 +116,7 @@ void RightUnit::attackUnit(Unit* enemy)
 	this->isFighting = true;
 	isAttackFac = false;
 
-	//Left공격 애니메이션
+	//Right 공격 애니메이션
 	auto attackAni = Animation::create();
 	attackAni->setDelayPerUnit(0.3f);
 	attackAni->addSpriteFrameWithFile("Character/A/AAttack_0.png");
@@ -125,7 +125,7 @@ void RightUnit::attackUnit(Unit* enemy)
 	attackAni->addSpriteFrameWithFile("Character/A/AAttack_3.png");
 	attackAni->addSpriteFrameWithFile("Character/A/AAttack_4.png");
 	attackAni->addSpriteFrameWithFile("Character/A/AAttack_5.png");
-	
+
 	auto seq = Sequence::create(Animate::create(attackAni), CallFunc::create(CC_CALLBACK_0(RightUnit::callbackAttack, this, enemy)), DelayTime::create(1.5f), nullptr); //애니메이션+공격, 딜레이 순차적으로
 	auto rep = Repeat::create(seq, -1); //애니메이션, 공격, 딜레이
 	this->runAction(rep);
@@ -136,7 +136,7 @@ void RightUnit::attackFactory()
 	this->stopAllActions();
 	isAttackFac = true;
 
-	//Left공격 애니메이션
+	//Right 공격 애니메이션
 	auto attackAni = Animation::create();
 	attackAni->setDelayPerUnit(0.3f);
 	attackAni->addSpriteFrameWithFile("Character/A/AAttack_0.png");
@@ -252,18 +252,18 @@ void RightUnit::update(float f)
 	for (Unit* b : unitsR)
 	{
 		Rect buddyRect = b->getBoundingBox();
-		
+
 		if (myRect.intersectsRect(buddyRect))
 		{
 			//앞쪽 버디 유닛이 있는 경우
-			if (buddyRect.origin.x < myRect.origin.x && !isStop)
+			if (myRect.origin.x > buddyRect.origin.x && !isStop)
 			{
 				isStop = true;
 				buddyUnit = b;
 				idleUnit();
 			}
 			//뒷쪽 버디 유닛이 있는 경우
-			if (myRect.origin.x > buddyRect.origin.x)
+			if (myRect.origin.x < buddyRect.origin.x)
 				backBuddyUnit = b;
 		}
 		else
@@ -274,6 +274,11 @@ void RightUnit::update(float f)
 				isStop = false;
 				buddyUnit = nullptr;
 				moveUnit();
+			}
+
+			if (b == backBuddyUnit)
+			{
+				backBuddyUnit = nullptr;
 			}
 		}
 	}
