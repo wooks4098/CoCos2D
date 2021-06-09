@@ -107,6 +107,9 @@ bool Bubble::isMove()
 }
 void Bubble::onEnter()
 {
+	this->setColor(Color3B::RED);
+	log("on Bubble...");
+
 	Sprite::onEnter();
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->setSwallowTouches(true);
@@ -122,7 +125,8 @@ void Bubble::onEnter()
 		if (rect.containsPoint(LocationInNode))
 		{
 			_isMove = true;
-			//log("touch Bubble...");
+			this->setColor(Color3B::RED);
+			log("touch Bubble...");
 			return true;
 		}
 	};

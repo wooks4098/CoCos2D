@@ -42,6 +42,8 @@ private:
 	Label* Rcoin;
 	Label* Lbitcoincost;
 	Label* Rbitcoincost;
+	Label* LbitcoincostU;
+	Label* RbitcoincostU;
 
 	//dimu
 	INVENPOS invenPos_Left[8];
@@ -57,6 +59,10 @@ private:
 	int bubbleCostL;
 	int bitCoinR;
 	int bubbleCostR;
+
+	int unitCostL;
+	int unitCostR;
+
 	static bool isMove;
 	
 	int coinAmount;
@@ -71,6 +77,8 @@ public:
 	void Creat_Factory();
 	void Create_BackGround();
 	void Creat_End_Menu(bool isRightWin);
+
+	void UnitUpgraid(Ref* pSender, int dir);
 
 	BUBBLE GetPP(int lev);
 	void ClickToCreateBubble1(Ref* pSender, int lev, bool isRight);

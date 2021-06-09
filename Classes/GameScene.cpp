@@ -29,22 +29,12 @@ bool GameScene::init()
 	bitCoinR = 150;
 	bubbleCostL = 50;
 	bubbleCostR = 50;
+	unitCostL = 100;
+	unitCostR = 100;
 	coinAmount = 50;
 
 	Create_BackGround();
 	Creat_Factory();
-
-#pragma region menu
-	//m_3->setTag(1);
-	//m_4->setTag(2);
-	//auto menu1 = Menu::create(m_3, m_4, nullptr);
-	//m_3->setPosition(Vec2(480, 320));
-	//m_3->setAnchorPoint(Vec2(1, 1));
-	//m_4->setPosition(Vec2(0, 320));
-	//m_4->setAnchorPoint(Vec2(0, 1));
-	//this->addChild(menu1);
-	//menu1->setPosition(Vec2::ZERO);
-#pragma endregion
 
 
 	//스케줄 등록
@@ -106,7 +96,7 @@ void GameScene::Create_BackGround()
 	UI_Left_bottom_Bubble->setAnchorPoint(Vec2(0, 0));
 	UI_Left_bottom_Bubble->setPosition(UI_Left_bottom_Info->getContentSize().width, 0);
 	
-	UI_Left_bottom_Unit = MenuItemImage::create("UI/UI_bottom_Unit.png", "UI/UI_bottom_Unit1.png", CC_CALLBACK_1(GameScene::ClickToCreateBubble1, this, 1, false));
+	UI_Left_bottom_Unit = MenuItemImage::create("UI/UI_bottom_Unit.png", "UI/UI_bottom_Unit1.png", CC_CALLBACK_1(GameScene::UnitUpgraid, this,FACTORY_LEFT));
 	UI_Left_bottom_Unit->setAnchorPoint(Vec2(0, 0));
 	UI_Left_bottom_Unit->setPosition(UI_Left_bottom_Info->getContentSize().width, UI_Left_bottom_Bubble->getContentSize().height);
 
@@ -136,6 +126,12 @@ void GameScene::Create_BackGround()
 	Lbitcoincost->setColor(Color3B::BLACK);
 	this->addChild(Lbitcoincost);
 
+	LbitcoincostU = Label::createWithTTF("333", "fonts/Marker Felt.ttf", 24);
+	LbitcoincostU->setString(StringUtils::format("%d", unitCostL));
+	LbitcoincostU->setPosition(Vec2(335, 50));
+	LbitcoincostU->setColor(Color3B::BLACK);
+	this->addChild(LbitcoincostU);
+
 	//rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
 	UI_Right_bottom_Info = Sprite::create("UI/UI_bottom_Info_Right.png");
 	UI_Right_bottom_Info->setAnchorPoint(Vec2(1, 0));
@@ -146,7 +142,7 @@ void GameScene::Create_BackGround()
 	UI_Right_bottom_Bubble->setAnchorPoint(Vec2(1, 0));
 	UI_Right_bottom_Bubble->setPosition(winSize.width - UI_Right_bottom_Info->getContentSize().width, 0);
 
-	UI_Right_bottom_Unit = MenuItemImage::create("UI/UI_bottom_Unit.png", "UI/UI_bottom_Unit1.png", CC_CALLBACK_1(GameScene::ClickToCreateBubble1, this, 1, false));
+	UI_Right_bottom_Unit = MenuItemImage::create("UI/UI_bottom_Unit.png", "UI/UI_bottom_Unit1.png", CC_CALLBACK_1(GameScene::UnitUpgraid, this, FACTORY_RIGHT));
 	UI_Right_bottom_Unit->setAnchorPoint(Vec2(1, 0));
 	UI_Right_bottom_Unit->setPosition(winSize.width - UI_Right_bottom_Info->getContentSize().width, UI_Right_bottom_Bubble->getContentSize().height);
 
@@ -176,6 +172,13 @@ void GameScene::Create_BackGround()
 	Rbitcoincost->setColor(Color3B::BLACK);
 	this->addChild(Rbitcoincost);
 
+
+	RbitcoincostU = Label::createWithTTF("333", "fonts/Marker Felt.ttf", 24);
+	RbitcoincostU->setString(StringUtils::format("%d", unitCostR));
+	RbitcoincostU->setPosition(Vec2(winSize.width - 332, 50));
+	RbitcoincostU->setColor(Color3B::BLACK);
+	this->addChild(RbitcoincostU);
+
 	//인벤칸 초기화
 	for (int i = 0; i < 4; i++)
 	{
@@ -190,7 +193,24 @@ void GameScene::Create_BackGround()
 		invenPos_Right[i + 4].y = UI_Right_bottom_Bubble->getContentSize().height - 33;
 	}
 }
-
+void GameScene::UnitUpgraid(Ref* pSender, int dir)
+{
+	factory[dir].UnitUpgraid();
+	if (dir == FACTORY_RIGHT)//r
+	{
+		bitCoinR -= unitCostR;
+		unitCostR += 20;
+		Rbitcoincost->setString(StringUtils::format("%d", bubbleCostR));
+		Rcoin->setString(StringUtils::format("%d", bitCoinR));
+	}
+	else if(dir == FACTORY_LEFT)
+	{
+		bitCoinL -= unitCostL;
+		unitCostL += 20;
+		Lbitcoincost->setString(StringUtils::format("%d", bubbleCostL));
+		Lcoin->setString(StringUtils::format("%d", bitCoinL));
+	}
+}
 void GameScene::Creat_End_Menu(bool isRightWin)
 {
 
