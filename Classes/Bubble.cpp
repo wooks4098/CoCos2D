@@ -137,14 +137,14 @@ void Bubble::onEnter()
 		this->setPosition(this->getPosition() + touch->getDelta());//이동한정보
 	};
 	
-	//listener->onTouchEnded = [=](Touch* touch, Event* event)
-	//{
-	//	_isMove = false;
-	//	//log("touch end...");
-	//};
-	//
+	listener->onTouchEnded = [=](Touch* touch, Event* event)
+	{
+		_isMove = false;
+		//log("touch end...");
+	};
+	
+		_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this); //그려진 순서
 	//if (_useNodePr)
-	//	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this); //그려진 순서
 	//else
 	//	_eventDispatcher->addEventListenerWithFixedPriority(listener, _fixedPr); // 지정된 우선순위대로
 	//
