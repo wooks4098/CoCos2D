@@ -54,20 +54,16 @@ void RightUnit::initUnit(BUBBLE bubble)
 }
 #pragma endregion
 
-#pragma region upgrade
-void RightUnit::upgradeUnit()
-{
-
-}
-#pragma endregion
-
-
 #pragma region remove
 //제거하는 함수
+void RightUnit::removeVector()
+{
+	if (unitsL.contains(this))
+		unitsL.eraseObject(this);
+}
+
 void RightUnit::removeUnit()
 {
-	if (unitsR.contains(this))
-		unitsR.eraseObject(this);
 	auto removeSelf = RemoveSelf::create(true);
 	this->runAction(removeSelf);
 }
@@ -137,6 +133,7 @@ void RightUnit::attackFactory()
 {
 	this->stopAllActions();
 	isAttackFac = true;
+	isFighting = false;
 
 	//Left공격 애니메이션
 	auto attackAni = Animation::create();
@@ -175,7 +172,8 @@ void RightUnit::dieUnit()
 	auto animate = Animate::create(dieAni);
 
 	auto remove = CallFunc::create(CC_CALLBACK_0(RightUnit::removeUnit, this));
-	auto seq = Sequence::create(animate, remove, nullptr);
+	auto removeVec = CallFunc::create(CC_CALLBACK_0(RightUnit::removeVector, this));
+	auto seq = Sequence::create(removeVec, animate, remove, nullptr);
 	this->runAction(seq);
 
 	auto fadeout = Spawn::create(DelayTime::create(2.4f), FadeOut::create(1.2f), nullptr);
@@ -204,10 +202,17 @@ void RightUnit::damaged(float d)
 	hp -= d;
 
 	if (hp <= 0)
-	{	
+	{
 		hp = 0;
 		isDied = true;
-		if(!isDieAct)
+
+		if (backBuddyUnit != nullptr && backBuddyUnit->isStop)
+		{
+			backBuddyUnit->buddyUnit = nullptr;
+			backBuddyUnit->moveUnit();
+		}
+
+		if (!isDieAct)
 			this->dieUnit();
 	}
 }
@@ -219,15 +224,13 @@ void RightUnit::update(float f)
 	fullHP->setScaleX(static_cast<float>(hp) / static_cast<float>(startHp));
 
 	Rect myRect = getBoundingBox();
-	Rect enemyFacRect = enemyFactory->return_Factory_Sp()->getBoundingBox();
-	//rect 범위 수정
+	Rect enemyFacRect = Rect(enemyFactoryPos.x + 200, enemyFactoryPos.y, enemyFactory->return_Factory_Sp()->getContentSize().width, enemyFactory->return_Factory_Sp()->getContentSize().height);
 
 	//적군과 충돌할 때
 	for (Unit* e : unitsL)
 	{
 		Rect enemyRect = e->getBoundingBox();
 
-		//두 유닛이 충돌했을 때
 		if (myRect.intersectsRect(enemyRect) && !e->isDied)
 		{
 			if (!isFighting)
@@ -235,34 +238,37 @@ void RightUnit::update(float f)
 		}
 	}
 
-	//적군과 충돌하지 않을 때 (우선 순위 = 적 > 적 팩토리)
+	//적 팩토리와 충돌할 때 (우선 순위 = 적 > 적 팩토리)
 	if (!isFighting && myRect.intersectsRect(enemyFacRect))
 	{
 		//팩토리 공격
-		log("Attack the enemy factory");
 		if (!isAttackFac)
 			attackFactory();
 	}
 
 	//아군과 충돌할 때
-	for (Unit* b : unitsR)
+	for (Unit* buddy : unitsR)
 	{
-		Rect bRect = b->getBoundingBox();
+		Rect buddyRect = buddy->getBoundingBox();
 		
-		if (myRect.intersectsRect(bRect))
+		if (myRect.intersectsRect(buddyRect) && !buddy->isDied)
 		{
 			//나보다 버디 유닛이 상대편 팩토리와 더 가까울 때
-			if (bRect.origin.x < myRect.origin.x && isStop == false)
+			if (buddyRect.origin.x < myRect.origin.x && isStop == false)
 			{
 				isStop = true;
-				buddyUnit = b;
+				buddyUnit = buddy;
 				idleUnit();
 			}
+
+			//앞에 충돌한 아군 유닛
+			if (myRect.origin.x > buddyRect.origin.x)
+				backBuddyUnit = buddy;
 		}
 		else
 		{
 			//전투 후 다시 이동
-			if (b == buddyUnit)
+			if (buddy == buddyUnit)
 			{
 				isStop = false;
 				buddyUnit = nullptr;
@@ -270,17 +276,11 @@ void RightUnit::update(float f)
 			}
 		}
 
-		Rect buddyRect;
-		if(buddyUnit != nullptr)
-			buddyRect = buddyUnit->getBoundingBox();
-
-		if (!myRect.intersectsRect(buddyRect) && buddyUnit == nullptr)
+		//앞에 충돌한 아군 유닛이 죽었을 때
+		if (buddy == backBuddyUnit)
 		{
-			isStop = false;
-			moveUnit();
+			backBuddyUnit = nullptr;
 		}
-
 	}
-
 }
 #pragma endregion
