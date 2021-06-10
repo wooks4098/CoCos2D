@@ -107,30 +107,29 @@ bool Bubble::isMove()
 }
 void Bubble::onEnter()
 {
-	this->setColor(Color3B::RED);
 	log("on Bubble...");
 
 	Sprite::onEnter();
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->setSwallowTouches(true);
 	
-	//listener->onTouchBegan = [=](Touch* touch, Event* event)
-	//{
-	//	Vec2 basepoint = touch->getLocation();
-	//
-	//	Vec2 LocationInNode = this->convertToNodeSpace(touch->getLocation());
-	//
-	//	Size s = this->getContentSize();
-	//	Rect rect = Rect(0, 0, s.width, s.height);
-	//	if (rect.containsPoint(LocationInNode))
-	//	{
-	//		_isMove = true;
-	//		this->setColor(Color3B::RED);
-	//		log("touch Bubble...");
-	//		return true;
-	//	}
-	//	return false;
-	//};
+	listener->onTouchBegan = [=](Touch* touch, Event* event)
+	{
+		Vec2 basepoint = touch->getLocation();
+	
+		Vec2 LocationInNode = this->convertToNodeSpace(touch->getLocation());
+	
+		Size s = this->getContentSize();
+		Rect rect = Rect(0, 0, s.width, s.height);
+		if (rect.containsPoint(LocationInNode))
+		{
+			_isMove = true;
+			this->setColor(Color3B::RED);
+			log("touch Bubble...");
+			return true;
+		}
+		return false;
+	};
 	
 	//listener->onTouchMoved = [=](Touch* touch, Event* event)
 	//{
