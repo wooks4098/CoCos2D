@@ -112,8 +112,8 @@ void Bubble::onEnter()
 
 	Sprite::onEnter();
 	auto listener = EventListenerTouchOneByOne::create();
-	//listener->setSwallowTouches(true);
-	//
+	listener->setSwallowTouches(true);
+	
 	//listener->onTouchBegan = [=](Touch* touch, Event* event)
 	//{
 	//	Vec2 basepoint = touch->getLocation();
@@ -129,8 +129,9 @@ void Bubble::onEnter()
 	//		log("touch Bubble...");
 	//		return true;
 	//	}
+	//	return false;
 	//};
-	//
+	
 	//listener->onTouchMoved = [=](Touch* touch, Event* event)
 	//{
 	//	//log("touch mv...", _isMove);
