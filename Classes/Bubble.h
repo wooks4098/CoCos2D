@@ -11,7 +11,7 @@ public:
 	void setPr(int fixedPr);
 	void setP1r(int fixedPr);
 	void setPrWiththis(bool useNodePr);
-	//void onEnter();
+	void onEnter();
 	void onExit();
 	bool isMove();
 	bool _isMove = false;
