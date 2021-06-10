@@ -110,8 +110,8 @@ void Bubble::onEnter()
 	this->setColor(Color3B::RED);
 	log("on Bubble...");
 
-	//Sprite::onEnter();
-	//auto listener = EventListenerTouchOneByOne::create();
+	Sprite::onEnter();
+	auto listener = EventListenerTouchOneByOne::create();
 	//listener->setSwallowTouches(true);
 	//
 	//listener->onTouchBegan = [=](Touch* touch, Event* event)
