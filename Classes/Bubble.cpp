@@ -105,10 +105,10 @@ bool Bubble::isMove()
 {
 	return _isMove;
 }
-void Bubble::onEnter()
-{
-	this->setColor(Color3B::RED);
-	log("on Bubble...");
+//void Bubble::onEnter()
+//{
+	//this->setColor(Color3B::RED);
+	//log("on Bubble...");
 
 	//Sprite::onEnter();
 	//auto listener = EventListenerTouchOneByOne::create();
@@ -149,7 +149,7 @@ void Bubble::onEnter()
 	//	_eventDispatcher->addEventListenerWithFixedPriority(listener, _fixedPr); // 지정된 우선순위대로
 	//
 	//_listener = listener; //화면 보일 때 터치하면 리스너 만들고 화면 사라지면 리스너 제거
-}
+//}
 
 void Bubble::onExit()
 {
