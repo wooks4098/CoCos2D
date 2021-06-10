@@ -115,6 +115,7 @@ void Bubble::onEnter()
 	
 	listener->onTouchBegan = [=](Touch* touch, Event* event)
 	{
+		log("touch dd...");
 		Vec2 basepoint = touch->getLocation();
 	
 		Vec2 LocationInNode = this->convertToNodeSpace(touch->getLocation());
@@ -128,7 +129,7 @@ void Bubble::onEnter()
 			log("touch Bubble...");
 			return true;
 		}
-		return false;
+		return false; //추가한것
 	};
 	
 	listener->onTouchMoved = [=](Touch* touch, Event* event)
@@ -148,7 +149,7 @@ void Bubble::onEnter()
 	//else
 	//	_eventDispatcher->addEventListenerWithFixedPriority(listener, _fixedPr); // 지정된 우선순위대로
 	//
-	//_listener = listener; //화면 보일 때 터치하면 리스너 만들고 화면 사라지면 리스너 제거
+	_listener = listener; //화면 보일 때 터치하면 리스너 만들고 화면 사라지면 리스너 제거
 }
 
 void Bubble::onExit()
