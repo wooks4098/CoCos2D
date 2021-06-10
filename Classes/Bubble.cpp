@@ -131,12 +131,12 @@ void Bubble::onEnter()
 		return false;
 	};
 	
-	//listener->onTouchMoved = [=](Touch* touch, Event* event)
-	//{
-	//	//log("touch mv...", _isMove);
-	//	this->setPosition(this->getPosition() + touch->getDelta());//이동한정보
-	//};
-	//
+	listener->onTouchMoved = [=](Touch* touch, Event* event)
+	{
+		//log("touch mv...", _isMove);
+		this->setPosition(this->getPosition() + touch->getDelta());//이동한정보
+	};
+	
 	//listener->onTouchEnded = [=](Touch* touch, Event* event)
 	//{
 	//	_isMove = false;
