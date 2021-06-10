@@ -1,4 +1,5 @@
 #include "GameManager.h"
+#include "SoundManager.h"
 GameManager* GameManager::m_hThis = nullptr;
 
 
@@ -16,4 +17,10 @@ void GameManager::Reset()
 {
 	isRightFactory_Die = false;
 	isLeftFactory_Die = false;
+}
+
+void GameManager::Play_Bac()
+{
+	if(isBac)
+		SoundManager::GetInstance()->Play(BackGround_0);
 }

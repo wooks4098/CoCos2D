@@ -170,6 +170,7 @@ void Factory::Factory_Hp_Down()
 	{
 		if (isRight)
 		{
+			SoundManager::GetInstance()->Play(Factory_Damage);
 
 			GameManager::GetInstance()->Die_Right_Factory();
 
@@ -177,13 +178,14 @@ void Factory::Factory_Hp_Down()
 		else
 		{
 
-			
+			SoundManager::GetInstance()->Play(Factory_Damage);
 			GameManager::GetInstance()->Die_Left_Factory();
 		}
 
 		return;
 
 	}
+	SoundManager::GetInstance()->Play(Factory_Damage);
 	Factory_Damage_Action();
 	CurHp -= 10;
 	if (CurHp <= 0)
@@ -351,7 +353,7 @@ void Factory::HpDown(Ref* Sender)
 		return;
 
 	}
-	SoundManager::GetInstance()->Play(0);
+	SoundManager::GetInstance()->Play(Factory_Damage);
 	if (CurHp <= 0)
 		return;
 	Factory_Damage_Action();
@@ -389,6 +391,7 @@ BUBBLE Factory::return_bubble()
 
 void Factory::UnitUpgraid()
 {
+	SoundManager::GetInstance()->Play(Unit_Upgrade);
 	Upgraid_hp += 10;
 	Upgraid_defense += 2;
 	Upgraid_damage += 3;

@@ -1,6 +1,7 @@
 #include "HelloWorldScene.h"
 #include "MenuScene.h"
 #include "GameScene.h"
+#include "GameManager.h"
 using namespace cocos2d;
 
 Scene* MenuScene::createScene()
@@ -27,6 +28,7 @@ bool MenuScene::init()
 
 void MenuScene::CreatMenu()
 {
+	GameManager::GetInstance()->Play_Bac();
 	auto _Play = cocos2d::MenuItemImage::create("UI/Main/MUI_SB0.png", "UI/Main/MUI_SB1.png", CC_CALLBACK_1(MenuScene::Menu_Play,this));
 	_Play->setAnchorPoint(Vec2(0.5, 0.5));
 
@@ -46,6 +48,8 @@ void MenuScene::CreatMenu()
 
 void MenuScene::Menu_Play(Ref* pSender)
 {
+	SoundManager::GetInstance()->Play(UI_Click);
+
 	auto _GameScene = GameScene::createScene();
 	Director::getInstance()->replaceScene(_GameScene);
 }
@@ -55,5 +59,6 @@ void MenuScene::Menu_Option(Ref* pSender)
 }
 void MenuScene::Menu_Exit(Ref* pSender)
 {
+	SoundManager::GetInstance()->Play(UI_Click);
 	Director::getInstance()->end();
 }

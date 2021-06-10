@@ -21,7 +21,7 @@ bool GameScene::init()
 	auto wlayer = LayerColor::create(Color4B::WHITE);
 	addChild(wlayer);
 	winSize = Director::getInstance()->getWinSize(); //화면의 사이즈 구하기
-	
+
 	unitsL.clear();
 	unitsR.clear();
 
@@ -50,6 +50,8 @@ bool GameScene::init()
 
 void GameScene::Creat_Factory()
 {
+	SoundManager::GetInstance()->Play(BackGround_1);
+
 	//팩토리 생성
 	factory[FACTORY_RIGHT].Create(FACTORY_RIGHT);
 	factory[FACTORY_LEFT].Create(FACTORY_LEFT);
@@ -213,6 +215,7 @@ void GameScene::UnitUpgraid(Ref* pSender, int dir)
 }
 void GameScene::Creat_End_Menu(bool isRightWin)
 {
+	SoundManager::GetInstance()->Play(UI_End);
 
 	if (isRightWin)
 	{
