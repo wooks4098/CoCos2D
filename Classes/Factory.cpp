@@ -199,10 +199,13 @@ int Factory::Change_Key(int _key)
 	switch (_key)
 	{
 	case R1_Blue:
+	case C1_Blue:
 		return 0;
 	case R1_Red:
+	case C1_Red:
 		return 1;
 	case R1_Yellow:
+	case C1_Yellow:
 		return 2;
 
 	case C2_Blue:

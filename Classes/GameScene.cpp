@@ -593,7 +593,7 @@ void GameScene::OneTwoThreeFourBubbleBubbleLeft(float f)
 	{
 		if (bubblesLeft.at(i)->getBoundingBox().intersectsRect(factory[FACTORY_LEFT].return_Factory_Sp()->getBoundingBox()))
 		{
-			//factory[FACTORY_LEFT].Change_Bubble(bubblesLeft.at(i)->BubbleStat_rt());
+			factory[FACTORY_LEFT].Change_Bubble(bubblesLeft.at(i)->BubbleStat_rt());
 			invenPos_Left[bubblesLeft.at(i)->GetPosNum()].isFull = false;
 			bubblesLeft.at(i)->removeFromParentAndCleanup(true);
 			bubblesLeft.erase(bubblesLeft.begin() + i);
