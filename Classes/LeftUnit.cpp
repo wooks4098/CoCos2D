@@ -35,12 +35,22 @@ Unit* LeftUnit::createUnit(Factory* myFac, Factory* enemyFac, BUBBLE bubble)
 #pragma region init
 void LeftUnit::initUnit(BUBBLE bubble)
 {
-	startHp = 50;
+	//수정해야함
+	if (bubble.Hp == 0)
+		startHp = 50;
+	else
+		startHp = bubble.Hp;
 	hp = startHp;
-	speed = 300;
-	damage = 10;
 
-	fullHP->setScaleX(1); //실험 중...
+	if (bubble.MoveSpeed == 0)
+		speed = 400;
+	else
+		speed = bubble.MoveSpeed;
+
+	if (bubble.Damage == 0)
+		damage = 20;
+	else
+		damage = bubble.Damage;
 }
 #pragma endregion
 
@@ -82,12 +92,12 @@ void LeftUnit::moveUnit()
 	isFighting = false;
 	isAttackFac = false;
 
-	float distance = fabs(enemyFactory->return_Factory_Sp()->getPosition().x - getPosition().x);
-	auto move = MoveTo::create(distance / speed, enemyFactory->return_Factory_Sp()->getPosition());
+	float distance = fabs(enemyFactoryPos.x - myFactoryPos.x);
+	auto move = MoveTo::create(distance / speed, enemyFactoryPos);
 
-	//Right 이동 애니메이션
+	//Left 이동 애니메이션
 	auto moveAni = Animation::create();
-	moveAni->setDelayPerUnit(0.3f);
+	moveAni->setDelayPerUnit(0.1f);
 	moveAni->addSpriteFrameWithFile("Character/C/CMove_0.png");
 	moveAni->addSpriteFrameWithFile("Character/C/CMove_1.png");
 	moveAni->addSpriteFrameWithFile("Character/C/CMove_2.png");
@@ -95,9 +105,10 @@ void LeftUnit::moveUnit()
 	moveAni->addSpriteFrameWithFile("Character/C/CMove_4.png");
 	moveAni->addSpriteFrameWithFile("Character/C/CMove_5.png");
 	auto animate = Animate::create(moveAni);
-
-	auto spawn = Spawn::create(Repeat::create(animate, -1), move, nullptr);
-	this->runAction(spawn);
+	auto rep = Repeat::create(animate, -1);
+	
+	this->runAction(move);
+	this->runAction(rep);
 }
 
 void LeftUnit::attackUnit(Unit* enemy)
@@ -238,9 +249,9 @@ void LeftUnit::update(float f)
 	{
 		Rect buddyRect = b->getBoundingBox();
 
-		if (myRect.intersectsRect(buddyRect))
+		if (myRect.intersectsRect(buddyRect) && !b->isDied)
 		{
-			//유닛보다 충돌한 아군 유닛이 더 상대편 팩토리와 가까울 때
+			//나보다 버디 유닛이 상대편 팩토리와 더 가까울 때
 			if (myRect.origin.x < buddyRect.origin.x && isStop == false)
 			{
 				isStop = true;
@@ -250,6 +261,7 @@ void LeftUnit::update(float f)
 		}
 		else
 		{
+			//전투 후 다시 이동
 			if (b == buddyUnit)
 			{
 				isStop = false;

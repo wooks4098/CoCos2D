@@ -3,7 +3,10 @@
 //초기화
 void Unit::initData()
 {
-	this->setPosition(this->myFactory->return_Factory_Sp()->getPosition());
+	myFactoryPos = Vec2(myFactory->return_Factory_Sp()->getPosition().x, myFactory->return_Factory_Sp()->getPosition().y - 50);
+	enemyFactoryPos = Vec2(enemyFactory->return_Factory_Sp()->getPosition().x, enemyFactory->return_Factory_Sp()->getPosition().y - 50);
+
+	this->setPosition(this->myFactoryPos);
 
 	//hp바
 	emptyHP = Sprite::create("Character/emptyHP.png");

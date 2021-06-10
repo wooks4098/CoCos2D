@@ -107,43 +107,48 @@ bool Bubble::isMove()
 }
 void Bubble::onEnter()
 {
+	log("on Bubble...");
+
 	Sprite::onEnter();
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->setSwallowTouches(true);
-
+	
 	listener->onTouchBegan = [=](Touch* touch, Event* event)
 	{
+		log("touch dd...");
 		Vec2 basepoint = touch->getLocation();
-
+	
 		Vec2 LocationInNode = this->convertToNodeSpace(touch->getLocation());
-
+	
 		Size s = this->getContentSize();
 		Rect rect = Rect(0, 0, s.width, s.height);
 		if (rect.containsPoint(LocationInNode))
 		{
 			_isMove = true;
-			//log("touch Bubble...");
+			this->setColor(Color3B::RED);
+			log("touch Bubble...");
 			return true;
 		}
+		return false; //추가한것
 	};
-
+	
 	listener->onTouchMoved = [=](Touch* touch, Event* event)
 	{
 		//log("touch mv...", _isMove);
 		this->setPosition(this->getPosition() + touch->getDelta());//이동한정보
 	};
-
+	
 	listener->onTouchEnded = [=](Touch* touch, Event* event)
 	{
 		_isMove = false;
 		//log("touch end...");
 	};
-
-	if (_useNodePr)
+	
 		_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this); //그려진 순서
-	else
-		_eventDispatcher->addEventListenerWithFixedPriority(listener, _fixedPr); // 지정된 우선순위대로
-
+	//if (_useNodePr)
+	//else
+	//	_eventDispatcher->addEventListenerWithFixedPriority(listener, _fixedPr); // 지정된 우선순위대로
+	//
 	_listener = listener; //화면 보일 때 터치하면 리스너 만들고 화면 사라지면 리스너 제거
 }
 

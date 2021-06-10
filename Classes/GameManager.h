@@ -3,7 +3,7 @@
 
 class GameManager
 {
-#pragma region ΩÃ±€≈Ê
+#pragma region singleton
 	static GameManager* m_hThis;
 public:
 	static GameManager* GetInstance()

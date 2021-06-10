@@ -1,5 +1,0 @@
-C:\cocos test\TestCode\proj.win32\Debug.win32\TestCode.exe
-C:\Users\A\Desktop\GitHub\CoCos2D\proj.win32\Debug.win32\TestCode.exe
-E:\CoCos2D\proj.win32\Debug.win32\TestCode.exe
-C:\Users\유지현\Desktop\GitHub\CoCos2D\proj.win32\Debug.win32\TestCode.exe
-C:\Users\유지현\Desktop\GitHub\CoCos2D\proj.win32\Debug.win32\TestCode.pdb
