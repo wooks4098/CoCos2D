@@ -53,4 +53,11 @@ public:
 
 	//스케줄 함수
 	void virtual update(float f) = 0;
+
+	//사운드 함수
+	void sound_create();
+	void sound_attack();
+	void sound_attackFac();
+	void sound_upgrade();
+	void sound_dead();
 };

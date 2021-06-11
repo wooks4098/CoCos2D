@@ -47,7 +47,7 @@ void SoundManager::Play(int _SoundNum)
 	case Unit_Attack_2:
 		experimental::AudioEngine::play2d("Sound/U_Attack02.ogg", false, 1.0f);
 		break;
-	case Unit_Creat:
+	case Unit_Create:
 		experimental::AudioEngine::play2d("Sound/U_Create.ogg", false, 1.0f);
 		break;
 	case Unit_Dead_0:

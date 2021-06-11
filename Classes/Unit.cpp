@@ -21,3 +21,66 @@ void Unit::initData()
 	this->addChild(emptyHP, 4);
 	this->addChild(fullHP, 5);
 }
+
+#pragma region sound
+void sound_create()
+{
+	SoundManager::GetInstance()->Play(Unit_Create);
+}
+
+void sound_attack()
+{
+	int randSound = rand() % 3;
+		switch (randSound)
+		{
+			case 0:
+			{
+				SoundManager::GetInstance()->Play(Unit_Attack_0);
+				break;
+			}
+			case 1:
+			{
+				SoundManager::GetInstance()->Play(Unit_Attack_1);
+				break;
+			}
+			case 2:
+			{
+				SoundManager::GetInstance()->Play(Unit_Attack_2);
+				break;
+			}
+		}
+}
+
+void sound_attackFac()
+{
+	SoundManager::GetInstance()->Play(Factory_Damage);
+}
+
+void sound_upgrade()
+{
+	SoundManager::GetInstance()->Play(Unit_Upgrade);
+}
+
+void sound_dead()
+{
+	int randSound = rand() % 3;
+	switch (randSound)
+	{
+		case 0:
+		{
+			SoundManager::GetInstance()->Play(Unit_Dead_0);
+			break;
+		}
+		case 1:
+		{
+			SoundManager::GetInstance()->Play(Unit_Dead_1);
+			break;
+		}
+		case 2:
+		{
+			SoundManager::GetInstance()->Play(Unit_Dead_2);
+			break;
+		}
+	}
+}
+#pragma endregion

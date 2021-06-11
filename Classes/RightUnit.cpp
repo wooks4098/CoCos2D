@@ -19,6 +19,8 @@ Unit* RightUnit::createUnit(Factory* myFac, Factory* enemyFac, BUBBLE bubble)
 	sprite->initData();
 	sprite->initUnit(bubble); //유닛 초기화
 
+	sprite->sound_create();
+
 	sprite->scheduleUpdate();
 
 	if (sprite && sprite->initWithFile(fileName))
@@ -124,7 +126,7 @@ void RightUnit::attackUnit(Unit* enemy)
 	attackAni->addSpriteFrameWithFile("Character/A/AAttack_4.png");
 	attackAni->addSpriteFrameWithFile("Character/A/AAttack_5.png");
 	
-	auto seq = Sequence::create(Animate::create(attackAni), CallFunc::create(CC_CALLBACK_0(RightUnit::callbackAttack, this, enemy)), DelayTime::create(1.5f), nullptr); //애니메이션+공격, 딜레이 순차적으로
+	auto seq = Sequence::create(Animate::create(attackAni), CallFunc::create(CC_CALLBACK_0(RightUnit::callbackAttack, this, enemy)), CallFunc::create(CC_CALLBACK_0(Unit::sound_attack, this)), DelayTime::create(1.5f), nullptr); //애니메이션+공격, 딜레이 순차적으로
 	auto rep = Repeat::create(seq, -1); //애니메이션, 공격, 딜레이
 	this->runAction(rep);
 }
@@ -145,7 +147,7 @@ void RightUnit::attackFactory()
 	attackAni->addSpriteFrameWithFile("Character/A/AAttack_4.png");
 	attackAni->addSpriteFrameWithFile("Character/A/AAttack_5.png");
 
-	auto seq = Sequence::create(Animate::create(attackAni), CallFunc::create(CC_CALLBACK_0(RightUnit::callbackAttackFac, this)), DelayTime::create(1.5f), nullptr); //애니메이션+공격, 딜레이 순차적으로
+	auto seq = Sequence::create(Animate::create(attackAni), CallFunc::create(CC_CALLBACK_0(RightUnit::callbackAttackFac, this)), CallFunc::create(CC_CALLBACK_0(Unit::sound_attackFac, this)), DelayTime::create(1.5f), nullptr); //애니메이션+공격, 딜레이 순차적으로
 	auto rep = Repeat::create(seq, -1); //애니메이션, 공격, 딜레이
 	this->runAction(rep);
 }
@@ -173,7 +175,7 @@ void RightUnit::dieUnit()
 
 	auto remove = CallFunc::create(CC_CALLBACK_0(RightUnit::removeUnit, this));
 	auto removeVec = CallFunc::create(CC_CALLBACK_0(RightUnit::removeVector, this));
-	auto seq = Sequence::create(removeVec, animate, remove, nullptr);
+	auto seq = Sequence::create(CallFunc::create(CC_CALLBACK_0(Unit::sound_dead, this)), removeVec, animate, remove, nullptr);
 	this->runAction(seq);
 
 	auto fadeout = Spawn::create(DelayTime::create(2.4f), FadeOut::create(1.2f), nullptr);

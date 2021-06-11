@@ -40,7 +40,7 @@ enum Sound
 	Unit_Attack_0,
 	Unit_Attack_1,
 	Unit_Attack_2,
-	Unit_Creat,
+	Unit_Create,
 	Unit_Dead_0,
 	Unit_Dead_1,
 	Unit_Dead_2,
