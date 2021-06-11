@@ -1,5 +1,4 @@
 #include "LeftUnit.h"
-
 extern Vector<Unit*> unitsL;
 extern Vector<Unit*> unitsR;
 

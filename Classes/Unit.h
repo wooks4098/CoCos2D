@@ -1,4 +1,5 @@
 #pragma once
+#include "SoundManager.h"
 #include "cocos2d.h"
 #include "Factory.h"
 #include "mecro.h"

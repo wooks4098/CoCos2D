@@ -23,12 +23,12 @@ void Unit::initData()
 }
 
 #pragma region sound
-void sound_create()
+void Unit::sound_create()
 {
 	SoundManager::GetInstance()->Play(Unit_Create);
 }
 
-void sound_attack()
+void Unit::sound_attack()
 {
 	int randSound = rand() % 3;
 		switch (randSound)
@@ -51,17 +51,17 @@ void sound_attack()
 		}
 }
 
-void sound_attackFac()
+void Unit::sound_attackFac()
 {
 	SoundManager::GetInstance()->Play(Factory_Damage);
 }
 
-void sound_upgrade()
+void Unit::sound_upgrade()
 {
 	SoundManager::GetInstance()->Play(Unit_Upgrade);
 }
 
-void sound_dead()
+void Unit::sound_dead()
 {
 	int randSound = rand() % 3;
 	switch (randSound)
