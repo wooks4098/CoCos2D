@@ -8,6 +8,8 @@ using namespace cocos2d;
 class Unit : public cocos2d::Sprite
 {
 public:
+	int unitNumber; //유닛의 번호
+
 	//스테이터스
 	float startHp; //초기 체력
 	float startSpeed; //초기 이속
@@ -16,11 +18,11 @@ public:
 	float speed; //이동속도
 	float damage; //힘
 
-	bool isFighting = false; //싸우는 중인지
-	bool isDied = false; //죽었는지
 	bool isStop = false; //아군 유닛 충돌에 의해 정지한 상태인지
-	bool isDieAct = false;
-	bool isAttackFac = false;
+	bool isFighting = false; //유닛과 싸우는 중인지
+	bool isAttackFac = false; //팩토리를 공격했는지
+	bool isDied = false; //죽었는지
+	bool isDieAct = false; //죽는 애니메이션 한번만 하기 위해서
 
 	//충돌한 아군 유닛
 	Unit* buddyUnit = nullptr;

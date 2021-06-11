@@ -24,3 +24,13 @@ void GameManager::Play_Bac()
 	if(isBac)
 		SoundManager::GetInstance()->Play(BackGround_0);
 }
+
+void GameManager::diedUnitL()
+{
+	forwardUnitLeft++;
+}
+
+void GameManager::diedUnitR()
+{
+	forwardUnitRight++;
+}

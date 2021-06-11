@@ -75,11 +75,12 @@ void RightUnit::removeUnit()
 void RightUnit::idleUnit()
 {
 	this->stopAllActions();
+	isStop = true;
 	isFighting = false;
 	isAttackFac = false;
 
 	auto idleAni = Animation::create();
-	idleAni->setDelayPerUnit(0.3f);
+	idleAni->setDelayPerUnit(1);
 	idleAni->addSpriteFrameWithFile("Character/A/AMove_0.png");
 	auto rep = Repeat::create(Animate::create(idleAni), -1);
 	this->runAction(rep);
@@ -88,6 +89,7 @@ void RightUnit::idleUnit()
 void RightUnit::moveUnit()
 {
 	this->stopAllActions();
+	isStop = false;
 	isFighting = false;
 	isAttackFac = false;
 
@@ -113,7 +115,8 @@ void RightUnit::moveUnit()
 void RightUnit::attackUnit(Unit* enemy)
 {
 	this->stopAllActions();
-	this->isFighting = true;
+	isStop = true;
+	isFighting = true;
 	isAttackFac = false;
 
 	//Left공격 애니메이션
@@ -134,8 +137,9 @@ void RightUnit::attackUnit(Unit* enemy)
 void RightUnit::attackFactory()
 {
 	this->stopAllActions();
-	isAttackFac = true;
+	isStop = true;
 	isFighting = false;
+	isAttackFac = true;
 
 	//Left공격 애니메이션
 	auto attackAni = Animation::create();
@@ -156,6 +160,9 @@ void RightUnit::dieUnit()
 {
 	this->stopAllActions();
 	isDieAct = true;
+	isFighting = true;
+	isAttackFac = true;
+	isStop = true;
 
 	auto dieAni = Animation::create();
 	dieAni->setDelayPerUnit(0.3f);
@@ -173,9 +180,11 @@ void RightUnit::dieUnit()
 	dieAni->addSpriteFrameWithFile("Character/A/ADeath_11.png");
 	auto animate = Animate::create(dieAni);
 
+	GameManager::GetInstance()->diedUnitR();
 	auto remove = CallFunc::create(CC_CALLBACK_0(RightUnit::removeUnit, this));
 	auto removeVec = CallFunc::create(CC_CALLBACK_0(RightUnit::removeVector, this));
-	auto seq = Sequence::create(CallFunc::create(CC_CALLBACK_0(Unit::sound_dead, this)), removeVec, animate, remove, nullptr);
+	auto sound = CallFunc::create(CC_CALLBACK_0(Unit::sound_dead, this));
+	auto seq = Sequence::create(sound, removeVec, animate, remove, nullptr);
 	this->runAction(seq);
 
 	auto fadeout = Spawn::create(DelayTime::create(2.4f), FadeOut::create(1.2f), nullptr);
@@ -208,12 +217,6 @@ void RightUnit::damaged(float d)
 		hp = 0;
 		isDied = true;
 
-		if (backBuddyUnit != nullptr && backBuddyUnit->isStop)
-		{
-			backBuddyUnit->buddyUnit = nullptr;
-			backBuddyUnit->moveUnit();
-		}
-
 		if (!isDieAct)
 			this->dieUnit();
 	}
@@ -228,61 +231,67 @@ void RightUnit::update(float f)
 	Rect myRect = getBoundingBox();
 	Rect enemyFacRect = Rect(enemyFactoryPos.x + 200, enemyFactoryPos.y, enemyFactory->return_Factory_Sp()->getContentSize().width, enemyFactory->return_Factory_Sp()->getContentSize().height);
 
-	//적군과 충돌할 때
-	for (Unit* e : unitsL)
+	//내가 제일 앞에 있는 유닛이라면
+	if (unitNumber == GameManager::GetInstance()->forwardUnitRight)
 	{
-		Rect enemyRect = e->getBoundingBox();
-
-		if (myRect.intersectsRect(enemyRect) && !e->isDied)
+		//적군과 충돌할 때
+		for (Unit* e : unitsL)
 		{
-			if (!isFighting)
-				attackUnit(e);
+			Rect enemyRect = e->getBoundingBox();
+
+			if (myRect.intersectsRect(enemyRect) && !e->isDied)
+			{
+				if (!isFighting)
+					attackUnit(e);
+			}
 		}
-	}
 
-	//적 팩토리와 충돌할 때 (우선 순위 = 적 > 적 팩토리)
-	if (!isFighting && myRect.intersectsRect(enemyFacRect))
-	{
-		//팩토리 공격
-		if (!isAttackFac)
-			attackFactory();
-	}
-
-	//아군과 충돌할 때
-	for (Unit* buddy : unitsR)
-	{
-		Rect buddyRect = buddy->getBoundingBox();
+		//적 팩토리와 충돌할 때 (우선 순위 = 적 > 적 팩토리)
+		if (!isFighting && myRect.intersectsRect(enemyFacRect))
+		{
+			//팩토리 공격
+			if (!isAttackFac)
+				attackFactory();
+		}
 		
-		if (myRect.intersectsRect(buddyRect) && !buddy->isDied)
+		//싸우는 상태가 아닌데 멈춰있다면 (앞의 유닛이 죽었을 때)
+		if (!isFighting && isStop)
 		{
-			//나보다 버디 유닛이 상대편 팩토리와 더 가까울 때
-			if (buddyRect.origin.x < myRect.origin.x && isStop == false)
-			{
-				isStop = true;
-				buddyUnit = buddy;
-				idleUnit();
-			}
+			isStop = false;
+			moveUnit();
+		}
+	}
 
-			//앞에 충돌한 아군 유닛
-			if (myRect.origin.x > buddyRect.origin.x)
-				backBuddyUnit = buddy;
-		}
-		else
+	//내 앞에 아군 유닛이 하나 이상 있을 때
+	else
+	{
+		//아군과 충돌할 때
+		for (Unit* buddy : unitsR)
 		{
-			//전투 후 다시 이동
-			if (buddy == buddyUnit)
+			Rect buddyRect = buddy->getBoundingBox();
+
+			if (myRect.intersectsRect(buddyRect))
 			{
-				isStop = false;
-				buddyUnit = nullptr;
-				moveUnit();
+				//나보다 앞에 있는 유닛과 부딪혔다면
+				if (unitNumber > buddy->unitNumber)
+				{
+					isStop = true;
+					buddyUnit = buddy;
+					idleUnit();
+				}
+			}
+			else
+			{
+				//전투 후 다시 이동
+				if (buddy == buddyUnit)
+				{
+					isStop = false;
+					buddyUnit = nullptr;
+					moveUnit();
+				}
 			}
 		}
 
-		//앞에 충돌한 아군 유닛이 죽었을 때
-		if (buddy == backBuddyUnit)
-		{
-			backBuddyUnit = nullptr;
-		}
 	}
 }
 #pragma endregion

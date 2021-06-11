@@ -5,7 +5,8 @@
 
 using namespace cocos2d;
 
-//모든 유닛 저장
+
+	//모든 유닛 저장
 Vector<Unit*> unitsL;
 Vector<Unit*> unitsR;
 
@@ -44,6 +45,8 @@ bool GameScene::init()
 	this->schedule(static_cast<cocos2d::SEL_SCHEDULE>(&GameScene::OneTwoThreeFourBubbleBubbleLeft));
 	this->schedule(static_cast<cocos2d::SEL_SCHEDULE>(&GameScene::OneTwoThreeFourBubbleBubbleRight));
 	this->schedule(static_cast<cocos2d::SEL_SCHEDULE>(&GameScene::GetCoinInTime),1.0f);
+
+	
 	return true;
 }
 
@@ -441,6 +444,8 @@ void GameScene::Factory_Right_CreatUnitCheck(float f)
 
 		Unit* unit = RightUnit::createUnit(&factory[FACTORY_RIGHT], &factory[FACTORY_LEFT], _bubble);
 		unit->initUnit(_bubble);
+		unit->unitNumber = GameManager::GetInstance()->totalUnitNumR;
+		GameManager::GetInstance()->totalUnitNumR++;
 		unitsR.pushBack(unit);
 		this->addChild(unit);
 		unit->moveUnit();
@@ -460,6 +465,8 @@ void GameScene::Factory_Left_CreatUnitCheck(float f)
 
 		Unit* unit = LeftUnit::createUnit(&factory[FACTORY_LEFT], &factory[FACTORY_RIGHT], _bubble);
 		unit->initUnit(_bubble);
+		unit->unitNumber = GameManager::GetInstance()->totalUnitNumL;
+		GameManager::GetInstance()->totalUnitNumL++;
 		unitsL.pushBack(unit);
 		this->addChild(unit);
 		unit->moveUnit();
