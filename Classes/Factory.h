@@ -19,8 +19,8 @@ private:
 	bool isRight;	//공장이 오른쪽에 있는지
 	float CreatUnit_timeCheck;	//유닛 생성 쿨타임 체크
 	float CreatUnit_time;		//유닛 생성 쿨타임
-	float CreatUnit_time_Base = 1;	//유닛 생성 쿨타임 초기값
-
+	float CreatUnit_time_Base;	//유닛 생성 쿨타임 초기값
+	float CreatUnit_SpawnSpeed;
 	float Upgraid_hp = 0;
 	float Upgraid_defense = 0;
 	float Upgraid_damage = 0;
@@ -39,6 +39,7 @@ private:
 	Sprite* Circle_bubble_sprite[8];
 	Sprite* Rhombus_bubble_sprite[8];
 
+	bool isStart;
 
 public:
 	Factory();

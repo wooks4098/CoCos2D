@@ -272,22 +272,24 @@ BUBBLE GameScene::GetPP(int lev)
 	if (lev == 1)
 	{
 		randnum = rand() % 6;
+		randnum = R1_Yellow;
+
 		switch (randnum)
 		{
 		case C1_Blue:
-			val.Defense = 5;
+			val.Defense = 10;
 			val.key = 0;
 			break;
 		case C1_Red:
-			val.Hp = 5;
+			val.Hp = 20;
 			val.key = 1;
 			break;
 		case C1_Yellow:
-			val.SpawnSpeed = -0.1f;
+			val.SpawnSpeed = 1.1f;
 			val.key = 2;
 			break;
 		case R1_Blue:
-			val.Damage = 2;
+			val.Damage = 20;
 			val.key = 3;
 			break;
 		case R1_Red:
@@ -295,7 +297,7 @@ BUBBLE GameScene::GetPP(int lev)
 			val.key = 4;
 			break;
 		case R1_Yellow:
-			val.MoveSpeed = 5;
+			val.MoveSpeed = 50;
 			val.key = 5;
 			break;
 		default:
@@ -305,23 +307,24 @@ BUBBLE GameScene::GetPP(int lev)
 	else if (lev == 2)
 	{
 		randnum = (rand() % 6) + 6;
+		randnum = R2_Yellow;
 
 		switch (randnum)
 		{
 		case C2_Blue:
-			val.Defense = 10;
+			val.Defense = 15;
 			val.key = 6;
 			break;
 		case C2_Red:
-			val.Hp = 10;
+			val.Hp = 35;
 			val.key = 7;
 			break;
 		case C2_Yellow:
-			val.SpawnSpeed = -0.3f;
+			val.SpawnSpeed = 1.2f;
 			val.key = 8;
 			break;
 		case R2_Blue:
-			val.Damage = 3;
+			val.Damage = 30;
 			val.key = 9;
 			break;
 		case R2_Red:
@@ -329,7 +332,7 @@ BUBBLE GameScene::GetPP(int lev)
 			val.key = 10;
 			break;
 		case R2_Yellow:
-			val.MoveSpeed = 15;
+			val.MoveSpeed = 75;
 			val.key = 11;
 			break;
 		default:
