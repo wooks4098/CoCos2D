@@ -3,11 +3,13 @@
 Factory::Factory()
 {
 	winSize = Director::getInstance()->getWinSize(); //화면의 사이즈 구하기
-	CreatUnit_timeCheck = 1;	
+	CreatUnit_timeCheck = 3;	
 	CreatUnit_time = 0;		
+	CreatUnit_time_Base = 10;
 	MaxHp = 100;
 	CurHp = MaxHp;
-
+	CreatUnit_SpawnSpeed = 1;
+	isStart = false;
 	Circle_bubble.key = None_Circle;
 	Rhombus_bubble.key = None_Rhombus;
 }
@@ -100,23 +102,23 @@ void Factory::Create_HpDownMenu()
 void Factory::Create_Bubble()
 {
 	//원
-	Circle_bubble_sprite[0] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/C1_Blue.png");
-	Circle_bubble_sprite[1] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/C1_Red.png");
-	Circle_bubble_sprite[2] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/C1_Yellow.png");
-	Circle_bubble_sprite[3] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/C2_Blue.png");
-	Circle_bubble_sprite[4] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/C2_Red.png");
-	Circle_bubble_sprite[5] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/C2_Yellow.png");
+	Circle_bubble_sprite[0] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/C1_Blue.png");
+	Circle_bubble_sprite[1] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/C1_Red.png");
+	Circle_bubble_sprite[2] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/C1_Yellow.png");
+	Circle_bubble_sprite[3] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/C2_Blue.png");
+	Circle_bubble_sprite[4] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/C2_Red.png");
+	Circle_bubble_sprite[5] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/C2_Yellow.png");
 	//Circle_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2_40.png");
 	//Circle_bubble_sprite[7] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2_40.png");
 	Circle_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2.png");
 	Circle_bubble_sprite[7] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2.png");
 	//마름모
-	Rhombus_bubble_sprite[0] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R1_Blue.png");
-	Rhombus_bubble_sprite[1] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R1_Red.png");
-	Rhombus_bubble_sprite[2] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R1_Yellow.png");
-	Rhombus_bubble_sprite[3] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R2_Blue.png");
-	Rhombus_bubble_sprite[4] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R2_Red.png");
-	Rhombus_bubble_sprite[5] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_40/R2_Yellow.png");
+	Rhombus_bubble_sprite[0] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/R1_Blue.png");
+	Rhombus_bubble_sprite[1] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/R1_Red.png");
+	Rhombus_bubble_sprite[2] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/R1_Yellow.png");
+	Rhombus_bubble_sprite[3] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/R2_Blue.png");
+	Rhombus_bubble_sprite[4] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/R2_Red.png");
+	Rhombus_bubble_sprite[5] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/R2_Yellow.png");
 	//Rhombus_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1_40.png");
 	//Rhombus_bubble_sprite[7] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1_40.png");
 	Rhombus_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1.png");
@@ -266,8 +268,11 @@ void Factory::Change_Bubble_Setting(BUBBLE _Bubble)
 	{
 	case C1_Yellow:
 	case C2_Yellow:
-		CreatUnit_time = CreatUnit_time_Base - _Bubble.SpawnSpeed;
+		//CreatUnit_timeCheck = CreatUnit_time_Base *(1- _Bubble.SpawnSpeed);
+		CreatUnit_SpawnSpeed = _Bubble.SpawnSpeed;
 		break;
+	default:
+		CreatUnit_SpawnSpeed = 1;
 	}
 }
 void Factory::SetPos_Bubble()
@@ -319,10 +324,16 @@ void Factory::Change_CreatUnit_Time(float time)
 
 bool Factory::CreatUnit()
 {
-	CreatUnit_time += 0.1f;
+
+	CreatUnit_time += 0.1f * CreatUnit_SpawnSpeed ;
 	if (CreatUnit_time >= CreatUnit_timeCheck)
 	{
 		CreatUnit_time = 0;
+		if (!isStart)
+		{
+			CreatUnit_timeCheck = CreatUnit_time_Base;
+			isStart = true;
+		}
 		return true;
 	}
 	return false;
@@ -380,6 +391,7 @@ BUBBLE Factory::return_bubble()
 	Rhombus_bubble;
 
 	_bubble.AttackSpeed = Circle_bubble.AttackSpeed + Rhombus_bubble.AttackSpeed + Upgraid_attackSpeed;
+	//_bubble.AttackSpeed = 0.5;
 	_bubble.Damage = Circle_bubble.Damage + Rhombus_bubble.Damage + Upgraid_damage;
 	_bubble.Defense = Circle_bubble.Defense + Rhombus_bubble.Defense + Upgraid_defense;
 	_bubble.Hp = Circle_bubble.Hp + Rhombus_bubble.Hp + Upgraid_hp;
