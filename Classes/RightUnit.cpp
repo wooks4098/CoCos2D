@@ -37,32 +37,31 @@ Unit* RightUnit::createUnit(Factory* myFac, Factory* enemyFac, BUBBLE bubble)
 #pragma region init
 void RightUnit::initUnit(BUBBLE bubble)
 {
-	//레벨 디자인 해야함
-	if(bubble.Hp == 0)
-		startHp = 100;
+	if (bubble.Hp == 0)
+		startHp = 80;
 	else
-		startHp = bubble.Hp;
+		startHp = 80 + bubble.Hp;
 	hp = startHp;
 
 	if (bubble.MoveSpeed == 0)
-		speed = 400;
+		speed = 200;
 	else
-		speed = bubble.MoveSpeed;
+		speed = 200 + bubble.MoveSpeed;
 
 	if (bubble.Damage == 0)
 		damage = 10;
 	else
-		damage = bubble.Damage;
+		damage = 10 + bubble.Damage;
 
 	if (bubble.AttackSpeed == 0)
-		attackSpeed = 1;
+		attackSpeed = 0.5;
 	else
-		attackSpeed = bubble.AttackSpeed;
-	
+		attackSpeed = 0.5 * (bubble.AttackSpeed);
+
 	if (bubble.Defense == 0)
 		defense = 5;
 	else
-		defense = bubble.Defense;
+		defense = 5 + bubble.Defense;
 }
 #pragma endregion
 
