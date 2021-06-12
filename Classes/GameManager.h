@@ -32,8 +32,8 @@ public:
 
 	void Play_Bac();
 
-	int forwardUnitLeft = 0; //제일 앞에 있는 왼쪽 유닛
-	int forwardUnitRight = 0; //제일 앞에 있는 오른쪽 유닛
+	int frontUnitLeft = 0; //제일 앞에 있는 왼쪽 유닛
+	int frontUnitRight = 0; //제일 앞에 있는 오른쪽 유닛
 	int totalUnitNumL = 0; //총 유닛 개수
 	int totalUnitNumR = 0; //총 유닛 개수
 

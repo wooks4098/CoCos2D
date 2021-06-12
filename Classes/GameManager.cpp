@@ -27,10 +27,10 @@ void GameManager::Play_Bac()
 
 void GameManager::diedUnitL()
 {
-	forwardUnitLeft++;
+	frontUnitLeft++;
 }
 
 void GameManager::diedUnitR()
 {
-	forwardUnitRight++;
+	frontUnitRight++;
 }

@@ -266,51 +266,49 @@ void LeftUnit::update(float f)
 	Rect myRect = getBoundingBox();
 	Rect enemyFacRect = Rect(enemyFactoryPos.x - 200, enemyFactoryPos.y, enemyFactoryPos.x, enemyFactory->return_Factory_Sp()->getContentSize().height);
 
-	//내가 제일 앞에 있는 유닛이라면
-	if (unitNumber == GameManager::GetInstance()->forwardUnitLeft)
+	//내가 제일 앞에 있는 유닛일 경우
+	if (unitNumber == GameManager::GetInstance()->frontUnitLeft)
 	{
 		if (fullHP == nullptr)
 			createHpBar();
 
-		//적군과 충돌할 때
-		for (Unit* e : unitsR)
+		for(Unit* enemy : unitsR)
 		{
-			Rect enemyRect = e->getBoundingBox();
-
-			if (myRect.intersectsRect(enemyRect) && !e->isDied)
+			//가장 앞에 있는 적군과 충돌할 경우
+			if (enemy->unitNumber == GameManager::GetInstance()->frontUnitRight)
 			{
-				if (!isAttackUnit)
-					attackUnit(e);
+				Rect enemyRect = enemy->getBoundingBox();
+
+				if (myRect.intersectsRect(enemyRect) && !isAttackUnit)
+					attackUnit(enemy);
 			}
 		}
-
-		//적 팩토리와 충돌할 때 (우선 순위 = 적 > 적 팩토리)
-		if (!isAttackUnit && myRect.intersectsRect(enemyFacRect))
+		
+		//적 팩토리와 충돌할 경우 (우선 순위 = 적 > 적 팩토리)
+		if (!isAttackUnit && !isAttackFac && myRect.intersectsRect(enemyFacRect))
 		{
-			//팩토리 공격
-			if (!isAttackFac)
-				attackFactory();
+			attackFactory();
 		}
 
-		//싸우는 상태가 아닌데 멈춰있다면 (앞의 유닛이 죽었을 때)
-		if (!isAttackUnit && !isAttackFac && isStop)
+		//싸우는 상태가 아닌데 멈춰있을 경우 (앞의 유닛이 죽었을 때)
+		if (!isDied && !isAttackUnit && !isAttackFac && isStop)
 		{
 			isStop = false;
 			moveUnit();
 		}
 	}
 
-	//내 앞에 아군 유닛이 하나 이상 있을 때
+	//내가 가장 앞에 있는 유닛이 아닐 경우
 	else
 	{
-		//아군과 충돌할 때
+		//아군과 충돌할 경우
 		for (Unit* buddy : unitsL)
 		{
 			Rect buddyRect = buddy->getBoundingBox();
 
 			if (myRect.intersectsRect(buddyRect))
 			{
-				//나보다 앞에 있는 유닛과 부딪혔다면
+				//나보다 앞에 있는 유닛과 부딪힐 경우
 				if (unitNumber > buddy->unitNumber && !isDied)
 				{
 					isStop = true;
@@ -320,8 +318,8 @@ void LeftUnit::update(float f)
 			}
 			else
 			{
-				//전투 후 다시 이동
-				if (buddy == buddyUnit)
+				//충돌하지 않았는데 buddyUnit이 그대로 = buddyUnit이 전투를 마친 후 이동
+				if (!isDied && buddy == buddyUnit)
 				{
 					isStop = false;
 					buddyUnit = nullptr;
@@ -329,7 +327,6 @@ void LeftUnit::update(float f)
 				}
 			}
 		}
-
 	}
 }
 #pragma endregion
