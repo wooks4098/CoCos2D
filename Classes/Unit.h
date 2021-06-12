@@ -22,7 +22,8 @@ public:
 	float defense; //방어력
 
 	bool isStop = false; //아군 유닛 충돌에 의해 정지한 상태인지
-	bool isFighting = false; //유닛과 싸우는 중인지
+	//bool isFight = false; //싸우는 중인지 (유닛 or 팩토리)
+	bool isAttackUnit = false; //유닛을 공격했는지
 	bool isAttackFac = false; //팩토리를 공격했는지
 	bool isDied = false; //죽었는지
 	bool isDieAct = false; //죽는 애니메이션 한번만 하기 위해서
@@ -56,6 +57,8 @@ public:
 	void virtual callbackAttackFac() = 0; //공격할 때 호출
 	void virtual removeUnit() = 0; //사망할 때 호출
 	void virtual removeVector() = 0;
+	void callbackHpBarAni(); //HP바 애니메이션
+	void callbackHpBarSetScale(); //HP바 애니메이션
 
 	//스케줄 함수
 	void virtual update(float f) = 0;

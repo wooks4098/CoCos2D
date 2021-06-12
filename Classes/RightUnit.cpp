@@ -45,7 +45,7 @@ void RightUnit::initUnit(BUBBLE bubble)
 	hp = startHp;
 
 	if (bubble.MoveSpeed == 0)
-		speed = 200;
+		speed = 400;
 	else
 		speed = bubble.MoveSpeed;
 
@@ -63,7 +63,6 @@ void RightUnit::initUnit(BUBBLE bubble)
 		defense = 5;
 	else
 		defense = bubble.Defense;
-
 }
 #pragma endregion
 
@@ -87,7 +86,7 @@ void RightUnit::idleUnit()
 {
 	this->stopAllActions();
 	isStop = true;
-	isFighting = false;
+	isAttackUnit = false;
 	isAttackFac = false;
 
 	auto idleAni = Animation::create();
@@ -101,7 +100,7 @@ void RightUnit::moveUnit()
 {
 	this->stopAllActions();
 	isStop = false;
-	isFighting = false;
+	isAttackUnit = false;
 	isAttackFac = false;
 
 	float distance = fabs(myFactoryPos.x - enemyFactoryPos.x);
@@ -127,7 +126,7 @@ void RightUnit::attackUnit(Unit* enemy)
 {
 	this->stopAllActions();
 	isStop = true;
-	isFighting = true;
+	isAttackUnit = true;
 	isAttackFac = false;
 
 	//Left공격 애니메이션
@@ -161,23 +160,32 @@ void RightUnit::attackFactory()
 {
 	this->stopAllActions();
 	isStop = true;
-	isFighting = false;
+	isAttackUnit = false;
 	isAttackFac = true;
 
 	//Left공격 애니메이션
-	auto attackAni = Animation::create();
 	float aniPerSpeed = (attackSpeed / 6) * 2;
-	clampf(aniPerSpeed, 0.1, 0.4);
+	clampf(aniPerSpeed, 0.2, 0.4);
 
-	attackAni->setDelayPerUnit(aniPerSpeed);
-	attackAni->addSpriteFrameWithFile("Character/A/AAttack_0.png");
-	attackAni->addSpriteFrameWithFile("Character/A/AAttack_1.png");
-	attackAni->addSpriteFrameWithFile("Character/A/AAttack_2.png");
-	attackAni->addSpriteFrameWithFile("Character/A/AAttack_3.png");
-	attackAni->addSpriteFrameWithFile("Character/A/AAttack_4.png");
-	attackAni->addSpriteFrameWithFile("Character/A/AAttack_5.png");
+	auto attackFirstAni = Animation::create();
+	attackFirstAni->setDelayPerUnit(aniPerSpeed);
+	attackFirstAni->addSpriteFrameWithFile("Character/A/AAttack_0.png");
+	attackFirstAni->addSpriteFrameWithFile("Character/A/AAttack_1.png");
+	attackFirstAni->addSpriteFrameWithFile("Character/A/AAttack_2.png");
+	attackFirstAni->addSpriteFrameWithFile("Character/A/AAttack_3.png");
+	auto firstAni = Animate::create(attackFirstAni);
 
-	auto seq = Sequence::create(Animate::create(attackAni), CallFunc::create(CC_CALLBACK_0(RightUnit::callbackAttackFac, this)), CallFunc::create(CC_CALLBACK_0(Unit::sound_attackFac, this)), DelayTime::create(attackSpeed), nullptr); //애니메이션+공격, 딜레이 순차적으로
+	auto attackSecondAni = Animation::create();
+	attackSecondAni->setDelayPerUnit(aniPerSpeed);
+	attackSecondAni->addSpriteFrameWithFile("Character/A/AAttack_4.png");
+	attackSecondAni->addSpriteFrameWithFile("Character/A/AAttack_5.png");
+	auto secondAni = Animate::create(attackSecondAni);
+
+	auto attackFunc = CallFunc::create(CC_CALLBACK_0(RightUnit::callbackAttackFac, this));
+	auto sound = CallFunc::create(CC_CALLBACK_0(Unit::sound_attack, this));
+
+	//검으로 베는 애니메이션, 공격 함수, 사운드, 검으로 벤 후 애니메이션, 딜레이 순
+	auto seq = Sequence::create(firstAni, attackFunc, sound, secondAni, DelayTime::create(attackSpeed), nullptr);
 	auto rep = Repeat::create(seq, -1); //애니메이션, 공격, 딜레이
 	this->runAction(rep);
 }
@@ -186,8 +194,8 @@ void RightUnit::dieUnit()
 {
 	this->stopAllActions();
 	isDieAct = true;
-	isFighting = true;
-	isAttackFac = true;
+	isAttackUnit = false;
+	isAttackFac = false;
 	isStop = true;
 
 	auto dieAni = Animation::create();
@@ -246,6 +254,9 @@ void RightUnit::damaged(float d)
 		if (!isDieAct)
 			this->dieUnit();
 	}
+	
+	callbackHpBarAni();
+
 	fullHP->setScaleX(static_cast<float>(hp) / static_cast<float>(startHp));
 }
 #pragma endregion
@@ -254,7 +265,7 @@ void RightUnit::damaged(float d)
 void RightUnit::update(float f)
 {
 	Rect myRect = getBoundingBox();
-	Rect enemyFacRect = Rect(enemyFactoryPos.x + 200, enemyFactoryPos.y, enemyFactory->return_Factory_Sp()->getContentSize().width, enemyFactory->return_Factory_Sp()->getContentSize().height);
+	Rect enemyFacRect = Rect(enemyFactoryPos.x, enemyFactoryPos.y, 200, enemyFactory->return_Factory_Sp()->getContentSize().height);
 
 	//내가 제일 앞에 있는 유닛이라면
 	if (unitNumber == GameManager::GetInstance()->forwardUnitRight)
@@ -266,13 +277,13 @@ void RightUnit::update(float f)
 
 			if (myRect.intersectsRect(enemyRect) && !e->isDied)
 			{
-				if (!isFighting)
+				if (!isAttackUnit)
 					attackUnit(e);
 			}
 		}
 
 		//적 팩토리와 충돌할 때 (우선 순위 = 적 > 적 팩토리)
-		if (!isFighting && myRect.intersectsRect(enemyFacRect))
+		if (!isAttackUnit && myRect.intersectsRect(enemyFacRect))
 		{
 			//팩토리 공격
 			if (!isAttackFac)
@@ -280,7 +291,7 @@ void RightUnit::update(float f)
 		}
 		
 		//싸우는 상태가 아닌데 멈춰있다면 (앞의 유닛이 죽었을 때)
-		if (!isFighting && isStop)
+		if (!isAttackUnit && !isAttackFac && isStop)
 		{
 			isStop = false;
 			moveUnit();
