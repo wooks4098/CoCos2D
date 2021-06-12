@@ -37,22 +37,32 @@ Unit* LeftUnit::createUnit(Factory* myFac, Factory* enemyFac, BUBBLE bubble)
 #pragma region init
 void LeftUnit::initUnit(BUBBLE bubble)
 {
-	//수정해야함
+	//레벨 디자인 해야함
 	if (bubble.Hp == 0)
-		startHp = 50;
+		startHp = 100;
 	else
 		startHp = bubble.Hp;
 	hp = startHp;
 
 	if (bubble.MoveSpeed == 0)
-		speed = 400;
+		speed = 200;
 	else
 		speed = bubble.MoveSpeed;
 
 	if (bubble.Damage == 0)
-		damage = 20;
+		damage = 10;
 	else
 		damage = bubble.Damage;
+
+	if (bubble.AttackSpeed == 0)
+		attackSpeed = 1;
+	else
+		attackSpeed = bubble.AttackSpeed;
+	
+	if (bubble.Defense == 0)
+		defense = 5;
+	else
+		defense = bubble.Defense;
 }
 #pragma endregion
 
@@ -120,16 +130,28 @@ void LeftUnit::attackUnit(Unit* enemy)
 	isAttackFac = false;
 
 	//Right 공격 애니메이션
-	auto attackAni = Animation::create();
-	attackAni->setDelayPerUnit(0.3f);
-	attackAni->addSpriteFrameWithFile("Character/C/CAttack_0.png");
-	attackAni->addSpriteFrameWithFile("Character/C/CAttack_1.png");
-	attackAni->addSpriteFrameWithFile("Character/C/CAttack_2.png");
-	attackAni->addSpriteFrameWithFile("Character/C/CAttack_3.png");
-	attackAni->addSpriteFrameWithFile("Character/C/CAttack_4.png");
-	attackAni->addSpriteFrameWithFile("Character/C/CAttack_5.png");
+	float aniPerSpeed = (attackSpeed / 6) * 2;
+	clampf(aniPerSpeed, 0.1, 0.4);
 
-	auto seq = Sequence::create(Animate::create(attackAni), CallFunc::create(CC_CALLBACK_0(LeftUnit::callbackAttack, this, enemy)), CallFunc::create(CC_CALLBACK_0(Unit::sound_attack, this)), DelayTime::create(1.5f), nullptr); //애니메이션+공격, 딜레이 순차적으로
+	auto attackFirstAni = Animation::create();
+	attackFirstAni->setDelayPerUnit(aniPerSpeed);
+	attackFirstAni->addSpriteFrameWithFile("Character/C/CAttack_0.png");
+	attackFirstAni->addSpriteFrameWithFile("Character/C/CAttack_1.png");
+	attackFirstAni->addSpriteFrameWithFile("Character/C/CAttack_2.png");
+	attackFirstAni->addSpriteFrameWithFile("Character/C/CAttack_3.png");
+	auto firstAni = Animate::create(attackFirstAni);
+
+	auto attackSecondAni = Animation::create();
+	attackSecondAni->setDelayPerUnit(aniPerSpeed);
+	attackSecondAni->addSpriteFrameWithFile("Character/C/CAttack_4.png");
+	attackSecondAni->addSpriteFrameWithFile("Character/C/CAttack_5.png");
+	auto secondAni = Animate::create(attackSecondAni);
+
+	auto attackFunc = CallFunc::create(CC_CALLBACK_0(LeftUnit::callbackAttack, this, enemy));
+	auto sound = CallFunc::create(CC_CALLBACK_0(Unit::sound_attack, this));
+
+	//검으로 베는 애니메이션, 공격 함수, 사운드, 검으로 벤 후 애니메이션, 딜레이 순
+	auto seq = Sequence::create(firstAni, attackFunc, sound, secondAni, DelayTime::create(attackSpeed), nullptr);
 	auto rep = Repeat::create(seq, -1); //애니메이션, 공격, 딜레이
 	this->runAction(rep);
 }
@@ -143,7 +165,10 @@ void LeftUnit::attackFactory()
 
 	//Right 공격 애니메이션
 	auto attackAni = Animation::create();
-	attackAni->setDelayPerUnit(0.3f);
+	float aniPerSpeed = (attackSpeed / 6) * 2;
+	clampf(aniPerSpeed, 0.1, 0.4);
+
+	attackAni->setDelayPerUnit(aniPerSpeed);
 	attackAni->addSpriteFrameWithFile("Character/C/CAttack_0.png");
 	attackAni->addSpriteFrameWithFile("Character/C/CAttack_1.png");
 	attackAni->addSpriteFrameWithFile("Character/C/CAttack_2.png");
@@ -151,7 +176,7 @@ void LeftUnit::attackFactory()
 	attackAni->addSpriteFrameWithFile("Character/C/CAttack_4.png");
 	attackAni->addSpriteFrameWithFile("Character/C/CAttack_5.png");
 
-	auto seq = Sequence::create(Animate::create(attackAni), CallFunc::create(CC_CALLBACK_0(LeftUnit::callbackAttackFac, this)), CallFunc::create(CC_CALLBACK_0(Unit::sound_attackFac, this)), DelayTime::create(1.5f), nullptr); //애니메이션+공격, 딜레이 순차적으로
+	auto seq = Sequence::create(Animate::create(attackAni), CallFunc::create(CC_CALLBACK_0(LeftUnit::callbackAttackFac, this)), CallFunc::create(CC_CALLBACK_0(Unit::sound_attackFac, this)), DelayTime::create(attackSpeed), nullptr); //애니메이션+공격, 딜레이 순차적으로
 	auto rep = Repeat::create(seq, -1); //애니메이션, 공격, 딜레이
 	this->runAction(rep);
 }
@@ -220,14 +245,14 @@ void LeftUnit::damaged(float d)
 		if (!isDieAct)
 			this->dieUnit();
 	}
+
+	fullHP->setScaleX(static_cast<float>(hp) / static_cast<float>(startHp));
 }
 #pragma endregion
 
 #pragma region schedule function
 void LeftUnit::update(float f)
 {
-	fullHP->setScaleX(static_cast<float>(hp) / static_cast<float>(startHp));
-
 	Rect myRect = getBoundingBox();
 	Rect enemyFacRect = Rect(enemyFactoryPos.x + 200, enemyFactoryPos.y, enemyFactory->return_Factory_Sp()->getContentSize().width, enemyFactory->return_Factory_Sp()->getContentSize().height);
 
@@ -273,7 +298,7 @@ void LeftUnit::update(float f)
 			if (myRect.intersectsRect(buddyRect))
 			{
 				//나보다 앞에 있는 유닛과 부딪혔다면
-				if (unitNumber > buddy->unitNumber)
+				if (unitNumber > buddy->unitNumber && !isDied)
 				{
 					isStop = true;
 					buddyUnit = buddy;

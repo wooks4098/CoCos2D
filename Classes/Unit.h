@@ -3,6 +3,7 @@
 #include "cocos2d.h"
 #include "Factory.h"
 #include "mecro.h"
+#include <algorithm>
 using namespace cocos2d;
 
 class Unit : public cocos2d::Sprite
@@ -16,7 +17,9 @@ public:
 	float startPower; //초기 힘
 	float hp; //현재 체력
 	float speed; //이동속도
-	float damage; //힘
+	float damage; //공격력
+	float attackSpeed; //공격 속도
+	float defense; //방어력
 
 	bool isStop = false; //아군 유닛 충돌에 의해 정지한 상태인지
 	bool isFighting = false; //유닛과 싸우는 중인지
