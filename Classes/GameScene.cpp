@@ -438,20 +438,20 @@ void GameScene::Factory_Right_CreatUnitCheck(float f)
 {
 	if (factory[FACTORY_RIGHT].CreatUnit())
 	{
-		//BUBBLE _bubble = factory[FACTORY_RIGHT].return_bubble();
-		///*_bubble.AttackSpeed;
-		//_bubble.Damage;
-		//_bubble.Defense;
-		//_bubble.Hp;
-		//_bubble.MoveSpeed;*/
+		BUBBLE _bubble = factory[FACTORY_RIGHT].return_bubble();
+		/*_bubble.AttackSpeed;
+		_bubble.Damage;
+		_bubble.Defense;
+		_bubble.Hp;
+		_bubble.MoveSpeed;*/
 
-		//Unit* unit = RightUnit::createUnit(&factory[FACTORY_RIGHT], &factory[FACTORY_LEFT], _bubble);
-		//unit->initUnit(_bubble);
-		//unit->unitNumber = GameManager::GetInstance()->totalUnitNumR;
-		//GameManager::GetInstance()->totalUnitNumR++;
-		//unitsR.pushBack(unit);
-		//this->addChild(unit);
-		//unit->moveUnit();
+		Unit* unit = RightUnit::createUnit(&factory[FACTORY_RIGHT], &factory[FACTORY_LEFT], _bubble);
+		unit->initUnit(_bubble);
+		unit->unitNumber = GameManager::GetInstance()->totalUnitNumR;
+		GameManager::GetInstance()->totalUnitNumR++;
+		unitsR.pushBack(unit);
+		this->addChild(unit);
+		unit->moveUnit();
 	}
 }
 

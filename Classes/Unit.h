@@ -52,13 +52,15 @@ public:
 	void virtual dieUnit() = 0; //유닛 사망
 	void virtual damaged(float damage) = 0; //데미지 입는 함수
 
+	//HP바 관련 함수
+	void callbackHpBarAni(); //HP바 애니메이션
+	void createHpBar();
+
 	//콜백 함수
 	void virtual callbackAttack(Unit* enemy) = 0; //공격할 때 호출
 	void virtual callbackAttackFac() = 0; //공격할 때 호출
 	void virtual removeUnit() = 0; //사망할 때 호출
 	void virtual removeVector() = 0;
-	void callbackHpBarAni(); //HP바 애니메이션
-	void callbackHpBarSetScale(); //HP바 애니메이션
 
 	//스케줄 함수
 	void virtual update(float f) = 0;

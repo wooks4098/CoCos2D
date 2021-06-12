@@ -7,19 +7,6 @@ void Unit::initData()
 	enemyFactoryPos = Vec2(enemyFactory->return_Factory_Sp()->getPosition().x, enemyFactory->return_Factory_Sp()->getPosition().y - 60);
 
 	this->setPosition(this->myFactoryPos);
-
-	//hp¹Ù
-	emptyHP = Sprite::create("Character/emptyHP.png");
-	fullHP = Sprite::create("Character/fullHP.png");
-
-	emptyHP->setPosition(Vec2(0, 300));
-	fullHP->setPosition(Vec2(0, 300));
-
-	emptyHP->setAnchorPoint(Vec2(0, 0));
-	fullHP->setAnchorPoint(Vec2(0, 0));
-	
-	this->addChild(emptyHP, 4);
-	this->addChild(fullHP, 5);
 }
 #pragma endregion
 
@@ -87,6 +74,29 @@ void Unit::sound_dead()
 #pragma endregion
 
 #pragma region HpBar
+void Unit::createHpBar()
+{
+	//hp¹Ù
+	emptyHP = Sprite::create("Character/emptyHP.png");
+	fullHP = Sprite::create("Character/fullHP.png");
+
+	emptyHP->setPosition(Vec2(getBoundingBox().size.width / 2 - emptyHP->getBoundingBox().size.width / 2, getBoundingBox().size.height));
+	fullHP->setPosition(Vec2(getBoundingBox().size.width / 2 - fullHP->getBoundingBox().size.width / 2, getBoundingBox().size.height));
+
+	emptyHP->setAnchorPoint(Vec2(0, 0));
+	fullHP->setAnchorPoint(Vec2(0, 0));
+
+	this->addChild(emptyHP, 4);
+	this->addChild(fullHP, 5);
+
+	auto fadeTo = FadeTo::create(0, 0);
+	auto fadeIn = FadeIn::create(1.5f);
+	auto seq = Sequence::create(fadeTo, fadeIn, nullptr);
+
+	emptyHP->runAction(seq);
+	fullHP->runAction(seq);
+}
+
 void Unit::callbackHpBarAni()
 {
 	auto first = ScaleTo::create(0.05, (static_cast<float>(hp) / static_cast<float>(startHp)) * 1.1f , 1);

@@ -269,6 +269,9 @@ void RightUnit::update(float f)
 	//내가 제일 앞에 있는 유닛이라면
 	if (unitNumber == GameManager::GetInstance()->forwardUnitRight)
 	{
+		if (fullHP == nullptr)
+			createHpBar();
+
 		//적군과 충돌할 때
 		for (Unit* e : unitsL)
 		{
