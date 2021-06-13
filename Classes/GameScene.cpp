@@ -127,13 +127,13 @@ void GameScene::Create_BackGround()
 
 	Lbitcoincost = Label::createWithTTF("333", "fonts/Marker Felt.ttf", 24);
 	Lbitcoincost->setString(StringUtils::format("%d", bubbleCostL));
-	Lbitcoincost->setPosition(Vec2(335, 20));
+	Lbitcoincost->setPosition(Vec2(223, 40));
 	Lbitcoincost->setColor(Color3B::BLACK);
 	this->addChild(Lbitcoincost);
 
 	LbitcoincostU = Label::createWithTTF("333", "fonts/Marker Felt.ttf", 24);
 	LbitcoincostU->setString(StringUtils::format("%d", unitCostL));
-	LbitcoincostU->setPosition(Vec2(335, 50));
+	LbitcoincostU->setPosition(Vec2(223, 120));
 	LbitcoincostU->setColor(Color3B::BLACK);
 	this->addChild(LbitcoincostU);
 
@@ -173,14 +173,14 @@ void GameScene::Create_BackGround()
 
 	Rbitcoincost = Label::createWithTTF("333", "fonts/Marker Felt.ttf", 24);
 	Rbitcoincost->setString(StringUtils::format("%d", bubbleCostR));
-	Rbitcoincost->setPosition(Vec2(winSize.width - 332, 20));
+	Rbitcoincost->setPosition(Vec2(winSize.width - 220, 40));
 	Rbitcoincost->setColor(Color3B::BLACK);
 	this->addChild(Rbitcoincost);
 
 
 	RbitcoincostU = Label::createWithTTF("333", "fonts/Marker Felt.ttf", 24);
 	RbitcoincostU->setString(StringUtils::format("%d", unitCostR));
-	RbitcoincostU->setPosition(Vec2(winSize.width - 332, 50));
+	RbitcoincostU->setPosition(Vec2(winSize.width - 220, 120));
 	RbitcoincostU->setColor(Color3B::BLACK);
 	this->addChild(RbitcoincostU);
 
@@ -205,16 +205,16 @@ void GameScene::UnitUpgraid(Ref* pSender, int dir)
 		factory[dir].UnitUpgraid();
 		bitCoinR -= unitCostR;
 		unitCostR += 20;
-		Rbitcoincost->setString(StringUtils::format("%d", bubbleCostR));
-		Rcoin->setString(StringUtils::format("%d", bitCoinR));
+		RbitcoincostU->setString(StringUtils::format("%d", unitCostR));
+		RbitcoincostU->setString(StringUtils::format("%d", unitCostR));
 	}
 	else if (dir == FACTORY_LEFT && bitCoinL > unitCostL)
 	{
 		factory[dir].UnitUpgraid();
 		bitCoinL -= unitCostL;
 		unitCostL += 20;
-		Lbitcoincost->setString(StringUtils::format("%d", bubbleCostL));
-		Lcoin->setString(StringUtils::format("%d", bitCoinL));
+		LbitcoincostU->setString(StringUtils::format("%d", unitCostL));
+		LbitcoincostU->setString(StringUtils::format("%d", unitCostL));
 	}
 }
 void GameScene::Creat_End_Menu(bool isRightWin)
