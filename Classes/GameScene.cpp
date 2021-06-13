@@ -302,13 +302,13 @@ BUBBLE GameScene::GetPP(int lev)
 		break;
 	case 7:
 		val.Damage = 15;
-		val.AttackSpeed = 0.8f;
+		val.AttackSpeed = 1.2f;
 		val.key = 7;
 		break;
 	case 8:
 		val.Hp = 80;
 		val.Damage = 20;
-		val.AttackSpeed = 0.6f;
+		val.AttackSpeed = 1.4f;
 		val.SpawnSpeed = 0.8f;
 		val.key = 8;
 		break;

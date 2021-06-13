@@ -20,7 +20,6 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/hellocpp/main.cpp \
                    $(LOCAL_PATH)/../../../Classes/HelloWorldScene.cpp \
                    $(LOCAL_PATH)/../../../Classes/LeftUnit.cpp \
                    $(LOCAL_PATH)/../../../Classes/mecro.cpp \
-                   $(LOCAL_PATH)/../../../Classes/MenuScene.cpp \
                    $(LOCAL_PATH)/../../../Classes/MainScene.cpp \
                    $(LOCAL_PATH)/../../../Classes/RightUnit.cpp \
                    $(LOCAL_PATH)/../../../Classes/SoundManager.cpp \
