@@ -220,6 +220,7 @@ void GameScene::Creat_End_Menu(bool isRightWin)
 {
 	SoundManager::GetInstance()->Play(UI_End);
 	stopAllUnit();
+	GameManager::GetInstance()->initUnitNum();
 	isEnd = true;
 	if (isRightWin)
 	{
