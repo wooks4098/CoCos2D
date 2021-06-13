@@ -125,7 +125,6 @@ void Bubble::onEnter()
 		if (rect.containsPoint(LocationInNode))
 		{
 			_isMove = true;
-			this->setColor(Color3B::RED);
 			log("touch Bubble...");
 			return true;
 		}
