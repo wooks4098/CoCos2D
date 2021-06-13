@@ -225,6 +225,8 @@ int Factory::Change_Key(int _key)
 
 void Factory::Change_Bubble(BUBBLE _Bubble)
 {
+	SoundManager::GetInstance()->Play(Bubble_Set);
+
 	Change_Bubble_Setting(_Bubble);
 	auto hide = Hide::create();
 	auto show = Show::create();
