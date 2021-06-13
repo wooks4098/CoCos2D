@@ -249,9 +249,6 @@ void LeftUnit::damaged(float d)
 	{
 		hp = 0;
 		isDied = true;
-
-		if (!isDieAct)
-			this->dieUnit();
 	}
 
 	callbackHpBarAni();
@@ -328,5 +325,8 @@ void LeftUnit::update(float f)
 			}
 		}
 	}
+
+	if (isDied && !isDieAct)
+		this->dieUnit();
 }
 #pragma endregion

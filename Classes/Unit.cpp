@@ -107,3 +107,8 @@ void Unit::callbackHpBarAni()
 	fullHP->runAction(seq);
 }
 #pragma endregion
+
+void Unit::died()
+{
+	this->dieUnit();
+}

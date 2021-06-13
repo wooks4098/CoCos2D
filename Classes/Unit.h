@@ -52,6 +52,7 @@ public:
 	void virtual attackFactory() = 0; //적 팩토리 공격하기
 	void virtual dieUnit() = 0; //유닛 사망
 	void virtual damaged(float damage) = 0; //데미지 입는 함수
+	void died(); //데미지 입은 후에 사망하기 위한 함수
 
 	//HP바 관련 함수
 	void callbackHpBarAni(); //HP바 애니메이션
