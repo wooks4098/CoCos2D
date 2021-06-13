@@ -36,6 +36,7 @@ public:
 	int frontUnitRight = 0; //제일 앞에 있는 오른쪽 유닛
 	int totalUnitNumL = 0; //총 유닛 개수
 	int totalUnitNumR = 0; //총 유닛 개수
+	void initUnitNum(); //위 변수 초기화
 
 	void diedUnitL();
 	void diedUnitR();

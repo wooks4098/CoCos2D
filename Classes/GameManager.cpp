@@ -38,3 +38,11 @@ void GameManager::diedUnitR()
 {
 	frontUnitRight++;
 }
+
+void GameManager::initUnitNum()
+{
+	frontUnitLeft = 0; //제일 앞에 있는 왼쪽 유닛
+	frontUnitRight = 0; //제일 앞에 있는 오른쪽 유닛
+	totalUnitNumL = 0; //총 유닛 개수
+	totalUnitNumR = 0; //총 유닛 개수
+}

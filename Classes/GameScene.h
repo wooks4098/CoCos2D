@@ -68,6 +68,7 @@ private:
 	int coinAmount;
 	BUBBLE val;
 	int randnum;
+	bool isEnd = false;
 
 public:
     static cocos2d::Scene* createScene();
