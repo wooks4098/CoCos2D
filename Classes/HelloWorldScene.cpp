@@ -2,7 +2,7 @@
 #include "SimpleAudioEngine.h"
 
 
-#include "MenuScene.h"
+#include "MainScene.h"
 #include "GameScene.h"
 
 #define W 0             //¿í·¡¾À   TestScene0
@@ -80,6 +80,6 @@ void HelloWorld::GameScene(Ref* pSender)
 }
 void HelloWorld::MenuScene(Ref* pSender)
 {
-	auto MenuScene = MenuScene::createScene();
+	auto MenuScene = MainScene::createScene();
 	Director::getInstance()->replaceScene(MenuScene);
 }

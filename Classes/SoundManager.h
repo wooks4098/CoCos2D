@@ -25,6 +25,6 @@ private:
 public:
 	void CreatAudio();
 	void Play(int _SoundNum);
-
+	
 
 };

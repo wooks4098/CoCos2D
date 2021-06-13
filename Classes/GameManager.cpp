@@ -21,8 +21,12 @@ void GameManager::Reset()
 
 void GameManager::Play_Bac()
 {
-	if(isBac)
+	if (isBac)
+	{
 		SoundManager::GetInstance()->Play(BackGround_0);
+
+		isBac = false;
+	}
 }
 
 void GameManager::diedUnitL()
