@@ -39,9 +39,6 @@
     <ClCompile Include="..\Classes\mecro.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\MenuScene.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\RightUnit.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -81,9 +78,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\mecro.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\MenuScene.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\RightUnit.h">
