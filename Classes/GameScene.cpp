@@ -1,6 +1,6 @@
 #include "HelloWorldScene.h"
 #include "GameScene.h"
-#include "MenuScene.h"
+#include "MainScene.h"
 #include "Factory.h"
 
 using namespace cocos2d;
@@ -60,12 +60,12 @@ void GameScene::Creat_Factory()
 	factory[FACTORY_LEFT].Create(FACTORY_LEFT);
 	
 	//ÆÑÅä¸® µî·Ï
-	this->addChild(factory[FACTORY_RIGHT].return_Menu());
+	//this->addChild(factory[FACTORY_RIGHT].return_Menu());
 	this->addChild(factory[FACTORY_RIGHT].return_HpBar_Back());
 	this->addChild(factory[FACTORY_RIGHT].return_HpBar());
 	this->addChild(factory[FACTORY_RIGHT].return_Factory_Sp());
 
-	this->addChild(factory[FACTORY_LEFT].return_Menu());
+	//this->addChild(factory[FACTORY_LEFT].return_Menu());
 	this->addChild(factory[FACTORY_LEFT].return_HpBar_Back());
 	this->addChild(factory[FACTORY_LEFT].return_HpBar());
 	this->addChild(factory[FACTORY_LEFT].return_Factory_Sp());
@@ -200,16 +200,17 @@ void GameScene::Create_BackGround()
 }
 void GameScene::UnitUpgraid(Ref* pSender, int dir)
 {
-	factory[dir].UnitUpgraid();
-	if (dir == FACTORY_RIGHT)//r
+	if (dir == FACTORY_RIGHT && bitCoinR > unitCostR)//r
 	{
+		factory[dir].UnitUpgraid();
 		bitCoinR -= unitCostR;
 		unitCostR += 20;
 		Rbitcoincost->setString(StringUtils::format("%d", bubbleCostR));
 		Rcoin->setString(StringUtils::format("%d", bitCoinR));
 	}
-	else if(dir == FACTORY_LEFT)
+	else if (dir == FACTORY_LEFT && bitCoinL > unitCostL)
 	{
+		factory[dir].UnitUpgraid();
 		bitCoinL -= unitCostL;
 		unitCostL += 20;
 		Lbitcoincost->setString(StringUtils::format("%d", bubbleCostL));
@@ -269,85 +270,72 @@ BUBBLE GameScene::GetPP(int lev)
 	val.AttackSpeed = 0;
 	val.MoveSpeed = 0;
 	val.SpawnSpeed = 0;
-
-
-	if (lev == 1)
+	randnum = rand() % 11;
+	switch (randnum)
 	{
-		randnum = rand() % 6;
-		randnum = R1_Yellow;
+	case 0:
+		val.Hp = 30;
+		val.key = 0;
+		break;
+	case 1:
+		val.AttackSpeed = 0.7f;
+		val.key = 1;
+		break;
+	case 2:
+		val.Defense = 8;
+		val.key = 2;
+		break;
+	case 3:
+		val.Damage = 10;
+		val.key = 3;
+		break;
+	case 4:
+		val.MoveSpeed = 80;
+		val.key = 4;
+		break;
+	case 5:
+	case 6:
+		val.Hp = 20;
+		val.Damage = 8;
+		val.Defense = 6;
+		val.key = 6;
+		break;
+	case 7:
+		val.Damage = 15;
+		val.AttackSpeed = 0.8f;
+		val.key = 7;
+		break;
+	case 8:
+		val.Hp = 80;
+		val.Damage = 20;
+		val.AttackSpeed = 0.6f;
+		val.SpawnSpeed = 0.8f;
+		val.key = 8;
+		break;
+	case 9:
+		val.Hp = -40;
+		val.MoveSpeed = 40;
+		val.Damage = -8;
+		val.AttackSpeed = 0.5f;
+		val.SpawnSpeed = 1.4f;
+		val.key = 9;
+		break;
+	case 10:
+		val.Hp = 20;
+		val.Defense = 5;
 
-		switch (randnum)
-		{
-		case C1_Blue:
-			val.Defense = 10;
-			val.key = 0;
-			break;
-		case C1_Red:
-			val.Hp = 20;
-			val.key = 1;
-			break;
-		case C1_Yellow:
-			val.SpawnSpeed = 1.1f;
-			val.key = 2;
-			break;
-		case R1_Blue:
-			val.Damage = 20;
-			val.key = 3;
-			break;
-		case R1_Red:
-			val.AttackSpeed = 0.5f;
-			val.key = 4;
-			break;
-		case R1_Yellow:
-			val.MoveSpeed = 50;
-			val.key = 5;
-			break;
-		default:
-			break;
-		}
+		val.key = 10;
+		break;
+	case 11:
+		val.Hp = 50;
+		val.MoveSpeed = -80;
+		val.Defense = 12;
+
+		val.key = 11;
+		break;
+	default:
+		break;
 	}
-	else if (lev == 2)
-	{
-		randnum = (rand() % 6) + 6;
-		randnum = R2_Yellow;
-
-		switch (randnum)
-		{
-		case C2_Blue:
-			val.Defense = 15;
-			val.key = 6;
-			break;
-		case C2_Red:
-			val.Hp = 35;
-			val.key = 7;
-			break;
-		case C2_Yellow:
-			val.SpawnSpeed = 1.2f;
-			val.key = 8;
-			break;
-		case R2_Blue:
-			val.Damage = 30;
-			val.key = 9;
-			break;
-		case R2_Red:
-			val.AttackSpeed = 1;
-			val.key = 10;
-			break;
-		case R2_Yellow:
-			val.MoveSpeed = 75;
-			val.key = 11;
-			break;
-		default:
-			break;
-		}
-	}
-
-	//val.Hp = 100 + addval.Hp;
-	//val.Defense = 5 + addval.Defense;
-	//val.Damage = 10 + addval.Damage;
-	//val.AttackSpeed = 1.0f + addval.AttackSpeed;
-	//val.MoveSpeed = 5 + addval.MoveSpeed;
- //   val.Spawn_time = 3 + addval.Spawn_time;
 
 	return val;
 }
@@ -364,7 +352,7 @@ void GameScene::ClickToCreateBubble1(Ref* pSender, int lev, bool isRight)
 		if (bubblesRight.size() < 8 && (bitCoinR > bubbleCostR || lev==2))
 		{
 			Bubble* bb = Bubble::create();
-			bubblesRight.pushBack(bb->BubbleCreate(GetPP(lev)));
+			bubblesRight.pushBack(bb->BubbleCreate(GetPP(1)));
 			//Bubble* a;
 			//bubblesRight.pushBack(bubblesRight.at(bubblesRight.size())->BubbleCreate(GetPP(lev)));
 			//bb = bb->BubbleCreate();
@@ -385,6 +373,8 @@ void GameScene::ClickToCreateBubble1(Ref* pSender, int lev, bool isRight)
 						Rbitcoincost->setString(StringUtils::format("%d", bubbleCostR));
 						Rcoin->setString(StringUtils::format("%d", bitCoinR));
 					}
+					SoundManager::GetInstance()->Play(Bubble_Creat);
+
 					break;
 				}
 			}
@@ -396,7 +386,7 @@ void GameScene::ClickToCreateBubble1(Ref* pSender, int lev, bool isRight)
 		if (bubblesLeft.size() < 8 && (bitCoinL > bubbleCostL||lev==2))
 		{
 			Bubble* bb = Bubble::create();
-			bubblesLeft.pushBack(bb->BubbleCreate(GetPP(lev)));
+			bubblesLeft.pushBack(bb->BubbleCreate(GetPP(1)));
 			for (int i = 0; i < 8; i++)
 			{
 				if (!invenPos_Left[i].isFull)
@@ -411,6 +401,8 @@ void GameScene::ClickToCreateBubble1(Ref* pSender, int lev, bool isRight)
 						Lbitcoincost->setString(StringUtils::format("%d", bubbleCostL));
 						Lcoin->setString(StringUtils::format("%d", bitCoinL));
 					}
+					SoundManager::GetInstance()->Play(Bubble_Creat);
+
 					break;
 				}
 			}
@@ -496,8 +488,9 @@ void GameScene::OneTwoThreeFourBubbleBubbleRight(float f)
 			{
 				if (bubblesRight.at(i)->getBoundingBox().intersectsRect(bubblesRight.at(j)->getBoundingBox()))
 				{
-					if (bubblesRight.at(i)->BubbleStat_rt().key <= 5 && bubblesRight.at(i)->BubbleStat_rt().key == bubblesRight.at(j)->BubbleStat_rt().key)
+					if (bubblesRight.at(i)->BubbleStat_rt().key <= 20 && bubblesRight.at(i)->BubbleStat_rt().key == bubblesRight.at(j)->BubbleStat_rt().key)
 					{
+						SoundManager::GetInstance()->Play(Bubble_Mix);
 						auto removebb=Bubble::create();
 						log("R C Check");
 						invenPos_Right[bubblesRight.at(i)->GetPosNum()].isFull = false;
@@ -555,7 +548,7 @@ void GameScene::OneTwoThreeFourBubbleBubbleRight(float f)
 			//bubblesRight[i]->removeFromParentAndCleanup(true);
 			removebb = bubblesRight.at(i);
 			this->removeChild(bubblesRight.at(i));
-
+			SoundManager::GetInstance()->Play(Bubble_Sell);
 			bubblesRight.erase(bubblesRight.begin() + i);
 		}
 		else
@@ -582,8 +575,9 @@ void GameScene::OneTwoThreeFourBubbleBubbleLeft(float f)
 			{
 				if (bubblesLeft.at(i)->getBoundingBox().intersectsRect(bubblesLeft.at(j)->getBoundingBox()))
 				{
-					if (bubblesLeft.at(i)->BubbleStat_rt().key <= 5 && bubblesLeft.at(i)->BubbleStat_rt().key == bubblesLeft.at(j)->BubbleStat_rt().key)
+					if (bubblesLeft.at(i)->BubbleStat_rt().key <= 20 && bubblesLeft.at(i)->BubbleStat_rt().key == bubblesLeft.at(j)->BubbleStat_rt().key)
 					{
+						SoundManager::GetInstance()->Play(Bubble_Mix);
 						log("L C Check");
 						invenPos_Left[bubblesLeft.at(i)->GetPosNum()].isFull = false;
 						bubblesLeft.at(i)->removeFromParentAndCleanup(true);
@@ -621,6 +615,7 @@ void GameScene::OneTwoThreeFourBubbleBubbleLeft(float f)
 			Lcoin->setString(StringUtils::format("%d", bitCoinL));
 			invenPos_Left[bubblesLeft.at(i)->GetPosNum()].isFull = false;
 			bubblesLeft.at(i)->removeFromParentAndCleanup(true);
+			SoundManager::GetInstance()->Play(Bubble_Sell);
 			bubblesLeft.erase(bubblesLeft.begin() + i);
 		}
 		else
@@ -635,7 +630,7 @@ void GameScene::go_Menu(Ref* pSender)
 {
 	GameManager::GetInstance()->Reset();
 	//this->removeAllChildren();
-	auto _MenuScene = MenuScene::createScene();
+	auto _MenuScene = MainScene::createScene();
 	Director::getInstance()->replaceScene(_MenuScene);
 
 }

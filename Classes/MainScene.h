@@ -24,7 +24,6 @@ public:
 
 	//ฤÝน้
 	void Menu_Play(Ref* pSender);
-	void Menu_Option(Ref* pSender);
 	void Menu_Exit(Ref* pSender);
 };
 
