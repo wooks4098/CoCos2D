@@ -1,7 +1,6 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
-#include <stdlib.h>
-#include <time.h>
+
 
 #include "MainScene.h"
 #include "GameScene.h"
@@ -22,7 +21,7 @@ Scene* HelloWorld::createScene()
 
 bool HelloWorld::init()
 {
-	srand(time(NULL));
+  
     if ( !Scene::init() )
     {
         return false;

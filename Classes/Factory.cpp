@@ -5,7 +5,7 @@ Factory::Factory()
 	winSize = Director::getInstance()->getWinSize(); //화면의 사이즈 구하기
 	CreatUnit_timeCheck = 3;	
 	CreatUnit_time = 0;		
-	CreatUnit_time_Base = 8;
+	CreatUnit_time_Base = 10;
 	MaxHp = 100;
 	CurHp = MaxHp;
 	CreatUnit_SpawnSpeed = 1;
@@ -102,23 +102,23 @@ void Factory::Create_HpDownMenu()
 void Factory::Create_Bubble()
 {
 	//원
-	Circle_bubble_sprite[0] = Hp_Bar_Back = Sprite::create("Bubble/new_60/C1_Blue.png");
-	Circle_bubble_sprite[1] = Hp_Bar_Back = Sprite::create("Bubble/new_60/C1_Red.png");
-	Circle_bubble_sprite[2] = Hp_Bar_Back = Sprite::create("Bubble/new_60/C1_Yellow.png");
-	Circle_bubble_sprite[3] = Hp_Bar_Back = Sprite::create("Bubble/new_60/C2_Blue.png");
-	Circle_bubble_sprite[4] = Hp_Bar_Back = Sprite::create("Bubble/new_60/C2_Red.png");
-	Circle_bubble_sprite[5] = Hp_Bar_Back = Sprite::create("Bubble/new_60/C2_Yellow.png");
+	Circle_bubble_sprite[0] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/C1_Blue.png");
+	Circle_bubble_sprite[1] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/C1_Red.png");
+	Circle_bubble_sprite[2] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/C1_Yellow.png");
+	Circle_bubble_sprite[3] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/C2_Blue.png");
+	Circle_bubble_sprite[4] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/C2_Red.png");
+	Circle_bubble_sprite[5] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/C2_Yellow.png");
 	//Circle_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2_40.png");
 	//Circle_bubble_sprite[7] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2_40.png");
 	Circle_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2.png");
 	Circle_bubble_sprite[7] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2.png");
 	//마름모
-	Rhombus_bubble_sprite[0] = Hp_Bar_Back = Sprite::create("Bubble/new_60/R1_Blue.png");
-	Rhombus_bubble_sprite[1] = Hp_Bar_Back = Sprite::create("Bubble/new_60/R1_Red.png");
-	Rhombus_bubble_sprite[2] = Hp_Bar_Back = Sprite::create("Bubble/new_60/R1_Yellow.png");
-	Rhombus_bubble_sprite[3] = Hp_Bar_Back = Sprite::create("Bubble/new_60/R2_Blue.png");
-	Rhombus_bubble_sprite[4] = Hp_Bar_Back = Sprite::create("Bubble/new_60/R2_Red.png");
-	Rhombus_bubble_sprite[5] = Hp_Bar_Back = Sprite::create("Bubble/new_60/R2_Yellow.png");
+	Rhombus_bubble_sprite[0] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/R1_Blue.png");
+	Rhombus_bubble_sprite[1] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/R1_Red.png");
+	Rhombus_bubble_sprite[2] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/R1_Yellow.png");
+	Rhombus_bubble_sprite[3] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/R2_Blue.png");
+	Rhombus_bubble_sprite[4] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/R2_Red.png");
+	Rhombus_bubble_sprite[5] = Hp_Bar_Back = Sprite::create("Bubble/Bubble_60/R2_Yellow.png");
 	//Rhombus_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1_40.png");
 	//Rhombus_bubble_sprite[7] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1_40.png");
 	Rhombus_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1.png");
@@ -202,23 +202,24 @@ int Factory::Change_Key(int _key)
 {
 	switch (_key)
 	{
-	case 0:
-	case 6:
+	case R1_Blue:
+	case C1_Blue:
 		return 0;
-	case 1:
-	case 7:
+	case R1_Red:
+	case C1_Red:
 		return 1;
-	case 2:
-	case 8:
+	case R1_Yellow:
+	case C1_Yellow:
 		return 2;
-	case 3:
-	case 9:
+
+	case C2_Blue:
+	case R2_Blue:
 		return 3;
-	case 4:
-	case 10:
+	case R2_Red:
+	case C2_Red:
 		return 4;
-	case 5:
-	case 11:
+	case C2_Yellow:
+	case R2_Yellow:
 		return 5;
 	}
 }
@@ -230,12 +231,12 @@ void Factory::Change_Bubble(BUBBLE _Bubble)
 	auto show = Show::create();
 	switch (_Bubble.key)
 	{
-	case 0:
-	case 1:
-	case 2:
-	case 3:
-	case 4:
-	case 5:
+	case C1_Blue:
+	case C1_Red:
+	case C1_Yellow:
+	case C2_Blue:
+	case C2_Red:
+	case C2_Yellow:
 		_Bubble.key = Change_Key(_Bubble.key);
 		//Circle_bubble_sprite[0]->runAction(show);
 		if(Circle_bubble.key != None_Circle)
@@ -244,12 +245,12 @@ void Factory::Change_Bubble(BUBBLE _Bubble)
 		Circle_bubble_sprite[Circle_bubble.key]->runAction(show);
 		break;
 
-	case 6:
-	case 7:
-	case 8:
-	case 9:
-	case 10:
-	case 11:
+	case R1_Blue:
+	case R1_Red:
+	case R1_Yellow:
+	case R2_Blue:
+	case R2_Red:
+	case R2_Yellow:
 		_Bubble.key = Change_Key(_Bubble.key);
 		if (Rhombus_bubble.key != None_Rhombus)
 			Rhombus_bubble_sprite[Rhombus_bubble.key]->runAction(hide);
@@ -265,8 +266,8 @@ void Factory::Change_Bubble_Setting(BUBBLE _Bubble)
 {
 	switch (_Bubble.key)
 	{
-	case 8:
-	case 9:
+	case C1_Yellow:
+	case C2_Yellow:
 		//CreatUnit_timeCheck = CreatUnit_time_Base *(1- _Bubble.SpawnSpeed);
 		CreatUnit_SpawnSpeed = _Bubble.SpawnSpeed;
 		break;
@@ -406,6 +407,6 @@ void Factory::UnitUpgraid()
 	Upgraid_hp += 10;
 	Upgraid_defense += 2;
 	Upgraid_damage += 3;
-	//Upgraid_attackSpeed += 0.2f;
-	Upgraid_moveSpeed = 10;
+	Upgraid_attackSpeed += 0.2f;
+	Upgraid_moveSpeed = 2;
 }

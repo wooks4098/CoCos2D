@@ -35,15 +35,17 @@ void MainScene::CreatMenu()
 	GameManager::GetInstance()->Play_Bac();
 	auto _Play = cocos2d::MenuItemImage::create("UI/Main/MUI_SB0.png", "UI/Main/MUI_SB1.png", CC_CALLBACK_1(MainScene::Menu_Play, this));
 	_Play->setAnchorPoint(Vec2(0.5, 0.5));
-	_Play->setPosition(Vec2(0, -100));
-	
+
+	auto _Option = cocos2d::MenuItemImage::create("UI/Main/MUI_OB0.png", "UI/Main/MUI_OB1.png", CC_CALLBACK_1(MainScene::Menu_Option, this));
+	_Option->setAnchorPoint(Vec2(0.5, 0.5));
+	_Option->setPosition(Vec2(0, -150));
 
 	auto _Exit = cocos2d::MenuItemImage::create("UI/Main/MUI_EB0.png", "UI/Main/MUI_EB1.png", CC_CALLBACK_1(MainScene::Menu_Exit, this));
 	_Exit->setAnchorPoint(Vec2(0.5, 0.5));
-	_Exit->setPosition(Vec2(0, -250));
+	_Exit->setPosition(Vec2(0, -300));
 
 
-	menu = Menu::create(_Play, _Exit, nullptr);
+	menu = Menu::create(_Play, _Option, _Exit, nullptr);
 	menu->setPosition(Vec2(winSize.width / 2, winSize.height / 2));
 	this->addChild(menu);
 }
@@ -54,6 +56,10 @@ void MainScene::Menu_Play(Ref* pSender)
 
 	auto _GameScene = GameScene::createScene();
 	Director::getInstance()->replaceScene(_GameScene);
+}
+void MainScene::Menu_Option(Ref* pSender)
+{
+
 }
 void MainScene::Menu_Exit(Ref* pSender)
 {

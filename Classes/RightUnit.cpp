@@ -38,9 +38,9 @@ Unit* RightUnit::createUnit(Factory* myFac, Factory* enemyFac, BUBBLE bubble)
 void RightUnit::initUnit(BUBBLE bubble)
 {
 	if (bubble.Hp == 0)
-		startHp = 100;
+		startHp = 80;
 	else
-		startHp = 100 + bubble.Hp;
+		startHp = 80 + bubble.Hp;
 	hp = startHp;
 
 	if (bubble.MoveSpeed == 0)
@@ -49,9 +49,9 @@ void RightUnit::initUnit(BUBBLE bubble)
 		speed = 200 + bubble.MoveSpeed;
 
 	if (bubble.Damage == 0)
-		damage = 40;
+		damage = 10;
 	else
-		damage = 40 + bubble.Damage;
+		damage = 10 + bubble.Damage;
 
 	if (bubble.AttackSpeed == 0)
 		attackSpeed = 0.5;
@@ -59,9 +59,9 @@ void RightUnit::initUnit(BUBBLE bubble)
 		attackSpeed = 0.5 * (bubble.AttackSpeed);
 
 	if (bubble.Defense == 0)
-		defense = 10;
+		defense = 5;
 	else
-		defense = 10 + bubble.Defense;
+		defense = 5 + bubble.Defense;
 }
 #pragma endregion
 
