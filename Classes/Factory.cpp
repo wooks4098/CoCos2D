@@ -110,8 +110,8 @@ void Factory::Create_Bubble()
 	Circle_bubble_sprite[5] = Hp_Bar_Back = Sprite::create("Bubble/new_60/C2_Yellow.png");
 	//Circle_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2_40.png");
 	//Circle_bubble_sprite[7] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2_40.png");
-	Circle_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2.png");
-	Circle_bubble_sprite[7] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble2.png");
+	Circle_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble.png");
+	Circle_bubble_sprite[7] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble.png");
 	//¸¶¸§¸ð
 	Rhombus_bubble_sprite[0] = Hp_Bar_Back = Sprite::create("Bubble/new_60/R1_Blue.png");
 	Rhombus_bubble_sprite[1] = Hp_Bar_Back = Sprite::create("Bubble/new_60/R1_Red.png");
@@ -121,8 +121,8 @@ void Factory::Create_Bubble()
 	Rhombus_bubble_sprite[5] = Hp_Bar_Back = Sprite::create("Bubble/new_60/R2_Yellow.png");
 	//Rhombus_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1_40.png");
 	//Rhombus_bubble_sprite[7] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1_40.png");
-	Rhombus_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1.png");
-	Rhombus_bubble_sprite[7] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble1.png");
+	Rhombus_bubble_sprite[6] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble.png");
+	Rhombus_bubble_sprite[7] = Hp_Bar_Back = Sprite::create("Factory/BG_Bubble.png");
 	SetPos_Bubble();
 }
 
@@ -225,6 +225,8 @@ int Factory::Change_Key(int _key)
 
 void Factory::Change_Bubble(BUBBLE _Bubble)
 {
+	SoundManager::GetInstance()->Play(Bubble_Set);
+
 	Change_Bubble_Setting(_Bubble);
 	auto hide = Hide::create();
 	auto show = Show::create();
