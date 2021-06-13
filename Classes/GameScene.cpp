@@ -648,20 +648,3 @@ void GameScene::go_Play(Ref* pSender)
 
 
 }
-
-#pragma region unit
-void GameScene::stopAllUnit()
-{
-	for (Unit* unitL : unitsL)
-	{
-		unitL->unscheduleUpdate();
-		unitL->stopAllActions();
-	}
-
-	for (Unit* unitR : unitsR)
-	{
-		unitR->unscheduleUpdate();
-		unitR->stopAllActions();
-	}
-}
-#pragma endregion
