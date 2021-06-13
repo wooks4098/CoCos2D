@@ -84,6 +84,8 @@ public:
 	void ClickToCreateBubble1(Ref* pSender, int lev, bool isRight);
 	void initData() { bubblesLeft.clear(); bubblesRight.clear(); }
 
+	void stopAllUnit(); //모든 유닛의 움직임 중지
+
 	//스케줄
 	void Factory_Right_CreatUnitCheck(float f);	//팩토리(Right) 유닛 생성 체크
 	void Factory_Left_CreatUnitCheck(float f);	//팩토리(Left) 유닛 생성 체크
