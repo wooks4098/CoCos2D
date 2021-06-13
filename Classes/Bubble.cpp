@@ -1,5 +1,5 @@
 #include "Bubble.h"
-
+#include "SoundManager.h"
 USING_NS_CC;
 
 Bubble* Bubble::create(const std::string& filename)//, BUBBLE b_slot)
@@ -31,67 +31,49 @@ Bubble* Bubble::create()
 Bubble* Bubble::BubbleCreate(BUBBLE info)
 {
 	b_stat = info;
+	switch (b_stat.key)
+	{
+	case 0:
+		pBub = Bubble::create("Bubble/new_60/C1_Blue.png");
+		break;
+	case 1:
+		pBub = Bubble::create("Bubble/new_60/C1_Red.png");
+		break;
+	case 2:
+		pBub = Bubble::create("Bubble/new_60/C1_Yellow.png");
+		break;
+	case 3:
+		pBub = Bubble::create("Bubble/new_60/C2_Blue.png");
+		break;
+	case 4:
+		pBub = Bubble::create("Bubble/new_60/C2_Red.png");
+		break;
+	case 5:
+		pBub = Bubble::create("Bubble/new_60/C2_Yellow.png");
+		break;
+	case 6:
+		pBub = Bubble::create("Bubble/new_60/R1_Blue.png");
+		break;
+	case 7:
+		pBub = Bubble::create("Bubble/new_60/R1_Red.png");
+		break;
+	case 8:
+		pBub = Bubble::create("Bubble/new_60/R1_Yellow.png");
+		break;
+	case 9:
+		pBub = Bubble::create("Bubble/new_60/R2_Blue.png");
+		break;
+	case 10:
+		pBub = Bubble::create("Bubble/new_60/R2_Red.png");
+		break;
+	case 11:
+		pBub = Bubble::create("Bubble/new_60/R2_Yellow.png");
+		break;
 
-	if (b_stat.Defense != 0)
-	{
-		if (b_stat.key == C1_Blue)
-			pBub = Bubble::create("Bubble/Bubble_40/C1_Blue.png");
-		else
-			pBub = Bubble::create("Bubble/Bubble_40/C2_Blue.png");
-		b_stat.iscircle = true;
-		log(b_stat.Defense);
+	default:
+		break;
 	}
-	if (b_stat.Hp != 0)
-	{
-		if (b_stat.key == C1_Red)
-			pBub = Bubble::create("Bubble/Bubble_40/C1_Red.png");
-		else
-			pBub = Bubble::create("Bubble/Bubble_40/C2_Red.png");
-		b_stat.iscircle = true;
-		log(b_stat.Hp);
-	}
-	if (b_stat.SpawnSpeed != 0)
-	{
-		if (b_stat.key == C1_Yellow)
-			pBub = Bubble::create("Bubble/Bubble_40/C1_Yellow.png");
-		else 
-			pBub = Bubble::create("Bubble/Bubble_40/C2_Yellow.png");
-		b_stat.iscircle = true;
-		log(b_stat.SpawnSpeed);
-	}
-	if (b_stat.Damage != 0)
-	{
-		if (b_stat.key == R1_Blue)
-			pBub = Bubble::create("Bubble/Bubble_40/R1_Blue.png");
-		else 
-			pBub = Bubble::create("Bubble/Bubble_40/R2_Blue.png");
-		b_stat.iscircle = false;
-		log(b_stat.Damage);
-	}
-	if (b_stat.AttackSpeed != 0)
-	{
-		if (b_stat.key == R1_Red)
-			pBub = Bubble::create("Bubble/Bubble_40/R1_Red.png");
-		else
-			pBub = Bubble::create("Bubble/Bubble_40/R2_Red.png");
-		b_stat.iscircle = false;
-		log(b_stat.AttackSpeed);
-	}
-	if (b_stat.MoveSpeed != 0)
-	{
-		if (b_stat.key == R1_Yellow)
-			pBub = Bubble::create("Bubble/Bubble_40/R1_Yellow.png");
-		else
-			pBub = Bubble::create("Bubble/Bubble_40/R2_Yellow.png");
-		b_stat.iscircle = false;
-		log(b_stat.MoveSpeed);
-	}
-	//b_stat.Defense += 5;
-	//b_stat.Hp += 100;
-	//b_stat.SpawnSpeed += 3;
-	//b_stat.Damage += 10;
-	//b_stat.AttackSpeed += 1;
-	//b_stat.MoveSpeed += 5;
+	
 
 	pBub->b_stat = b_stat;
 	//pBub->setPosition(Vec2(100, 100));
@@ -115,6 +97,8 @@ void Bubble::onEnter()
 	
 	listener->onTouchBegan = [=](Touch* touch, Event* event)
 	{
+
+
 		log("touch dd...");
 		Vec2 basepoint = touch->getLocation();
 	
@@ -124,6 +108,7 @@ void Bubble::onEnter()
 		Rect rect = Rect(0, 0, s.width, s.height);
 		if (rect.containsPoint(LocationInNode))
 		{
+			SoundManager::GetInstance()->Play(Bubble_Select);
 			_isMove = true;
 			log("touch Bubble...");
 			return true;
