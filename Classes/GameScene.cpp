@@ -219,7 +219,8 @@ void GameScene::UnitUpgraid(Ref* pSender, int dir)
 void GameScene::Creat_End_Menu(bool isRightWin)
 {
 	SoundManager::GetInstance()->Play(UI_End);
-
+	stopAllUnit();
+	isEnd = true;
 	if (isRightWin)
 	{
 		end_Image = Sprite::create("UI/GameEnd/WUI_Green.png");
@@ -436,7 +437,7 @@ void GameScene::Update(float f)
 
 void GameScene::Factory_Right_CreatUnitCheck(float f)
 {
-	if (factory[FACTORY_RIGHT].CreatUnit())
+	if (factory[FACTORY_RIGHT].CreatUnit()&&!isEnd)
 	{
 		BUBBLE _bubble = factory[FACTORY_RIGHT].return_bubble();
 		/*_bubble.AttackSpeed;
@@ -457,7 +458,7 @@ void GameScene::Factory_Right_CreatUnitCheck(float f)
 
 void GameScene::Factory_Left_CreatUnitCheck(float f)
 {
-	if (factory[FACTORY_LEFT].CreatUnit())
+	if (factory[FACTORY_LEFT].CreatUnit() && !isEnd)
 	{
 		BUBBLE _bubble = factory[FACTORY_LEFT].return_bubble();
 		/*_bubble.AttackSpeed;
