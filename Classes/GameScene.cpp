@@ -60,12 +60,10 @@ void GameScene::Creat_Factory()
 	factory[FACTORY_LEFT].Create(FACTORY_LEFT);
 	
 	//ÆÑÅä¸® µî·Ï
-	//this->addChild(factory[FACTORY_RIGHT].return_Menu());
 	this->addChild(factory[FACTORY_RIGHT].return_HpBar_Back());
 	this->addChild(factory[FACTORY_RIGHT].return_HpBar());
 	this->addChild(factory[FACTORY_RIGHT].return_Factory_Sp());
 
-	//this->addChild(factory[FACTORY_LEFT].return_Menu());
 	this->addChild(factory[FACTORY_LEFT].return_HpBar_Back());
 	this->addChild(factory[FACTORY_LEFT].return_HpBar());
 	this->addChild(factory[FACTORY_LEFT].return_Factory_Sp());
@@ -342,22 +340,14 @@ BUBBLE GameScene::GetPP(int lev)
 
 void GameScene::ClickToCreateBubble1(Ref* pSender, int lev, bool isRight)
 {
-	//bubbles.push_back(new Bubble);
-	//bubbles.back()->BubbleCreate(GetPP(1));
-	//bubbles.back()->setPr(10);
-	//bubbles.back()->setPrWiththis(false);
-	//this->addChild(bubbles.back()->Bubble_rt());
+
 	if (isRight)
 	{
 		if (bubblesRight.size() < 8 && (bitCoinR > bubbleCostR || lev==2))
 		{
 			Bubble* bb = Bubble::create();
 			bubblesRight.pushBack(bb->BubbleCreate(GetPP(1)));
-			//Bubble* a;
-			//bubblesRight.pushBack(bubblesRight.at(bubblesRight.size())->BubbleCreate(GetPP(lev)));
-			//bb = bb->BubbleCreate();
-			//bubblesRight.pushBack(bb);
-			//bubblesRight.back() = bubblesLeft.back()->BubbleCreate(GetPP(lev));
+
 			for (int i = 0; i < 8; i++)
 			{
 				if (!invenPos_Right[i].isFull)
@@ -433,11 +423,7 @@ void GameScene::Factory_Right_CreatUnitCheck(float f)
 	if (factory[FACTORY_RIGHT].CreatUnit()&&!isEnd)
 	{
 		BUBBLE _bubble = factory[FACTORY_RIGHT].return_bubble();
-		/*_bubble.AttackSpeed;
-		_bubble.Damage;
-		_bubble.Defense;
-		_bubble.Hp;
-		_bubble.MoveSpeed;*/
+
 
 		Unit* unit = RightUnit::createUnit(&factory[FACTORY_RIGHT], &factory[FACTORY_LEFT], _bubble);
 		unit->initUnit(_bubble);
@@ -454,11 +440,7 @@ void GameScene::Factory_Left_CreatUnitCheck(float f)
 	if (factory[FACTORY_LEFT].CreatUnit() && !isEnd)
 	{
 		BUBBLE _bubble = factory[FACTORY_LEFT].return_bubble();
-		/*_bubble.AttackSpeed;
-		_bubble.Damage;
-		_bubble.Defense;
-		_bubble.Hp;
-		_bubble.MoveSpeed;*/
+
 
 		Unit* unit = LeftUnit::createUnit(&factory[FACTORY_LEFT], &factory[FACTORY_RIGHT], _bubble);
 		unit->initUnit(_bubble);
@@ -531,7 +513,6 @@ void GameScene::OneTwoThreeFourBubbleBubbleRight(float f)
 			factory[FACTORY_RIGHT].Change_Bubble(bubblesRight.at(i)->BubbleStat_rt());
 			invenPos_Right[bubblesRight.at(i)->GetPosNum()].isFull = false;
 			
-			//bubblesRight[i]->removeFromParentAndCleanup(true);
 			removebb = bubblesRight.at(i);
 			this->removeChild(bubblesRight.at(i));
 
@@ -545,7 +526,6 @@ void GameScene::OneTwoThreeFourBubbleBubbleRight(float f)
 			Rcoin->setString(StringUtils::format("%d", bitCoinR));
 			invenPos_Right[bubblesRight.at(i)->GetPosNum()].isFull = false;
 
-			//bubblesRight[i]->removeFromParentAndCleanup(true);
 			removebb = bubblesRight.at(i);
 			this->removeChild(bubblesRight.at(i));
 			SoundManager::GetInstance()->Play(Bubble_Sell);
@@ -628,8 +608,8 @@ void GameScene::OneTwoThreeFourBubbleBubbleLeft(float f)
 
 void GameScene::go_Menu(Ref* pSender)
 {
+	SoundManager::GetInstance()->Play(UI_Click);
 	GameManager::GetInstance()->Reset();
-	//this->removeAllChildren();
 	auto _MenuScene = MainScene::createScene();
 	Director::getInstance()->replaceScene(_MenuScene);
 
@@ -637,9 +617,9 @@ void GameScene::go_Menu(Ref* pSender)
 
 void GameScene::go_Play(Ref* pSender)
 {
+	SoundManager::GetInstance()->Play(UI_Click);
 	GameManager::GetInstance()->Reset();
 
-	//this->removeAllChildren();
 	auto _GameScene = GameScene::createScene();
 	Director::getInstance()->replaceScene(_GameScene);
 

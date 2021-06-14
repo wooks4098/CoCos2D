@@ -168,6 +168,14 @@ void Factory::Factory_Hit_Check(Sprite* _unit)
 
 void Factory::Factory_Hp_Down()
 {
+	
+	SoundManager::GetInstance()->Play(Factory_Damage);
+	Factory_Damage_Action();
+	CurHp -= 10;
+	if (CurHp <= 0)
+		Hp_Bar->setScaleX(0);
+	else
+		Hp_Bar->setScaleX((float)CurHp / (float)MaxHp);
 	if (CurHp <= 0)
 	{
 		if (isRight)
@@ -187,13 +195,6 @@ void Factory::Factory_Hp_Down()
 		return;
 
 	}
-	SoundManager::GetInstance()->Play(Factory_Damage);
-	Factory_Damage_Action();
-	CurHp -= 10;
-	if (CurHp <= 0)
-		Hp_Bar->setScaleX(0);
-	else
-		Hp_Bar->setScaleX((float)CurHp / (float)MaxHp);
 }
 #pragma endregion
 
@@ -390,8 +391,13 @@ BUBBLE Factory::return_bubble()
 	BUBBLE _bubble;
 	Circle_bubble;
 	Rhombus_bubble;
+	if (Circle_bubble.AttackSpeed == 0)
+		_bubble.AttackSpeed = Rhombus_bubble.AttackSpeed;
+	else if(Rhombus_bubble.AttackSpeed == 0)
+		_bubble.AttackSpeed = Circle_bubble.AttackSpeed;
+	else if(Circle_bubble.AttackSpeed != 0 && Rhombus_bubble.AttackSpeed != 0)
+		_bubble.AttackSpeed = Circle_bubble.AttackSpeed * Rhombus_bubble.AttackSpeed;
 
-	_bubble.AttackSpeed = Circle_bubble.AttackSpeed + Rhombus_bubble.AttackSpeed + Upgraid_attackSpeed;
 	//_bubble.AttackSpeed = 0.5;
 	_bubble.Damage = Circle_bubble.Damage + Rhombus_bubble.Damage + Upgraid_damage;
 	_bubble.Defense = Circle_bubble.Defense + Rhombus_bubble.Defense + Upgraid_defense;

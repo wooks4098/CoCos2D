@@ -151,16 +151,3 @@ void Bubble::setPrWiththis(bool useNodePr)
 {
 	_useNodePr = useNodePr;
 }
-
-//void Bubble::DimuTick(float t)
-//{
-//
-//	//if ((bubbleA->isMove() || bubbleB->isMove()) && bubbleA->getBoundingBox().intersectsRect(bubbleB->getBoundingBox()))
-//	//{
-//	//	log("C Check");
-//	//	bubbleA->removeFromParentAndCleanup(true);
-//	//	bubbleA = nullptr;
-//	//	bubbleB->removeFromParentAndCleanup(true);
-//	//	bubbleB = nullptr;
-//	//}
-//}
